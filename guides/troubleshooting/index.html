@@ -1,0 +1,2720 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Installing OpenWrt on a Cisco Meraki MR18 via JTAG">
+      
+      
+      
+      
+        <link rel="prev" href="../quickstart/">
+      
+      
+        <link rel="next" href="../../technical/mips-memory-model/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Troubleshooting - MR18 OpenWrt -- JTAG Flash Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="deep-purple" data-md-color-accent="amber">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#troubleshooting" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="MR18 OpenWrt -- JTAG Flash Documentation" class="md-header__button md-logo" aria-label="MR18 OpenWrt -- JTAG Flash Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            MR18 OpenWrt -- JTAG Flash Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Troubleshooting
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="deep-purple" data-md-color-accent="amber"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="deep-purple" data-md-color-accent="amber"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/bsikar/mr18-openwrt" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="MR18 OpenWrt -- JTAG Flash Documentation" class="md-nav__button md-logo" aria-label="MR18 OpenWrt -- JTAG Flash Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    MR18 OpenWrt -- JTAG Flash Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/bsikar/mr18-openwrt" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guides
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Guides
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../prerequisites/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Prerequisites
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hardware-setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hardware Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quick Start
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Troubleshooting
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Troubleshooting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#jtag-openocd-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        JTAG / OpenOCD Issues
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="JTAG / OpenOCD Issues">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#openocd-wont-connect" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OpenOCD won't connect
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cpu-wont-halt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CPU won't halt
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#binary-loading-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Binary Loading Issues
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Binary Loading Issues">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#load_image-completes-too-fast" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        load_image completes too fast
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#xor-checksum-mismatch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        XOR checksum mismatch
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#boot-decompression-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Boot / Decompression Issues
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Boot / Decompression Issues">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lzma-loader-reports-data-error" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        lzma-loader reports "data error!"
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#network-failsafe-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Network / Failsafe Issues
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Network / Failsafe Issues">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#kernel-boots-but-19216811-doesnt-respond" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kernel boots but 192.168.1.1 doesn't respond
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#failsafe-mode-doesnt-trigger" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Failsafe mode doesn't trigger
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ethernet-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ethernet Issues
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Ethernet Issues">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ethernet-tx-works-but-rx-is-broken" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ethernet TX works but RX is broken
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ar8035-fix-crashes-with-illegal-instruction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ar8035-fix crashes with "Illegal instruction"
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#device-stability-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Device Stability Issues
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Device Stability Issues">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#device-reboots-every-90-seconds" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Device reboots every ~90 seconds
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#psu-power-cycling-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PSU / Power Cycling Issues
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="PSU / Power Cycling Issues">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#psu-commands-not-working" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PSU commands not working
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#device-never-power-cycles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Device never power-cycles
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#uart-transfer-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UART Transfer Issues
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="UART Transfer Issues">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#uart_transferpy-pre-test-fails" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        uart_transfer.py pre-test fails
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#uart-transfer-md5-mismatch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UART transfer MD5 mismatch
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#checking-logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Checking Logs
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Checking Logs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tmpopenocdlog" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        /tmp/openocd.log
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tmpscpi_repllog" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        /tmp/scpi_repl.log
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#uart-console-output" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UART console output
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cross-references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cross-references
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Technical Deep-Dives
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Technical Deep-Dives
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../technical/mips-memory-model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MIPS Memory Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../technical/jtag-timing-attack/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    JTAG Timing Attack
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../technical/image-loading/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Image Loading & Verification
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../technical/mips-assembly/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MIPS Assembly
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../technical/failsafe-trigger/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Failsafe Trigger
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../technical/ar8035-phy-fix/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AR8035 PHY Fix
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../technical/uart-transfer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UART Transfer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../technical/openocd-config/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OpenOCD Config
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/address-map/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Address Map
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/script-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Script Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bugs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Bugs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bugs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug Index
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bugs/bug-01-wrong-binary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug 1: Wrong Binary
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bugs/bug-02-openocd-timing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug 2: OpenOCD Timing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bugs/bug-03-socket-contamination/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug 3: Socket Contamination
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bugs/bug-04-pracc-bit-errors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug 4: PRACC Bit Errors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bugs/bug-05-hardware-watchdog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug 5: Hardware Watchdog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bugs/bug-06-named-pipe-eof/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug 6: Named Pipe EOF
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bugs/bug-07-flush-trampoline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug 7: Flush Trampoline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bugs/bug-08-phantom-verify-errors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug 8: Phantom Verify Errors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bugs/bug-09-trampoline-overlap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug 9: Trampoline Overlap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bugs/bug-10-xor-cancellation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug 10: XOR Cancellation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bugs/bug-11-dcache-stale-data/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug 11: D-Cache Stale Data
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bugs/bug-12-beq-vs-bne/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug 12: BEQ vs BNE
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bugs/bug-13-flush-ordering/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug 13: Flush Ordering
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bugs/bug-14-ethernet-silent/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug 14: Ethernet Silent
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bugs/bug-15-meraki-nand-overlay/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug 15: Meraki NAND Overlay
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bugs/bug-16-failsafe-timing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug 16: Failsafe Timing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bugs/bug-17-hammer-freezes-cpu/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug 17: Missing Resume
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bugs/bug-18-mdw-mww-silent-fail/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug 18: mdw/mww Silent Fail
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bugs/bug-19-gpio-vs-pullup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug 19: GPIO vs Pull-up
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bugs/bug-20-reset-supervisor/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug 20: Reset Supervisor
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bugs/bug-21-manual-prompt-window/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug 21: Manual Prompt Window
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bugs/bug-22-resistor-wrong-side/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug 22: Resistor Wrong Side
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bugs/bug-23-en-before-boot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug 23: EN Before Boot
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#jtag-openocd-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        JTAG / OpenOCD Issues
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="JTAG / OpenOCD Issues">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#openocd-wont-connect" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OpenOCD won't connect
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cpu-wont-halt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CPU won't halt
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#binary-loading-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Binary Loading Issues
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Binary Loading Issues">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#load_image-completes-too-fast" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        load_image completes too fast
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#xor-checksum-mismatch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        XOR checksum mismatch
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#boot-decompression-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Boot / Decompression Issues
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Boot / Decompression Issues">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lzma-loader-reports-data-error" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        lzma-loader reports "data error!"
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#network-failsafe-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Network / Failsafe Issues
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Network / Failsafe Issues">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#kernel-boots-but-19216811-doesnt-respond" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kernel boots but 192.168.1.1 doesn't respond
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#failsafe-mode-doesnt-trigger" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Failsafe mode doesn't trigger
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ethernet-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ethernet Issues
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Ethernet Issues">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ethernet-tx-works-but-rx-is-broken" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ethernet TX works but RX is broken
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ar8035-fix-crashes-with-illegal-instruction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ar8035-fix crashes with "Illegal instruction"
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#device-stability-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Device Stability Issues
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Device Stability Issues">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#device-reboots-every-90-seconds" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Device reboots every ~90 seconds
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#psu-power-cycling-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PSU / Power Cycling Issues
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="PSU / Power Cycling Issues">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#psu-commands-not-working" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PSU commands not working
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#device-never-power-cycles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Device never power-cycles
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#uart-transfer-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UART Transfer Issues
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="UART Transfer Issues">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#uart_transferpy-pre-test-fails" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        uart_transfer.py pre-test fails
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#uart-transfer-md5-mismatch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UART transfer MD5 mismatch
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#checking-logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Checking Logs
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Checking Logs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tmpopenocdlog" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        /tmp/openocd.log
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tmpscpi_repllog" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        /tmp/scpi_repl.log
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#uart-console-output" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UART console output
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cross-references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cross-references
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h1>
+<p>Organized by symptom. Each entry includes the likely cause, the fix, and a link to the relevant bug write-up or technical document.</p>
+<hr />
+<h2 id="jtag-openocd-issues">JTAG / OpenOCD Issues<a class="headerlink" href="#jtag-openocd-issues" title="Permanent link">&para;</a></h2>
+<h3 id="openocd-wont-connect">OpenOCD won't connect<a class="headerlink" href="#openocd-wont-connect" title="Permanent link">&para;</a></h3>
+<p><strong>Symptom:</strong> OpenOCD logs <code>JTAG scan chain interrogation failed: all ones</code> or <code>TDO seems stuck high</code>. The <code>halt</code> command never succeeds.</p>
+<p><strong>Likely cause:</strong> OpenOCD was started before the MR18 was powered on, or after the ~2-second Nandloader window closed. The EJTAG TAP is only alive during a narrow window after power-on.</p>
+<p><strong>Fix:</strong> The <code>mr18_flash.py</code> script automates the timing: it powers the MR18 on via the PSU, waits ~1.5 seconds, then launches OpenOCD. If the first attempt misses the window, it retries up to 6 times with automatic power cycling. If you are running manually, start OpenOCD approximately 1.5 seconds after powering on the MR18.</p>
+<p><strong>Also check:</strong>
+- ESP-Prog USB connection (<code>ls /dev/ttyUSB*</code> -- see <a href="../hardware-setup/#device-enumeration">Hardware Setup</a>)
+- JTAG wiring (TDI, TDO, TMS, TCK, GND all connected)
+- TMS pull-up resistor present (4.7 kohm to 3.3V)</p>
+<p><strong>Reference:</strong> <a href="../../bugs/bug-02-openocd-timing/">Bug 2: OpenOCD Startup Timing</a></p>
+<h3 id="cpu-wont-halt">CPU won't halt<a class="headerlink" href="#cpu-wont-halt" title="Permanent link">&para;</a></h3>
+<p><strong>Symptom:</strong> OpenOCD connects and detects the TAP, but <code>halt</code> does not succeed. The CPU continues running and the Nandloader disables JTAG probing.</p>
+<p><strong>Likely cause:</strong> The 2-second JTAG window was missed. The Nandloader disables JTAG probing approximately 2 seconds after power-on. If the <code>halt</code> command arrives even slightly late, the TAP stops responding.</p>
+<p><strong>Fix:</strong> The script retries automatically -- up to 6 power-cycle attempts with slightly varied timing. Each cycle powers off, waits, powers on, starts OpenOCD, and attempts <code>halt</code>. If all 6 attempts fail, check that the PSU is actually cycling power (see the PSU troubleshooting section below).</p>
+<p><strong>Reference:</strong> <a href="../../technical/jtag-timing-attack/">JTAG Timing Attack</a>, <a href="../../bugs/bug-02-openocd-timing/">Bug 2</a></p>
+<hr />
+<h2 id="binary-loading-issues">Binary Loading Issues<a class="headerlink" href="#binary-loading-issues" title="Permanent link">&para;</a></h2>
+<h3 id="load_image-completes-too-fast">load_image completes too fast<a class="headerlink" href="#load_image-completes-too-fast" title="Permanent link">&para;</a></h3>
+<p><strong>Symptom:</strong> <code>load_image</code> reports completion in under 5 seconds for the 6.9 MB initramfs. At the PRACC transfer rate of ~97 KB/s, this should take approximately 70 seconds.</p>
+<p><strong>Likely cause:</strong> The OpenOCD telnet wrapper's <code>_drain()</code> method hit its socket timeout before <code>load_image</code> actually completed. The command appeared to succeed, but the data transfer was incomplete.</p>
+<p><strong>Fix:</strong> This bug is already fixed in the current <code>mr18_flash.py</code>. The <code>_drain()</code> method now uses a per-command timeout parameter (180 seconds for <code>load_image</code>). If you see this behavior, verify you are running the latest version of the script. Check the <code>_drain()</code> timeout in the <code>OCD</code> class.</p>
+<p><strong>Reference:</strong> <a href="../../bugs/bug-03-socket-contamination/">Bug 3: Socket Buffer Contamination</a></p>
+<h3 id="xor-checksum-mismatch">XOR checksum mismatch<a class="headerlink" href="#xor-checksum-mismatch" title="Permanent link">&para;</a></h3>
+<p><strong>Symptom:</strong> After <code>load_image</code> completes (correct duration), the XOR checksum does not match the expected value.</p>
+<p><strong>Likely cause:</strong> PRACC bit errors during the JTAG transfer. The MIPS EJTAG Processor Access handshake has an inherent error rate of approximately 0.04% (1 corrupted word per 2500 words). Over a 6.9 MB binary, this produces roughly 60 corrupted words per load.</p>
+<p><strong>Fix:</strong> This is expected and handled automatically. The <code>cpu_scan_and_fix</code> phase scans all 847 x 8 KB chunks using CPU-executed XOR, identifies corrupt chunks, rewrites them from the file, and re-verifies. The script only launches the kernel after both the chunk scan and a final full-binary XOR pass.</p>
+<p>If <code>cpu_scan_and_fix</code> itself fails after 3 rewrite attempts on a chunk, the script aborts and retries from a fresh power cycle.</p>
+<p><strong>Reference:</strong> <a href="../../bugs/bug-04-pracc-bit-errors/">Bug 4: PRACC Write Bit Errors</a></p>
+<hr />
+<h2 id="boot-decompression-issues">Boot / Decompression Issues<a class="headerlink" href="#boot-decompression-issues" title="Permanent link">&para;</a></h2>
+<h3 id="lzma-loader-reports-data-error">lzma-loader reports "data error!"<a class="headerlink" href="#lzma-loader-reports-data-error" title="Permanent link">&para;</a></h3>
+<p><strong>Symptom:</strong> The kernel launches, UART shows <code>LZMA data, decompressing...</code>, followed by <code>data error!</code>. The kernel never boots.</p>
+<p><strong>Likely cause (most common):</strong> D-cache stale data. The Cisco Nandloader filled the D-cache with dirty lines at the same physical addresses where our OpenWrt binary was loaded. When the lzma-loader reads via KSEG0 (cached), it gets the stale Cisco data instead of our binary.</p>
+<p><strong>Fix:</strong> The D-cache flush must run <strong>before</strong> <code>load_image</code>, not after. The current script does this correctly (Phase 0: pre-load flush). If you see this error, verify that the pre-flush SDBBP is hitting correctly:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>[+] D-cache pre-flush done [pass] -- dirty Cisco lines evicted before load
+</code></pre></div>
+<p>If the pre-flush fails or reports a wrong PC, the trampoline program was corrupted during write.</p>
+<p><strong>Other causes:</strong>
+- <strong>XOR cancellation</strong> (<a href="../../bugs/bug-10-xor-cancellation/">Bug 10</a>): Two PRACC bit errors with identical XOR deltas cancel each other in the full-binary checksum, making it appear correct. The chunk scan catches these because the probability of two errors in the same 8 KB chunk is very low.
+- <strong>Flush ordering</strong> (<a href="../../bugs/bug-13-flush-ordering/">Bug 13</a>): If the flush runs after <code>load_image</code>, the dirty D-cache write-back overwrites the freshly loaded binary. The flush must run before the load.</p>
+<p><strong>Reference:</strong> <a href="../../bugs/bug-11-dcache-stale-data/">Bug 11: D-Cache Stale Data</a>, <a href="../../bugs/bug-13-flush-ordering/">Bug 13: Flush Ordering</a>, <a href="../../bugs/bug-10-xor-cancellation/">Bug 10: XOR Cancellation</a></p>
+<hr />
+<h2 id="network-failsafe-issues">Network / Failsafe Issues<a class="headerlink" href="#network-failsafe-issues" title="Permanent link">&para;</a></h2>
+<h3 id="kernel-boots-but-19216811-doesnt-respond">Kernel boots but 192.168.1.1 doesn't respond<a class="headerlink" href="#kernel-boots-but-19216811-doesnt-respond" title="Permanent link">&para;</a></h3>
+<p><strong>Symptom:</strong> UART shows the kernel booting successfully (Linux banner, driver initialization messages), but <code>ping 192.168.1.1</code> gets no response. <code>nmap</code> or <code>arping</code> show no device on the subnet.</p>
+<p><strong>Likely cause:</strong> Failsafe mode was not triggered. Without failsafe, OpenWrt's preinit mounts the Meraki NAND overlay, which replaces the networking configuration with Cisco's settings. The device acquires an IP via DHCP as a WAN client instead of coming up at <code>192.168.1.1</code>.</p>
+<p><strong>Diagnostic:</strong> Check the UART console output for Meraki management frame references or DHCP client activity. If you see ethertype <code>0x0642</code> frames on <code>tcpdump</code>, the Meraki overlay is active.</p>
+<p><strong>Fix:</strong> The device must be re-flashed with failsafe mode properly triggered. Retry <code>mr18_flash.py</code> from scratch. Verify the UART <code>f</code> key trigger is working (see next entry).</p>
+<p><strong>Reference:</strong> <a href="../../bugs/bug-15-meraki-nand-overlay/">Bug 15: Meraki NAND Overlay</a></p>
+<h3 id="failsafe-mode-doesnt-trigger">Failsafe mode doesn't trigger<a class="headerlink" href="#failsafe-mode-doesnt-trigger" title="Permanent link">&para;</a></h3>
+<p><strong>Symptom:</strong> The kernel boots, UART shows preinit messages, but failsafe mode is never activated. The preinit proceeds to mount the NAND overlay normally.</p>
+<p><strong>Likely cause:</strong> The UART <code>f</code> key was not sent at the right time, and the EN pin did not pull GPIO17 LOW during the preinit window.</p>
+<p><strong>Diagnostic steps:</strong></p>
+<ol>
+<li>
+<p><strong>Check UART output</strong> for the failsafe prompt. You should see:
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>Press the [f] key and hit [enter] to enter failsafe mode
+</code></pre></div>
+   Followed by the script's response:
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>[+] Sent &#39;f\n&#39; to UART at t=22.1s -- triggering failsafe!
+</code></pre></div>
+   If the prompt appears but no <code>f</code> was sent, the UART thread may not be running or the serial port may be in use by another process.</p>
+</li>
+<li>
+<p><strong>Check EN wiring</strong>: Verify the EN pin from the ESP-Prog UART connector is connected to the non-GND pad of the reset button (GPIO17 net). Verify there is no series resistor (see <a href="../../bugs/bug-22-resistor-wrong-side/">Bug 22</a>).</p>
+</li>
+<li>
+<p><strong>Check timing</strong>: The EN pin should be asserted from t=2s after kernel launch and held for 40 seconds. If the <code>FAILSAFE_EN_DELAY</code> or <code>FAILSAFE_EN_HOLD</code> constants were modified, the window may not cover the preinit phase.</p>
+</li>
+<li>
+<p><strong>Check serial port availability</strong>: <code>lsof /dev/ttyUSB4</code> should show only the <code>mr18_flash.py</code> process. If another process (minicom, screen, etc.) has the port open, the script cannot send commands.</p>
+</li>
+</ol>
+<p><strong>Reference:</strong> <a href="../../technical/failsafe-trigger/">Failsafe Trigger</a>, <a href="../../bugs/bug-22-resistor-wrong-side/">Bug 22</a>, <a href="../../bugs/bug-23-en-before-boot/">Bug 23</a></p>
+<hr />
+<h2 id="ethernet-issues">Ethernet Issues<a class="headerlink" href="#ethernet-issues" title="Permanent link">&para;</a></h2>
+<h3 id="ethernet-tx-works-but-rx-is-broken">Ethernet TX works but RX is broken<a class="headerlink" href="#ethernet-tx-works-but-rx-is-broken" title="Permanent link">&para;</a></h3>
+<p><strong>Symptom:</strong> After OpenWrt boots from NAND, the MR18 can send packets (ARP requests visible on the host) but cannot receive any. <code>rx_packets</code> stays at zero. <code>ethtool -S eth0</code> shows FCS errors incrementing on every received frame. <code>ping</code> fails in both directions despite the link being physically up at 1 Gbps.</p>
+<p><strong>Likely cause:</strong> The AR8035 PHY's RGMII RX internal clock delay is not enabled. The OpenWrt device tree specifies <code>phy-mode = "rgmii"</code> instead of <code>"rgmii-rxid"</code>, so the <code>at803x</code> kernel driver leaves the delay at its hardware default (disabled). Without the 2 ns RX clock delay, the MAC samples data at transition points, producing garbage.</p>
+<p><strong>Fix:</strong> Run the <code>ar8035-fix</code> binary:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nb">cd</span><span class="w"> </span>ar8035-fix/
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>python3<span class="w"> </span>send_binary.py
+</code></pre></div>
+<p>This writes MDIO debug register 0x00 bit 15 to enable the RGMII RX clock delay. The fix takes effect immediately -- <code>rx_packets</code> will begin incrementing.</p>
+<p>For persistence across reboots, install the hotplug script (see <a href="../quickstart/#step-10-install-hotplug-script-for-persistence">Quick Start Guide -- Step 10</a>).</p>
+<p><strong>Reference:</strong> <a href="../../technical/ar8035-phy-fix/">AR8035 PHY Fix</a></p>
+<h3 id="ar8035-fix-crashes-with-illegal-instruction">ar8035-fix crashes with "Illegal instruction"<a class="headerlink" href="#ar8035-fix-crashes-with-illegal-instruction" title="Permanent link">&para;</a></h3>
+<p><strong>Symptom:</strong> Running the <code>ar8035-fix</code> binary on the MR18 produces an <code>Illegal instruction</code> signal and the process terminates immediately, before printing any output.</p>
+<p><strong>Likely cause:</strong> The binary was compiled with hardware floating-point instructions. The QCA9557/AR9344 SoC has no hardware FPU. Any FPU instruction (including those generated by glibc's <code>crt0.o</code> startup code for saving/restoring FP registers) causes an illegal instruction trap.</p>
+<p><strong>Fix:</strong> The binary must be compiled with <code>-msoft-float -nostdlib -nostartfiles</code>. The included <code>Makefile</code> and pre-built binary already use these flags. If you rebuilt the binary, verify the Makefile flags:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nv">CFLAGS</span><span class="w">  </span><span class="o">=</span><span class="w"> </span>-O2<span class="w"> </span>-msoft-float<span class="w"> </span>-mno-abicalls<span class="w"> </span>-fno-pic
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="nv">LDFLAGS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>-nostdlib<span class="w"> </span>-nostartfiles<span class="w"> </span>-Wl,-z,noexecstack<span class="w"> </span>-Wl,-e,_start<span class="w"> </span>-static
+</code></pre></div>
+<p>The most common mistake is linking against glibc (forgetting <code>-nostdlib</code>), which pulls in <code>crt0.o</code> containing FPU instructions.</p>
+<p><strong>Reference:</strong> <a href="../../technical/ar8035-phy-fix/#compilation">AR8035 PHY Fix -- Compilation</a></p>
+<hr />
+<h2 id="device-stability-issues">Device Stability Issues<a class="headerlink" href="#device-stability-issues" title="Permanent link">&para;</a></h2>
+<h3 id="device-reboots-every-90-seconds">Device reboots every ~90 seconds<a class="headerlink" href="#device-reboots-every-90-seconds" title="Permanent link">&para;</a></h3>
+<p><strong>Symptom:</strong> The MR18 boots into OpenWrt (or failsafe mode), then spontaneously reboots approximately 90 seconds later. This repeats in a loop.</p>
+<p><strong>Likely cause:</strong> The QCA9557 hardware watchdog timer. The Nandloader enables the watchdog with a ~90-second timeout. If nothing feeds the watchdog after boot, it triggers a full SoC reset.</p>
+<p>In normal OpenWrt operation, <code>procd</code> feeds the watchdog. In failsafe mode, however, the watchdog feeder may not start automatically.</p>
+<p><strong>Fix:</strong> The <code>mr18_flash.py</code> script handles this by sending a watchdog kicker command over UART as soon as the failsafe shell is detected:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="o">(</span><span class="w"> </span><span class="k">while</span><span class="w"> </span>true<span class="p">;</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="m">1</span><span class="w"> </span>&gt;<span class="w"> </span>/dev/watchdog<span class="p">;</span><span class="w"> </span>sleep<span class="w"> </span><span class="m">5</span><span class="p">;</span><span class="w"> </span><span class="k">done</span><span class="w"> </span><span class="o">)</span><span class="w"> </span><span class="p">&amp;</span>
+</code></pre></div>
+<p>If you are in a manual session and the device keeps rebooting, run this command immediately after getting a shell.</p>
+<p><strong>Reference:</strong> <a href="../../bugs/bug-05-hardware-watchdog/">Bug 5: Hardware Watchdog</a></p>
+<hr />
+<h2 id="psu-power-cycling-issues">PSU / Power Cycling Issues<a class="headerlink" href="#psu-power-cycling-issues" title="Permanent link">&para;</a></h2>
+<h3 id="psu-commands-not-working">PSU commands not working<a class="headerlink" href="#psu-commands-not-working" title="Permanent link">&para;</a></h3>
+<p><strong>Symptom:</strong> The script attempts power cycling, but the MR18 never actually turns off or on. The UART shows no reset activity. The CPU PC is at an old <code>SDBBP</code> address from a previous session.</p>
+<p><strong>Likely cause:</strong> The named pipe used to communicate with <code>scpi-repl</code> sent an EOF, causing <code>scpi-repl</code> to exit its read loop. This happens when the pipe is opened in write mode (<code>"w"</code>) instead of append mode (<code>"a"</code>).</p>
+<p><strong>Diagnostic:</strong> Check the <code>scpi-repl</code> process:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>ps<span class="w"> </span>aux<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>scpi-repl
+</code></pre></div>
+<p>If <code>scpi-repl</code> is not running, the pipe reader has died.</p>
+<p><strong>Fix:</strong> This bug is already fixed in the current <code>mr18_flash.py</code>. The <code>psu()</code> function uses append mode (<code>open(PSU_PIPE, 'a')</code>) which does not send EOF on close. If you see this behavior, verify the <code>psu()</code> function uses <code>'a'</code> mode, not <code>'w'</code> mode.</p>
+<p><strong>Reference:</strong> <a href="../../bugs/bug-06-named-pipe-eof/">Bug 6: Named Pipe EOF</a></p>
+<h3 id="device-never-power-cycles">Device never power-cycles<a class="headerlink" href="#device-never-power-cycles" title="Permanent link">&para;</a></h3>
+<p><strong>Symptom:</strong> The script says it is power cycling, but the MR18 LEDs never go off. The device stays running continuously.</p>
+<p><strong>Likely cause:</strong> One of:</p>
+<ol>
+<li><strong>scpi-repl not running:</strong> The process may have exited due to a pipe EOF, USB disconnection, or instrument error.</li>
+<li><strong>Named pipe does not exist:</strong> <code>/tmp/scpi_pipe</code> was deleted or never created.</li>
+<li><strong>PSU USB disconnected:</strong> The SCPI instrument is no longer reachable.</li>
+</ol>
+<p><strong>Diagnostic steps:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1"># 1. Is scpi-repl running?</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>ps<span class="w"> </span>aux<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>scpi-repl
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="c1"># 2. Does the named pipe exist?</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>ls<span class="w"> </span>-la<span class="w"> </span>/tmp/scpi_pipe
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="c1"># 3. Check scpi-repl log for errors</span>
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>tail<span class="w"> </span>-20<span class="w"> </span>/tmp/scpi_repl.log
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>
+<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="c1"># 4. Is the PSU USB device present?</span>
+<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>lsusb<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-i<span class="w"> </span>&lt;your-psu-vendor&gt;
+</code></pre></div>
+<p><strong>Fix:</strong> Restart <code>scpi-repl</code> if it has died. If using a manual PSU, toggle power by hand when the script prompts.</p>
+<hr />
+<h2 id="uart-transfer-issues">UART Transfer Issues<a class="headerlink" href="#uart-transfer-issues" title="Permanent link">&para;</a></h2>
+<h3 id="uart_transferpy-pre-test-fails">uart_transfer.py pre-test fails<a class="headerlink" href="#uart_transferpy-pre-test-fails" title="Permanent link">&para;</a></h3>
+<p><strong>Symptom:</strong> The 32-byte pre-test reports <code>Pre-test FAIL: expected 32 bytes</code> or an MD5 mismatch.</p>
+<p><strong>Likely cause:</strong> The awk hex decoder on the MR18 side is not working correctly. Possible reasons:</p>
+<ol>
+<li><strong>Shell not responsive:</strong> The MR18 has rebooted or the shell has hung.</li>
+<li><strong>UART corruption:</strong> Baud rate mismatch or wiring issue.</li>
+<li><strong>Another process on /dev/ttyUSB4:</strong> Only one process can have the serial port open.</li>
+</ol>
+<p><strong>Fix:</strong> Verify the MR18 is alive and the shell is responsive. Check that no other process has <code>/dev/ttyUSB4</code> open (<code>lsof /dev/ttyUSB4</code>). Verify baud rate is 115200.</p>
+<h3 id="uart-transfer-md5-mismatch">UART transfer MD5 mismatch<a class="headerlink" href="#uart-transfer-md5-mismatch" title="Permanent link">&para;</a></h3>
+<p><strong>Symptom:</strong> The full transfer completes but the MD5 does not match. The transfer took the expected ~20 minutes.</p>
+<p><strong>Likely cause:</strong> One or more hex lines were corrupted during UART transmission. At 115200 baud over ~20 minutes, even a very low error rate can corrupt a few bytes.</p>
+<p><strong>Fix:</strong> Retry the transfer. The pre-test should still pass (it tests the awk decoder, not the long-duration link). If repeated transfers fail, check for electrical noise on the UART wiring, try shorter wires, or reduce the baud rate.</p>
+<hr />
+<h2 id="checking-logs">Checking Logs<a class="headerlink" href="#checking-logs" title="Permanent link">&para;</a></h2>
+<p>When troubleshooting, always check these log sources:</p>
+<h3 id="tmpopenocdlog">/tmp/openocd.log<a class="headerlink" href="#tmpopenocdlog" title="Permanent link">&para;</a></h3>
+<p>Contains all OpenOCD output: JTAG scan chain interrogation, TAP detection, <code>load_image</code> progress, memory read/write results, and error messages.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>tail<span class="w"> </span>-50<span class="w"> </span>/tmp/openocd.log
+</code></pre></div>
+<p>Key things to look for:
+- <code>tap/device found</code> -- JTAG chain detected successfully
+- <code>target halted</code> -- CPU halt succeeded
+- <code>downloaded X bytes</code> -- load_image transfer progress
+- <code>Error:</code> lines -- any OpenOCD error</p>
+<h3 id="tmpscpi_repllog">/tmp/scpi_repl.log<a class="headerlink" href="#tmpscpi_repllog" title="Permanent link">&para;</a></h3>
+<p>Contains scpi-repl instrument discovery output and command responses.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>tail<span class="w"> </span>-20<span class="w"> </span>/tmp/scpi_repl.log
+</code></pre></div>
+<p>Key things to look for:
+- <code>eset&gt;</code> prompt -- scpi-repl is ready and connected to the instrument
+- Voltage/current readbacks confirming PSU commands were executed
+- Error messages if the instrument disconnected</p>
+<h3 id="uart-console-output">UART console output<a class="headerlink" href="#uart-console-output" title="Permanent link">&para;</a></h3>
+<p>The <code>mr18_flash.py</code> script prints all UART console output prefixed with <code>[uart t=Xs]</code>. This shows:</p>
+<ul>
+<li>lzma-loader decompression progress and any errors</li>
+<li>Kernel boot messages</li>
+<li>Preinit failsafe prompt and response</li>
+<li>Shell setup commands (watchdog kicker, ifconfig, telnetd)</li>
+<li>Any error messages from the MR18</li>
+</ul>
+<p>If the script is not running, you can monitor the UART console directly:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>screen<span class="w"> </span>/dev/ttyUSB4<span class="w"> </span><span class="m">115200</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="c1"># or</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>minicom<span class="w"> </span>-D<span class="w"> </span>/dev/ttyUSB4<span class="w"> </span>-b<span class="w"> </span><span class="m">115200</span>
+</code></pre></div>
+<p>Press <code>Ctrl-A</code> then <code>K</code> to exit screen, or <code>Ctrl-A</code> then <code>X</code> to exit minicom.</p>
+<hr />
+<h2 id="cross-references">Cross-references<a class="headerlink" href="#cross-references" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="../hardware-setup/">Hardware Setup</a> -- wiring and connection verification</li>
+<li><a href="../quickstart/">Quick Start Guide</a> -- the expected happy-path flow</li>
+<li><a href="../../reference/script-reference/">Script Reference</a> -- configurable constants and usage</li>
+<li><a href="../../bugs/">Bug Index</a> -- full list of all documented bugs</li>
+<li><a href="../../technical/jtag-timing-attack/">JTAG Timing Attack</a> -- details on the Nandloader timing window</li>
+<li><a href="../../technical/mips-memory-model/">D-Cache Stale Data</a> -- MIPS memory model and cache coherency</li>
+<li><a href="../../technical/failsafe-trigger/">Failsafe Trigger</a> -- all five failsafe approaches and why only two work</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../quickstart/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Quick Start">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Quick Start
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../../technical/mips-memory-model/" class="md-footer__link md-footer__link--next" aria-label="Next: MIPS Memory Model">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                MIPS Memory Model
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.expand", "navigation.top", "navigation.footer", "toc.follow", "search.suggest", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

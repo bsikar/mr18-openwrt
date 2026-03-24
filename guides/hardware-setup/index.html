@@ -1,0 +1,2986 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Installing OpenWrt on a Cisco Meraki MR18 via JTAG">
+      
+      
+      
+      
+        <link rel="prev" href="../prerequisites/">
+      
+      
+        <link rel="next" href="../quickstart/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Hardware Setup - MR18 OpenWrt -- JTAG Flash Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="deep-purple" data-md-color-accent="amber">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#hardware-setup" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="MR18 OpenWrt -- JTAG Flash Documentation" class="md-header__button md-logo" aria-label="MR18 OpenWrt -- JTAG Flash Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            MR18 OpenWrt -- JTAG Flash Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Hardware Setup
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="deep-purple" data-md-color-accent="amber"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="deep-purple" data-md-color-accent="amber"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/bsikar/mr18-openwrt" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="MR18 OpenWrt -- JTAG Flash Documentation" class="md-nav__button md-logo" aria-label="MR18 OpenWrt -- JTAG Flash Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    MR18 OpenWrt -- JTAG Flash Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/bsikar/mr18-openwrt" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guides
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Guides
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../prerequisites/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Prerequisites
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hardware Setup
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hardware Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#bench-layout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bench Layout
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mr18-teardown" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MR18 Teardown
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#esp-prog-connector-pinouts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ESP-Prog Connector Pinouts
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ESP-Prog Connector Pinouts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#jtag-connector-10-pin-2x5-254mm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        JTAG Connector (10-pin, 2x5, 2.54mm)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#uart-connector-6-pin-2x3-254mm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UART Connector (6-pin, 2x3, 2.54mm)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mr18-j3-jtag-header-14-pin-2x7-254mm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MR18 J3 JTAG Header (14-pin, 2x7, 2.54mm)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mr18-j1-uart-pads" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MR18 J1 UART Pads
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#wiring" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Wiring
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Wiring">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#jtag-wiring-esp-prog-2x5-to-mr18-j3-2x7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        JTAG wiring: ESP-Prog 2x5 to MR18 J3 2x7
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#uart-en-wiring-esp-prog-2x3-to-mr18-j1-1x4-reset-button" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UART + EN wiring: ESP-Prog 2x3 to MR18 J1 1x4 + reset button
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#en-pin-wiring-failsafe-trigger" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        EN Pin Wiring (Failsafe Trigger)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="EN Pin Wiring (Failsafe Trigger)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-it-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How it works
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wiring_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Wiring
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#purpose" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Purpose
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#uart-wiring-optional-but-recommended" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UART Wiring (Optional but Recommended)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="UART Wiring (Optional but Recommended)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#serial-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Serial parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bench-power-supply" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bench Power Supply
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Bench Power Supply">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#scpi-connection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SCPI connection
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#device-enumeration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Device Enumeration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#host-ethernet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Host Ethernet
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#wiring-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Wiring Checklist
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cross-references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cross-references
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quick Start
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../troubleshooting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Troubleshooting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Technical Deep-Dives
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Technical Deep-Dives
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../technical/mips-memory-model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MIPS Memory Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../technical/jtag-timing-attack/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    JTAG Timing Attack
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../technical/image-loading/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Image Loading & Verification
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../technical/mips-assembly/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MIPS Assembly
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../technical/failsafe-trigger/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Failsafe Trigger
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../technical/ar8035-phy-fix/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AR8035 PHY Fix
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../technical/uart-transfer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UART Transfer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../technical/openocd-config/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OpenOCD Config
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/address-map/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Address Map
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/script-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Script Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bugs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Bugs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bugs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug Index
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bugs/bug-01-wrong-binary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug 1: Wrong Binary
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bugs/bug-02-openocd-timing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug 2: OpenOCD Timing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bugs/bug-03-socket-contamination/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug 3: Socket Contamination
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bugs/bug-04-pracc-bit-errors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug 4: PRACC Bit Errors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bugs/bug-05-hardware-watchdog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug 5: Hardware Watchdog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bugs/bug-06-named-pipe-eof/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug 6: Named Pipe EOF
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bugs/bug-07-flush-trampoline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug 7: Flush Trampoline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bugs/bug-08-phantom-verify-errors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug 8: Phantom Verify Errors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bugs/bug-09-trampoline-overlap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug 9: Trampoline Overlap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bugs/bug-10-xor-cancellation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug 10: XOR Cancellation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bugs/bug-11-dcache-stale-data/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug 11: D-Cache Stale Data
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bugs/bug-12-beq-vs-bne/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug 12: BEQ vs BNE
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bugs/bug-13-flush-ordering/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug 13: Flush Ordering
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bugs/bug-14-ethernet-silent/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug 14: Ethernet Silent
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bugs/bug-15-meraki-nand-overlay/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug 15: Meraki NAND Overlay
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bugs/bug-16-failsafe-timing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug 16: Failsafe Timing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bugs/bug-17-hammer-freezes-cpu/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug 17: Missing Resume
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bugs/bug-18-mdw-mww-silent-fail/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug 18: mdw/mww Silent Fail
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bugs/bug-19-gpio-vs-pullup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug 19: GPIO vs Pull-up
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bugs/bug-20-reset-supervisor/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug 20: Reset Supervisor
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bugs/bug-21-manual-prompt-window/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug 21: Manual Prompt Window
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bugs/bug-22-resistor-wrong-side/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug 22: Resistor Wrong Side
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bugs/bug-23-en-before-boot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug 23: EN Before Boot
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#bench-layout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bench Layout
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mr18-teardown" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MR18 Teardown
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#esp-prog-connector-pinouts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ESP-Prog Connector Pinouts
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ESP-Prog Connector Pinouts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#jtag-connector-10-pin-2x5-254mm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        JTAG Connector (10-pin, 2x5, 2.54mm)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#uart-connector-6-pin-2x3-254mm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UART Connector (6-pin, 2x3, 2.54mm)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mr18-j3-jtag-header-14-pin-2x7-254mm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MR18 J3 JTAG Header (14-pin, 2x7, 2.54mm)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mr18-j1-uart-pads" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MR18 J1 UART Pads
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#wiring" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Wiring
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Wiring">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#jtag-wiring-esp-prog-2x5-to-mr18-j3-2x7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        JTAG wiring: ESP-Prog 2x5 to MR18 J3 2x7
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#uart-en-wiring-esp-prog-2x3-to-mr18-j1-1x4-reset-button" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UART + EN wiring: ESP-Prog 2x3 to MR18 J1 1x4 + reset button
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#en-pin-wiring-failsafe-trigger" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        EN Pin Wiring (Failsafe Trigger)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="EN Pin Wiring (Failsafe Trigger)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-it-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How it works
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wiring_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Wiring
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#purpose" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Purpose
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#uart-wiring-optional-but-recommended" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UART Wiring (Optional but Recommended)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="UART Wiring (Optional but Recommended)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#serial-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Serial parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bench-power-supply" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bench Power Supply
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Bench Power Supply">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#scpi-connection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SCPI connection
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#device-enumeration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Device Enumeration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#host-ethernet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Host Ethernet
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#wiring-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Wiring Checklist
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cross-references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cross-references
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="hardware-setup">Hardware Setup<a class="headerlink" href="#hardware-setup" title="Permanent link">&para;</a></h1>
+<p>Physical connections between the host PC, ESP-Prog JTAG adapter, bench power supply, and the Cisco Meraki MR18 access point. Complete this guide before running any scripts.</p>
+<h2 id="bench-layout">Bench Layout<a class="headerlink" href="#bench-layout" title="Permanent link">&para;</a></h2>
+<pre class="mermaid"><code>graph LR
+    subgraph Host PC
+        USB1["USB Port 1&lt;br&gt;(ESP-Prog)"]
+        USB2["USB Port 2&lt;br&gt;(Bench PSU)"]
+        ETH["Ethernet NIC&lt;br&gt;192.168.1.2/24"]
+    end
+
+    subgraph ESP-Prog ["ESP-Prog (FT2232H)"]
+        JTAG_CONN["JTAG Connector&lt;br&gt;(Interface A, 10-pin)&lt;br&gt;ttyUSB0/ttyUSB1"]
+        UART_CONN["UART Connector&lt;br&gt;(Interface B, 6-pin)&lt;br&gt;ttyUSB4"]
+    end
+
+    subgraph Breadboard
+        PULLUP["4.7k nTRST&lt;br&gt;Pull-up"]
+    end
+
+    subgraph MR18 ["Cisco Meraki MR18"]
+        J3["J3 JTAG Header"]
+        J1["J1 UART Pads"]
+        RST["Reset Button Pad&lt;br&gt;(GPIO17 net)"]
+        GBE["GbE Ethernet Port"]
+        BARREL["12V Barrel Jack"]
+    end
+
+    subgraph PSU ["Bench PSU"]
+        SCPI["SCPI USB"]
+        DC["12V DC Output"]
+    end
+
+    USB1 --- ESP-Prog
+    USB2 --- SCPI
+    ETH -- "CAT5 Direct" --- GBE
+
+    JTAG_CONN -- "TDI/TDO/TMS/TCK/GND" --- J3
+    JTAG_CONN -.- PULLUP
+    PULLUP -.- J3
+    UART_CONN -- "TXD0-&gt;MR18_RX&lt;br&gt;RXD0&lt;-MR18_TX" --- J1
+    UART_CONN -- "EN -&gt; GPIO17 net" --- RST
+
+    DC -- "12V center-positive" --- BARREL</code></pre>
+<h2 id="mr18-teardown">MR18 Teardown<a class="headerlink" href="#mr18-teardown" title="Permanent link">&para;</a></h2>
+<p><img alt="MR18 board overview -- JTAG header soldered, ethernet and barrel jack connected" src="../../images/mr18-board-overview.jpg" /></p>
+<p>The MR18 case is held together by clips around the perimeter. Pry the front cover off starting from the Ethernet port side. Inside you will find:</p>
+<ol>
+<li>
+<p><strong>J3 -- JTAG header</strong>: An unpopulated 14-pin (2x7) through-hole pad array near the center of the PCB at 2.54 mm pitch. This is the primary JTAG connection.</p>
+</li>
+<li>
+<p><strong>J1 -- UART pads</strong>: A 4-pin pad array near the board edge, carrying the QCA9557's serial console (115200 baud, 8N1, 3.3V TTL).</p>
+</li>
+<li>
+<p><strong>Reset button pad</strong>: A tactile switch pad with two connections -- one pad connects to GND and the other to the GPIO17 net. The non-GND pad is where the EN wire connects. To identify which pad is GND, use a continuity tester against the ground plane or any known GND point (such as the barrel jack outer ring or a JTAG GND pin).</p>
+</li>
+<li>
+<p><strong>Barrel jack</strong>: 12V center-positive DC input, located next to the Ethernet port.</p>
+</li>
+</ol>
+<p><img alt="Close-up of MR18 JTAG and UART pad area" src="../../images/mr18-jtag-uart-closeup.jpg" /></p>
+<h2 id="esp-prog-connector-pinouts">ESP-Prog Connector Pinouts<a class="headerlink" href="#esp-prog-connector-pinouts" title="Permanent link">&para;</a></h2>
+<p>The ESP-Prog has two connectors: a 10-pin JTAG header (Interface A) and a 6-pin UART header (Interface B).</p>
+<p><img alt="ESP-Prog back side showing pin labels on silkscreen" src="../../images/esp-prog-pinout-silkscreen.jpg" /></p>
+<p><img alt="ESP-Prog side view showing both connectors with wires to breadboard" src="../../images/esp-prog-side-view.jpg" /></p>
+<h3 id="jtag-connector-10-pin-2x5-254mm">JTAG Connector (10-pin, 2x5, 2.54mm)<a class="headerlink" href="#jtag-connector-10-pin-2x5-254mm" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>             ESP-Prog JTAG
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>        +-----+-----+-----+-----+-----+
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>  Pin:  |  1  |  3  |  5  |  7  |  9  |
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>Signal: | NC  | TDI | TDO | TCK | TMS |
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>        +-----+-----+-----+-----+-----+
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>  Pin:  |  2  |  4  |  6  |  8  | 10  |
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>Signal: | GND | GND | GND | GND |VJTAG|
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>        +-----+-----+-----+-----+-----+
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Pin</th>
+<th>Signal</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>NC</td>
+<td>Not connected</td>
+</tr>
+<tr>
+<td>2</td>
+<td>GND</td>
+<td>Ground</td>
+</tr>
+<tr>
+<td>3</td>
+<td>TDI</td>
+<td>Test Data In</td>
+</tr>
+<tr>
+<td>4</td>
+<td>GND</td>
+<td>Ground</td>
+</tr>
+<tr>
+<td>5</td>
+<td>TDO</td>
+<td>Test Data Out</td>
+</tr>
+<tr>
+<td>6</td>
+<td>GND</td>
+<td>Ground</td>
+</tr>
+<tr>
+<td>7</td>
+<td>TCK</td>
+<td>Test Clock</td>
+</tr>
+<tr>
+<td>8</td>
+<td>GND</td>
+<td>Ground</td>
+</tr>
+<tr>
+<td>9</td>
+<td>TMS</td>
+<td>Test Mode Select</td>
+</tr>
+<tr>
+<td>10</td>
+<td>VJTAG</td>
+<td>3.3V reference output</td>
+</tr>
+</tbody>
+</table>
+<h3 id="uart-connector-6-pin-2x3-254mm">UART Connector (6-pin, 2x3, 2.54mm)<a class="headerlink" href="#uart-connector-6-pin-2x3-254mm" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>  ESP-Prog UART
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>  +-----+-------+------+
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>  |  1  |   2   |  3   |
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>  | IO0 | RXD0  | GND  |
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>  +-----+-------+------+
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>  |  4  |   5   |  6   |
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>  | TXD0| VPROG |  EN  |
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>  +-----+-------+------+
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Pin</th>
+<th>Signal</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>IO0</td>
+<td>GPIO0 control (not used for MR18)</td>
+</tr>
+<tr>
+<td>2</td>
+<td>RXD0</td>
+<td>UART receive -- connect to MR18 TXD</td>
+</tr>
+<tr>
+<td>3</td>
+<td>GND</td>
+<td>Ground</td>
+</tr>
+<tr>
+<td>4</td>
+<td>TXD0</td>
+<td>UART transmit -- connect to MR18 RXD</td>
+</tr>
+<tr>
+<td>5</td>
+<td>VPROG</td>
+<td>Programming voltage (not used for MR18)</td>
+</tr>
+<tr>
+<td>6</td>
+<td>EN</td>
+<td>Enable -- NPN open-collector pull-down, driven by RTS</td>
+</tr>
+</tbody>
+</table>
+<h2 id="mr18-j3-jtag-header-14-pin-2x7-254mm">MR18 J3 JTAG Header (14-pin, 2x7, 2.54mm)<a class="headerlink" href="#mr18-j3-jtag-header-14-pin-2x7-254mm" title="Permanent link">&para;</a></h2>
+<p><img alt="MR18 board with JTAG and UART headers wired" src="../../images/mr18-jtag-wired.jpg" /></p>
+<p>The J3 pinout was determined empirically from the working wire connections (confirmed by signal matching with the ESP-Prog). Pins 1-9 (odd) follow a standard MIPS EJTAG layout. Pins 11-14 are standard EJTAG assignments but were not used or verified.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>              MR18 J3 JTAG Header
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>         (pin 1 marked on PCB silkscreen)
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>        +-------+------+------+------+------+-------+------+
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>  Pin:  |  1    |  3   |  5   |  7   |  9   | 11    | 13   |
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>Signal: |nTRST  | TDI  | TDO  | TMS  | TCK  |nSRST? | VREF?|
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>        +-------+------+------+------+------+-------+------+
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>  Pin:  |  2    |  4   |  6   |  8   | 10   | 12    | 14   |
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>Signal: | GND   | GND  | GND  | GND  | GND  | GND   | GND  |
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>        +-------+------+------+------+------+-------+------+
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Pin</th>
+<th>Signal</th>
+<th>Verified</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>nTRST</td>
+<td>Yes (wire color match)</td>
+<td>JTAG TAP reset, active-low. Pull HIGH to keep TAP active</td>
+</tr>
+<tr>
+<td>2</td>
+<td>GND</td>
+<td>--</td>
+<td>Ground</td>
+</tr>
+<tr>
+<td>3</td>
+<td>TDI</td>
+<td>Yes (wire color match)</td>
+<td>Test Data In</td>
+</tr>
+<tr>
+<td>4</td>
+<td>GND</td>
+<td>--</td>
+<td>Ground</td>
+</tr>
+<tr>
+<td>5</td>
+<td>TDO</td>
+<td>Yes (wire color match)</td>
+<td>Test Data Out</td>
+</tr>
+<tr>
+<td>6</td>
+<td>GND</td>
+<td>--</td>
+<td>Ground</td>
+</tr>
+<tr>
+<td>7</td>
+<td>TMS</td>
+<td>Yes (wire color match)</td>
+<td>Test Mode Select</td>
+</tr>
+<tr>
+<td>8</td>
+<td>GND</td>
+<td>--</td>
+<td>Ground</td>
+</tr>
+<tr>
+<td>9</td>
+<td>TCK</td>
+<td>Yes (wire color match)</td>
+<td>Test Clock</td>
+</tr>
+<tr>
+<td>10</td>
+<td>GND</td>
+<td>--</td>
+<td>Ground</td>
+</tr>
+<tr>
+<td>11</td>
+<td>nSRST?</td>
+<td>No</td>
+<td>Likely system reset (connected to reset supervisor IC)</td>
+</tr>
+<tr>
+<td>12</td>
+<td>GND</td>
+<td>--</td>
+<td>Ground</td>
+</tr>
+<tr>
+<td>13</td>
+<td>VREF?</td>
+<td>No</td>
+<td>Likely 3.3V target voltage reference</td>
+</tr>
+<tr>
+<td>14</td>
+<td>GND</td>
+<td>--</td>
+<td>Ground</td>
+</tr>
+</tbody>
+</table>
+<p>Only pins 1, 3, 5, 7, 9 and a GND pin were wired. Pins 11-14 were not connected and their assignments are inferred from standard 14-pin EJTAG convention.</p>
+<h2 id="mr18-j1-uart-pads">MR18 J1 UART Pads<a class="headerlink" href="#mr18-j1-uart-pads" title="Permanent link">&para;</a></h2>
+<p>Four pads in a vertical row (top to bottom when the board is oriented with the Ethernet port at the bottom):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>  MR18 J1 UART
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>  +-----+
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>  | GND |  (top)
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>  +-----+
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>  | TXD |  MR18 transmit -&gt; ESP-Prog RXD0
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>  +-----+
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>  | RXD |  MR18 receive &lt;- ESP-Prog TXD0
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>  +-----+
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>  | NC  |  (bottom, not connected -- possibly VCC)
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>  +-----+
+</code></pre></div>
+<h2 id="wiring">Wiring<a class="headerlink" href="#wiring" title="Permanent link">&para;</a></h2>
+<h3 id="jtag-wiring-esp-prog-2x5-to-mr18-j3-2x7">JTAG wiring: ESP-Prog 2x5 to MR18 J3 2x7<a class="headerlink" href="#jtag-wiring-esp-prog-2x5-to-mr18-j3-2x7" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>graph LR
+    subgraph ESP["ESP-Prog JTAG (2x5)"]
+        EP3["Pin 3: TDI"]
+        EP5["Pin 5: TDO"]
+        EP7["Pin 7: TCK"]
+        EP9["Pin 9: TMS"]
+        EP10["Pin 10: VJTAG"]
+        EPG["Pin 2/4/6/8: GND"]
+    end
+
+    subgraph BB["Breadboard"]
+        R1["4.7k Resistor"]
+    end
+
+    subgraph MR["MR18 J3 JTAG (2x7)"]
+        MP1["Pin 1: nTRST"]
+        MP3["Pin 3: TDI"]
+        MP5["Pin 5: TDO"]
+        MP7["Pin 7: TMS"]
+        MP9["Pin 9: TCK"]
+        MPG["Even pins: GND"]
+    end
+
+    EP3 -- "purple" --- MP3
+    EP5 -- "gray" --- MP5
+    EP9 -- "black" --- MP7
+    EP7 -- "white" --- MP9
+    EP10 -- "yellow" --- R1 -- "green" --- MP1
+    EPG -- "GND" --- MPG</code></pre>
+<table>
+<thead>
+<tr>
+<th>Wire Color</th>
+<th>ESP-Prog Pin</th>
+<th>ESP-Prog Signal</th>
+<th>MR18 J3 Pin</th>
+<th>MR18 Signal</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>purple</td>
+<td>3</td>
+<td>TDI</td>
+<td>3</td>
+<td>TDI</td>
+</tr>
+<tr>
+<td>gray</td>
+<td>5</td>
+<td>TDO</td>
+<td>5</td>
+<td>TDO</td>
+</tr>
+<tr>
+<td>black</td>
+<td>9</td>
+<td>TMS</td>
+<td>7</td>
+<td>TMS</td>
+</tr>
+<tr>
+<td>white</td>
+<td>7</td>
+<td>TCK</td>
+<td>9</td>
+<td>TCK</td>
+</tr>
+<tr>
+<td>yellow + green</td>
+<td>10 (VJTAG)</td>
+<td>3.3V through 4.7k</td>
+<td>1</td>
+<td>nTRST pull-up</td>
+</tr>
+<tr>
+<td>(any)</td>
+<td>2/4/6/8</td>
+<td>GND</td>
+<td>any even pin</td>
+<td>GND</td>
+</tr>
+</tbody>
+</table>
+<p>Note: ESP-Prog and MR18 pin numbers do NOT match for TMS and TCK -- connect by <strong>signal name</strong>, not by pin number.</p>
+<p>Both operate at 3.3V logic. No level shifter needed. Do NOT connect ESP-Prog VJTAG directly to any MR18 pin -- it only feeds the 4.7k pull-up resistor.</p>
+<p><strong>4.7k pull-up purpose:</strong> nTRST is active-low. Pulling it HIGH through 4.7k keeps the JTAG TAP controller out of reset and available for probing. Without this pull-up, nTRST may float LOW, holding the TAP in reset and preventing OpenOCD from scanning the chain.</p>
+<p><img alt="Breadboard with 4.7k pull-up between VJTAG (yellow) and nTRST (green)" src="../../images/breadboard-pullup.jpg" /></p>
+<p><img alt="ESP-Prog JTAG connector wired up, bench PSU visible in background" src="../../images/esp-prog-jtag-wired.jpg" /></p>
+<h3 id="uart-en-wiring-esp-prog-2x3-to-mr18-j1-1x4-reset-button">UART + EN wiring: ESP-Prog 2x3 to MR18 J1 1x4 + reset button<a class="headerlink" href="#uart-en-wiring-esp-prog-2x3-to-mr18-j1-1x4-reset-button" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>graph LR
+    subgraph ESP["ESP-Prog UART (2x3)"]
+        EU2["Pin 2: RXD0"]
+        EU3["Pin 3: GND"]
+        EU4["Pin 4: TXD0"]
+        EU6["Pin 6: EN"]
+    end
+
+    subgraph MR["MR18"]
+        subgraph J1["J1 UART (1x4)"]
+            MG["GND"]
+            MT["TXD"]
+            MR2["RXD"]
+        end
+        RST["Reset Button&lt;br&gt;non-GND pad&lt;br&gt;(GPIO17 net)"]
+    end
+
+    EU4 -- "TXD0 -&gt; RXD" --- MR2
+    EU2 -- "RXD0 &lt;- TXD" --- MT
+    EU3 -- "GND" --- MG
+    EU6 -- "EN (direct, no resistor)" --- RST</code></pre>
+<table>
+<thead>
+<tr>
+<th>ESP-Prog UART Pin</th>
+<th>Signal</th>
+<th>Connects To</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2 (RXD0)</td>
+<td>MR18 -&gt; Host</td>
+<td>MR18 J1 TXD pad</td>
+</tr>
+<tr>
+<td>3 (GND)</td>
+<td>Ground</td>
+<td>MR18 J1 GND pad</td>
+</tr>
+<tr>
+<td>4 (TXD0)</td>
+<td>Host -&gt; MR18</td>
+<td>MR18 J1 RXD pad</td>
+</tr>
+<tr>
+<td>6 (EN)</td>
+<td>Failsafe trigger</td>
+<td>MR18 reset button non-GND pad (GPIO17)</td>
+</tr>
+</tbody>
+</table>
+<p>ESP-Prog UART pins 1 (IO0) and 5 (VPROG) are not connected.</p>
+<p>The EN pin is wired <strong>directly</strong> to the reset button pad -- no series resistor. See <a href="../../bugs/bug-22-resistor-wrong-side/">Bug 22</a> for why.</p>
+<h2 id="en-pin-wiring-failsafe-trigger">EN Pin Wiring (Failsafe Trigger)<a class="headerlink" href="#en-pin-wiring-failsafe-trigger" title="Permanent link">&para;</a></h2>
+<p>The ESP-Prog UART connector exposes an EN (enable) pin. This pin is driven by the FT2232H's RTS line through an NPN transistor -- the same auto-reset circuit used by esptool.py for ESP32 boards.</p>
+<h3 id="how-it-works">How it works<a class="headerlink" href="#how-it-works" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>ser.rts = True   --&gt; NPN base driven HIGH --&gt; transistor conducts
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>                 --&gt; EN pin (collector) pulled to GND
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>                 --&gt; GPIO17 net pulled LOW (= reset button pressed)
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>ser.rts = False  --&gt; NPN base driven LOW --&gt; transistor off
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>                 --&gt; EN pin released
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>                 --&gt; reset supervisor pull-up returns GPIO17 HIGH (= button released)
+</code></pre></div>
+<h3 id="wiring_1">Wiring<a class="headerlink" href="#wiring_1" title="Permanent link">&para;</a></h3>
+<p>Connect the ESP-Prog UART connector EN pin directly to the <strong>non-GND pad of the MR18 reset button</strong> (the GPIO17 net).</p>
+<p><strong>Do NOT add a series resistor.</strong> A 100 ohm resistor between the NPN collector and the GPIO17 net was the root cause of <a href="../../bugs/bug-22-resistor-wrong-side/">Bug 22</a> -- the resistor was on the wrong side of the signal path. The voltage drop occurred between the NPN and GPIO17, leaving GPIO17 at 3.3V (reset supervisor still winning). Without the resistor, the NPN collector connects directly to the GPIO17 net and can sink enough current to pull the line LOW.</p>
+<p>The ESP-Prog's NPN transistor circuit already has a base resistor that limits saturation current. No additional protection is needed.</p>
+<h3 id="purpose">Purpose<a class="headerlink" href="#purpose" title="Permanent link">&para;</a></h3>
+<p>The EN pin provides a software-controlled "button press" to trigger OpenWrt failsafe mode during the preinit boot phase. This is the belt-and-suspenders backup to the primary UART <code>f</code> key trigger (see <a href="../../technical/failsafe-trigger/">Failsafe Trigger</a>).</p>
+<h2 id="uart-wiring-optional-but-recommended">UART Wiring (Optional but Recommended)<a class="headerlink" href="#uart-wiring-optional-but-recommended" title="Permanent link">&para;</a></h2>
+<p>The ESP-Prog UART connector (Interface B, ttyUSB4) also carries TX and RX lines for the MR18 serial console. These share the same physical connector as the EN pin.</p>
+<table>
+<thead>
+<tr>
+<th>Signal</th>
+<th>Direction</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TXD0</td>
+<td>Host -&gt; MR18</td>
+<td>ESP-Prog TX out to MR18 RX in</td>
+</tr>
+<tr>
+<td>RXD0</td>
+<td>MR18 -&gt; Host</td>
+<td>MR18 TX out to ESP-Prog RX in</td>
+</tr>
+<tr>
+<td>EN</td>
+<td>Host -&gt; MR18</td>
+<td>Failsafe trigger (see above)</td>
+</tr>
+<tr>
+<td>GND</td>
+<td>Common</td>
+<td>Shared ground (must be connected)</td>
+</tr>
+</tbody>
+</table>
+<p>Connect TXD0 to MR18's UART RX pad on J1, and RXD0 to MR18's UART TX pad on J1.</p>
+<h3 id="serial-parameters">Serial parameters<a class="headerlink" href="#serial-parameters" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Baud rate: 115200</li>
+<li>Data bits: 8</li>
+<li>Parity: None</li>
+<li>Stop bits: 1</li>
+<li>Logic level: 3.3V TTL</li>
+</ul>
+<p>The UART connection serves three purposes:</p>
+<ol>
+<li>
+<p><strong>Failsafe trigger:</strong> The <code>mr18_flash.py</code> script watches the UART console for the OpenWrt preinit prompt (<code>Press the [f] key and hit [enter] to enter failsafe mode</code>) and sends <code>f\n</code> to trigger failsafe. This is the primary and most reliable failsafe trigger.</p>
+</li>
+<li>
+<p><strong>Post-failsafe setup:</strong> After failsafe mode is detected, the script sends commands over UART to start the watchdog kicker, configure <code>eth0</code>, and start <code>telnetd</code>.</p>
+</li>
+<li>
+<p><strong>Diagnostics:</strong> All kernel boot messages, lzma-loader output, and preinit progress are visible on the UART console.</p>
+</li>
+</ol>
+<h2 id="bench-power-supply">Bench Power Supply<a class="headerlink" href="#bench-power-supply" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Voltage</td>
+<td>12V DC</td>
+</tr>
+<tr>
+<td>Current limit</td>
+<td>1.5A</td>
+</tr>
+<tr>
+<td>Connector</td>
+<td>Center-positive barrel jack</td>
+</tr>
+<tr>
+<td>Control</td>
+<td>SCPI over USB serial (optional)</td>
+</tr>
+</tbody>
+</table>
+<p>A SCPI-capable bench PSU allows the <code>mr18_flash.py</code> script to automate power cycling during the JTAG timing attack. The script uses <a href="https://github.com/T-O-M-Tool-Oauto-Mationator/scpi-instrument-toolkit">scpi-repl</a> to send SCPI commands via a named pipe.</p>
+<p>If you do not have a SCPI PSU, you can use any 12V/1.5A supply and toggle power manually when the script prompts. Set <code>PSU_PIPE</code> to <code>/dev/null</code> in <code>mr18_flash.py</code>.</p>
+<h3 id="scpi-connection">SCPI connection<a class="headerlink" href="#scpi-connection" title="Permanent link">&para;</a></h3>
+<p>Connect the PSU's USB control port to the host PC. The <code>scpi-repl</code> utility discovers the instrument automatically. Commands are injected through a named pipe at <code>/tmp/scpi_pipe</code>.</p>
+<h2 id="device-enumeration">Device Enumeration<a class="headerlink" href="#device-enumeration" title="Permanent link">&para;</a></h2>
+<p>After plugging the ESP-Prog into the host USB port, verify the devices appear:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>ls<span class="w"> </span>/dev/ttyUSB*
+</code></pre></div>
+<p>Expected output (device numbers may vary if other USB serial devices are connected):</p>
+<table>
+<thead>
+<tr>
+<th>Device</th>
+<th>FT2232H Channel</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/dev/ttyUSB0</code></td>
+<td>Interface A</td>
+<td>JTAG (used by OpenOCD)</td>
+</tr>
+<tr>
+<td><code>/dev/ttyUSB1</code></td>
+<td>Interface A</td>
+<td>JTAG (secondary, unused)</td>
+</tr>
+<tr>
+<td><code>/dev/ttyUSB4</code></td>
+<td>Interface B</td>
+<td>UART console + EN pin</td>
+</tr>
+</tbody>
+</table>
+<p>The gap between ttyUSB1 and ttyUSB4 occurs when other USB serial devices (such as the bench PSU) occupy ttyUSB2 and ttyUSB3. If your numbering differs, update the <code>ESPPROG_UART</code> constant in <code>mr18_flash.py</code> and the <code>UART</code> constant in <code>send_binary.py</code> and <code>uart_transfer.py</code>.</p>
+<p>If no ttyUSB devices appear, check:</p>
+<ul>
+<li>ESP-Prog USB cable (must be a data cable, not charge-only)</li>
+<li><code>lsusb</code> should show <code>0403:6010 Future Technology Devices International, Ltd FT2232C/D/H</code></li>
+<li>The <code>ftdi_sio</code> kernel module must be loaded (<code>sudo modprobe ftdi_sio</code>)</li>
+</ul>
+<h2 id="host-ethernet">Host Ethernet<a class="headerlink" href="#host-ethernet" title="Permanent link">&para;</a></h2>
+<p>Connect a CAT5 Ethernet cable directly from the host PC's NIC to the MR18 GbE Ethernet port. No switch or router is needed.</p>
+<p>Configure the host NIC with a static IP on the same subnet as the MR18's failsafe address:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>sudo<span class="w"> </span>ip<span class="w"> </span>addr<span class="w"> </span>flush<span class="w"> </span>dev<span class="w"> </span>&lt;your-nic&gt;
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>sudo<span class="w"> </span>ip<span class="w"> </span>addr<span class="w"> </span>add<span class="w"> </span><span class="m">192</span>.168.1.2/24<span class="w"> </span>dev<span class="w"> </span>&lt;your-nic&gt;
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>sudo<span class="w"> </span>ip<span class="w"> </span>link<span class="w"> </span><span class="nb">set</span><span class="w"> </span>&lt;your-nic&gt;<span class="w"> </span>up
+</code></pre></div>
+<p>Replace <code>&lt;your-nic&gt;</code> with your Ethernet adapter's interface name (find it with <code>ip link</code>). The <code>mr18_flash.py</code> script does this automatically using the <code>HOST_NIC</code> and <code>HOST_IP</code> constants.</p>
+<p>The MR18 in OpenWrt failsafe mode comes up at <code>192.168.1.1</code> with a static IP. The host must be at <code>192.168.1.2/24</code> (or any other address on the <code>192.168.1.0/24</code> subnet) to communicate.</p>
+<h2 id="wiring-checklist">Wiring Checklist<a class="headerlink" href="#wiring-checklist" title="Permanent link">&para;</a></h2>
+<p>Before proceeding to the <a href="../quickstart/">Quick Start Guide</a>, verify:</p>
+<ul>
+<li>[ ] J3 JTAG header (14-pin 2x7) soldered and tested for continuity</li>
+<li>[ ] ESP-Prog JTAG wired to J3 by signal name (TDI, TDO, TMS, TCK, GND)</li>
+<li>[ ] 4.7 kohm pull-up from ESP-Prog VJTAG (pin 10) to MR18 J3 pin 1 (nTRST)</li>
+<li>[ ] ESP-Prog UART EN pin wired to MR18 reset button non-GND pad (GPIO17 net) -- no series resistor</li>
+<li>[ ] ESP-Prog UART TX/RX wired to MR18 J1 UART pads (TXD0 to MR18_RX, RXD0 to MR18_TX)</li>
+<li>[ ] Bench PSU: 12V center-positive barrel jack to MR18, 1.5A current limit set</li>
+<li>[ ] Ethernet: direct CAT5 cable from host NIC to MR18 GbE port</li>
+<li>[ ] Host NIC configured: <code>192.168.1.2/24</code></li>
+<li>[ ] <code>ls /dev/ttyUSB*</code> shows expected devices (ttyUSB0, ttyUSB1, ttyUSB4)</li>
+</ul>
+<h2 id="cross-references">Cross-references<a class="headerlink" href="#cross-references" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="../prerequisites/">Prerequisites</a> -- software dependencies, firmware downloads, cross-compiler setup</li>
+<li><a href="../quickstart/">Quick Start Guide</a> -- step-by-step from "hardware wired" to "OpenWrt running from NAND"</li>
+<li><a href="../../technical/failsafe-trigger/">Failsafe Trigger</a> -- how EN pin and UART <code>f</code> key work together</li>
+<li><a href="../../bugs/bug-20-reset-supervisor/">Bug 20: Reset Supervisor</a> -- why nSRST cannot be used for power cycling</li>
+<li><a href="../../bugs/bug-22-resistor-wrong-side/">Bug 22: Resistor Wrong Side</a> -- why the EN wire has no series resistor</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../prerequisites/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Prerequisites">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Prerequisites
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../quickstart/" class="md-footer__link md-footer__link--next" aria-label="Next: Quick Start">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Quick Start
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.expand", "navigation.top", "navigation.footer", "toc.follow", "search.suggest", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
