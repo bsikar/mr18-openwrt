@@ -1,0 +1,2566 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Installing OpenWrt on a Cisco Meraki MR18 via JTAG">
+      
+      
+      
+      
+        <link rel="prev" href="../failsafe-trigger/">
+      
+      
+        <link rel="next" href="../uart-transfer/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>AR8035 PHY Fix - MR18 OpenWrt -- JTAG Flash Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="deep-purple" data-md-color-accent="amber">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#ar8035-phy-rgmii-rx-clock-delay-fix" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="MR18 OpenWrt -- JTAG Flash Documentation" class="md-header__button md-logo" aria-label="MR18 OpenWrt -- JTAG Flash Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            MR18 OpenWrt -- JTAG Flash Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              AR8035 PHY Fix
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="deep-purple" data-md-color-accent="amber"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="deep-purple" data-md-color-accent="amber"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/bsikar/mr18-openwrt" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="MR18 OpenWrt -- JTAG Flash Documentation" class="md-nav__button md-logo" aria-label="MR18 OpenWrt -- JTAG Flash Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    MR18 OpenWrt -- JTAG Flash Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/bsikar/mr18-openwrt" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guides
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Guides
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/prerequisites/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Prerequisites
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/hardware-setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hardware Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quick Start
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/troubleshooting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Troubleshooting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Technical Deep-Dives
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Technical Deep-Dives
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mips-memory-model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MIPS Memory Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../jtag-timing-attack/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    JTAG Timing Attack
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../image-loading/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Image Loading & Verification
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mips-assembly/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MIPS Assembly
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../failsafe-trigger/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Failsafe Trigger
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AR8035 PHY Fix
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AR8035 PHY Fix
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-symptom" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Symptom
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#root-cause-rgmii-rx-clock-timing-skew" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Root Cause: RGMII RX Clock Timing Skew
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Root Cause: RGMII RX Clock Timing Skew">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-dts-gap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The DTS Gap
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-fix-debug-register-0x00-bit-15" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Fix: Debug Register 0x00 Bit 15
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The Fix: Debug Register 0x00 Bit 15">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#debug-register-access-via-mdio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Debug Register Access via MDIO
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#register-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Register Operations
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phy-id-verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PHY ID Verification
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ar8035c-walkthrough" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ar8035.c Walkthrough
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ar8035.c Walkthrough">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#raw-syscall-wrappers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Raw Syscall Wrappers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mips-o32-abi-error-handling-and-clobbers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MIPS O32 ABI: Error Handling and Clobbers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mdio-access-layers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MDIO Access Layers
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ar8035_starts-walkthrough" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ar8035_start.S Walkthrough
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#compilation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Compilation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Compilation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-each-flag-is-needed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why each flag is needed
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#output" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Output
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cross-compilation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cross-compilation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deployment
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Deployment">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#initial-application-via-send_binarypy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Initial application via send_binary.py
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#persistence-via-hotplug-script" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Persistence via hotplug script
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#proper-upstream-fix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Proper upstream fix
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cross-references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cross-references
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../uart-transfer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UART Transfer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../openocd-config/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OpenOCD Config
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/address-map/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Address Map
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/script-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Script Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bugs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Bugs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bugs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug Index
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bugs/bug-01-wrong-binary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug 1: Wrong Binary
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bugs/bug-02-openocd-timing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug 2: OpenOCD Timing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bugs/bug-03-socket-contamination/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug 3: Socket Contamination
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bugs/bug-04-pracc-bit-errors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug 4: PRACC Bit Errors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bugs/bug-05-hardware-watchdog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug 5: Hardware Watchdog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bugs/bug-06-named-pipe-eof/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug 6: Named Pipe EOF
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bugs/bug-07-flush-trampoline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug 7: Flush Trampoline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bugs/bug-08-phantom-verify-errors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug 8: Phantom Verify Errors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bugs/bug-09-trampoline-overlap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug 9: Trampoline Overlap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bugs/bug-10-xor-cancellation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug 10: XOR Cancellation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bugs/bug-11-dcache-stale-data/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug 11: D-Cache Stale Data
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bugs/bug-12-beq-vs-bne/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug 12: BEQ vs BNE
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bugs/bug-13-flush-ordering/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug 13: Flush Ordering
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bugs/bug-14-ethernet-silent/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug 14: Ethernet Silent
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bugs/bug-15-meraki-nand-overlay/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug 15: Meraki NAND Overlay
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bugs/bug-16-failsafe-timing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug 16: Failsafe Timing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bugs/bug-17-hammer-freezes-cpu/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug 17: Missing Resume
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bugs/bug-18-mdw-mww-silent-fail/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug 18: mdw/mww Silent Fail
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bugs/bug-19-gpio-vs-pullup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug 19: GPIO vs Pull-up
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bugs/bug-20-reset-supervisor/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug 20: Reset Supervisor
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bugs/bug-21-manual-prompt-window/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug 21: Manual Prompt Window
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bugs/bug-22-resistor-wrong-side/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug 22: Resistor Wrong Side
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bugs/bug-23-en-before-boot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug 23: EN Before Boot
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-symptom" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Symptom
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#root-cause-rgmii-rx-clock-timing-skew" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Root Cause: RGMII RX Clock Timing Skew
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Root Cause: RGMII RX Clock Timing Skew">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-dts-gap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The DTS Gap
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-fix-debug-register-0x00-bit-15" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Fix: Debug Register 0x00 Bit 15
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The Fix: Debug Register 0x00 Bit 15">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#debug-register-access-via-mdio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Debug Register Access via MDIO
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#register-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Register Operations
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phy-id-verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PHY ID Verification
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ar8035c-walkthrough" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ar8035.c Walkthrough
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ar8035.c Walkthrough">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#raw-syscall-wrappers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Raw Syscall Wrappers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mips-o32-abi-error-handling-and-clobbers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MIPS O32 ABI: Error Handling and Clobbers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mdio-access-layers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MDIO Access Layers
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ar8035_starts-walkthrough" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ar8035_start.S Walkthrough
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#compilation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Compilation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Compilation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-each-flag-is-needed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why each flag is needed
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#output" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Output
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cross-compilation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cross-compilation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deployment
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Deployment">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#initial-application-via-send_binarypy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Initial application via send_binary.py
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#persistence-via-hotplug-script" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Persistence via hotplug script
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#proper-upstream-fix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Proper upstream fix
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cross-references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cross-references
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="ar8035-phy-rgmii-rx-clock-delay-fix">AR8035 PHY RGMII RX Clock Delay Fix<a class="headerlink" href="#ar8035-phy-rgmii-rx-clock-delay-fix" title="Permanent link">&para;</a></h1>
+<p>How a missing 2 ns internal delay line in the AR8035 Ethernet PHY causes total RX failure, and the bare-metal MIPS binary that fixes it by writing a single debug register bit over MDIO.</p>
+<h2 id="the-symptom">The Symptom<a class="headerlink" href="#the-symptom" title="Permanent link">&para;</a></h2>
+<p>After OpenWrt boots on the MR18:</p>
+<ul>
+<li><strong>TX works:</strong> ARP requests are transmitted, visible on a host connected directly to the MR18's Ethernet port. <code>tx_packets</code> increments normally.</li>
+<li><strong>RX is completely broken:</strong> <code>rx_packets</code> stays at zero. Every incoming frame triggers FCS (Frame Check Sequence) errors. The host sees ARP replies never arrive. <code>ping</code> fails in both directions despite the link being physically up at 1 Gbps.</li>
+</ul>
+<h2 id="root-cause-rgmii-rx-clock-timing-skew">Root Cause: RGMII RX Clock Timing Skew<a class="headerlink" href="#root-cause-rgmii-rx-clock-timing-skew" title="Permanent link">&para;</a></h2>
+<p>The QCA9557 SoC connects to the AR8035 PHY over an RGMII (Reduced Gigabit Media Independent Interface) bus. RGMII clocks data on both rising and falling edges of a 125 MHz clock at 1 Gbps. The specification requires a 2 ns delay between the clock and data signals so the MAC can sample data at the correct point.</p>
+<p>The AR8035 has an internal programmable delay line for this purpose. On the RX path (PHY-to-MAC direction), this delay is controlled by <strong>bit 15 of debug register 0x00</strong>. When this bit is cleared (the default), the delay line is disabled and the RX clock arrives aligned with the data edges -- the MAC samples at transition points, producing garbage.</p>
+<h3 id="the-dts-gap">The DTS Gap<a class="headerlink" href="#the-dts-gap" title="Permanent link">&para;</a></h3>
+<p>The OpenWrt device tree for the MR18 specifies:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">phy-mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;rgmii&quot;</span><span class="p">;</span>
+</code></pre></div>
+<p>The correct value should be <code>"rgmii-rxid"</code>, which tells the <code>at803x</code> PHY driver to enable the RX internal delay. With plain <code>"rgmii"</code>, the driver leaves the delay configuration at its hardware default (disabled), and the RX path is broken.</p>
+<h2 id="the-fix-debug-register-0x00-bit-15">The Fix: Debug Register 0x00 Bit 15<a class="headerlink" href="#the-fix-debug-register-0x00-bit-15" title="Permanent link">&para;</a></h2>
+<p>Set bit 15 in the AR8035's debug register 0x00 to enable the RGMII RX clock delay line.</p>
+<h3 id="debug-register-access-via-mdio">Debug Register Access via MDIO<a class="headerlink" href="#debug-register-access-via-mdio" title="Permanent link">&para;</a></h3>
+<p>AR8035 debug registers are not directly addressable through standard MDIO register space. Access requires a two-step protocol using standard MDIO registers 0x1D and 0x1E:</p>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Operation</th>
+<th>MDIO Register</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Write</td>
+<td>0x1D</td>
+<td>Set the debug register address</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Read/Write</td>
+<td>0x1E</td>
+<td>Access the debug register data</td>
+</tr>
+</tbody>
+</table>
+<p>To read debug register N:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>mdio_write(0x1D, N)     # select debug register
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>value = mdio_read(0x1E) # read its value
+</code></pre></div></p>
+<p>To write debug register N:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>mdio_write(0x1D, N)     # select debug register
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>mdio_write(0x1E, value) # write new value
+</code></pre></div></p>
+<h3 id="register-operations">Register Operations<a class="headerlink" href="#register-operations" title="Permanent link">&para;</a></h3>
+<p>The fix applies two debug register modifications:</p>
+<p><strong>1. Hibernation disable (debug 0x0B, bit 15)</strong> -- Clears the <code>PS_HIB_EN</code> bit to prevent the PHY from entering a low-power hibernation state. In practice, this turned out to be a <strong>no-op</strong> on the MR18 (the bit was already clear, and hibernation was not interfering), but it is included as a defensive measure.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>dbg_mask(0x0B, 0x8000, 0)   # clear bit 15
+</code></pre></div>
+<p><strong>2. RX delay enable (debug 0x00, bit 15)</strong> -- This is the <strong>actual fix.</strong> Sets the bit that enables the internal RGMII RX clock delay line (~2 ns).</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>dbg_mask(0x00, 0, 0x8000)   # set bit 15
+</code></pre></div>
+<h3 id="phy-id-verification">PHY ID Verification<a class="headerlink" href="#phy-id-verification" title="Permanent link">&para;</a></h3>
+<p>Before writing any registers, the binary reads MDIO registers 0x02 and 0x03 to verify the PHY identity:</p>
+<table>
+<thead>
+<tr>
+<th>Register</th>
+<th>Expected Value</th>
+<th>Contents</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x02 (PHY ID 1)</td>
+<td><code>0x004d</code></td>
+<td>Qualcomm/Atheros OUI upper bits</td>
+</tr>
+<tr>
+<td>0x03 (PHY ID 2)</td>
+<td><code>0xd072</code></td>
+<td>AR8035 model + revision</td>
+</tr>
+</tbody>
+</table>
+<p>If the PHY ID does not match, the binary aborts without writing any registers.</p>
+<h2 id="ar8035c-walkthrough">ar8035.c Walkthrough<a class="headerlink" href="#ar8035c-walkthrough" title="Permanent link">&para;</a></h2>
+<p>The fix is implemented as a standalone C program (<code>ar8035-fix/ar8035.c</code>) that uses raw Linux syscalls -- no libc, no dynamic linking.</p>
+<h3 id="raw-syscall-wrappers">Raw Syscall Wrappers<a class="headerlink" href="#raw-syscall-wrappers" title="Permanent link">&para;</a></h3>
+<p>Four syscall wrappers using inline MIPS assembly:</p>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Syscall #</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>sys_write(fd, buf, len)</code></td>
+<td>4004</td>
+<td>Console output to stdout</td>
+</tr>
+<tr>
+<td><code>sys_socket(domain, type, proto)</code></td>
+<td>4183</td>
+<td>Create <code>AF_INET</code>/<code>SOCK_DGRAM</code> socket for ioctl</td>
+</tr>
+<tr>
+<td><code>sys_ioctl(fd, req, arg)</code></td>
+<td>4054</td>
+<td>MDIO register access via <code>SIOCGMIIREG</code>/<code>SIOCSMIIREG</code></td>
+</tr>
+<tr>
+<td><code>sys_exit(code)</code></td>
+<td>4001</td>
+<td>Process exit</td>
+</tr>
+</tbody>
+</table>
+<h3 id="mips-o32-abi-error-handling-and-clobbers">MIPS O32 ABI: Error Handling and Clobbers<a class="headerlink" href="#mips-o32-abi-error-handling-and-clobbers" title="Permanent link">&para;</a></h3>
+<p>The MIPS O32 Linux syscall ABI has two critical properties that differ from x86:</p>
+<p><strong>Error signaling via <code>$a3</code>:</strong> On error, <code>$a3</code> is set to 1 and <code>$v0</code> contains a positive errno value. On success, <code>$a3</code> is 0 and <code>$v0</code> contains the return value. A naive check of <code>v0 &lt; 0</code> (as on x86) would miss errors entirely since errno values are positive.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">return</span><span class="w"> </span><span class="n">err</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="o">-</span><span class="n">r</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">r</span><span class="p">;</span><span class="w">  </span><span class="c1">// err=$a3, r=$v0</span>
+</code></pre></div>
+<p><strong>Register clobbers (<code>SYSCALL_CLOBBERS</code> macro):</strong> The kernel does NOT guarantee that <code>$t0</code>-<code>$t9</code> (<code>$8</code>-<code>$15</code>, <code>$24</code>-<code>$25</code>) are preserved across syscalls. glibc declares these as clobbers in its syscall wrappers. Without this macro, GCC may keep live values in temporary registers across a syscall, producing silent data corruption.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="cp">#define SYSCALL_CLOBBERS \</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="cp">    &quot;v1&quot;, &quot;t0&quot;, &quot;t1&quot;, &quot;t2&quot;, &quot;t3&quot;, &quot;t4&quot;, &quot;t5&quot;, &quot;t6&quot;, &quot;t7&quot;, &quot;t8&quot;, &quot;t9&quot;, \</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="cp">    &quot;memory&quot;</span>
+</code></pre></div>
+<h3 id="mdio-access-layers">MDIO Access Layers<a class="headerlink" href="#mdio-access-layers" title="Permanent link">&para;</a></h3>
+<p>The MDIO access is layered through four functions:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>ar8035_main()
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>    --&gt; dbg_mask(reg, clear_bits, set_bits)   // read-modify-write debug register
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>        --&gt; dbg_read(reg) / dbg_write(reg, val)   // two-step debug access
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>            --&gt; mdio_read(reg) / mdio_write(reg, val)   // standard MDIO via ioctl
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>                --&gt; mdio_ioctl(req, ifr)   // raw ioctl wrapper
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>                    --&gt; sys_ioctl(sock, req, arg)   // syscall
+</code></pre></div>
+<p>Standard MDIO ioctl commands used:</p>
+<table>
+<thead>
+<tr>
+<th>ioctl</th>
+<th>Value</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>SIOCGMIIPHY</code></td>
+<td><code>0x8947</code></td>
+<td>Query PHY address from driver</td>
+</tr>
+<tr>
+<td><code>SIOCGMIIREG</code></td>
+<td><code>0x8948</code></td>
+<td>Read MDIO register</td>
+</tr>
+<tr>
+<td><code>SIOCSMIIREG</code></td>
+<td><code>0x8949</code></td>
+<td>Write MDIO register</td>
+</tr>
+</tbody>
+</table>
+<h2 id="ar8035_starts-walkthrough">ar8035_start.S Walkthrough<a class="headerlink" href="#ar8035_starts-walkthrough" title="Permanent link">&para;</a></h2>
+<p>The assembly entry point (<code>ar8035-fix/ar8035_start.S</code>) is a minimal <code>_start</code> that:</p>
+<ol>
+<li>
+<p><strong>Sets up <code>$gp</code></strong> (global pointer) for accessing global/static variables:
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nf">lui</span><span class="w">     </span><span class="no">$gp</span><span class="p">,</span><span class="w"> </span><span class="nv">%hi</span><span class="p">(</span><span class="no">_gp</span><span class="p">)</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="nf">addiu</span><span class="w">   </span><span class="no">$gp</span><span class="p">,</span><span class="w"> </span><span class="no">$gp</span><span class="p">,</span><span class="w"> </span><span class="nv">%lo</span><span class="p">(</span><span class="no">_gp</span><span class="p">)</span>
+</code></pre></div></p>
+</li>
+<li>
+<p><strong>Aligns the stack</strong> to 8 bytes (O32 ABI requirement):
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="nf">li</span><span class="w">      </span><span class="no">$t0</span><span class="p">,</span><span class="w"> </span><span class="err">~</span><span class="mi">7</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="nf">and</span><span class="w">     </span><span class="no">$sp</span><span class="p">,</span><span class="w"> </span><span class="no">$sp</span><span class="p">,</span><span class="w"> </span><span class="no">$t0</span>
+</code></pre></div></p>
+</li>
+<li>
+<p><strong>Calls C entry</strong> via <code>jalr</code> (not <code>jal</code>, since we use a register-indirect call):
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="nf">la</span><span class="w">      </span><span class="no">$t9</span><span class="p">,</span><span class="w"> </span><span class="no">ar8035_main</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="nf">jalr</span><span class="w">    </span><span class="no">$t9</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="nf">nop</span>
+</code></pre></div></p>
+</li>
+<li>
+<p><strong>Exits</strong> with the return value from <code>ar8035_main</code> as the exit code:
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="nf">move</span><span class="w">    </span><span class="no">$a0</span><span class="p">,</span><span class="w"> </span><span class="no">$v0</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="nf">li</span><span class="w">      </span><span class="no">$v0</span><span class="p">,</span><span class="w"> </span><span class="mi">4001</span><span class="w">      </span><span class="c1"># __NR_exit</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="nf">syscall</span>
+</code></pre></div></p>
+</li>
+</ol>
+<h2 id="compilation">Compilation<a class="headerlink" href="#compilation" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="nv">CFLAGS</span><span class="w">  </span><span class="o">=</span><span class="w"> </span>-O2<span class="w"> </span>-msoft-float<span class="w"> </span>-mno-abicalls<span class="w"> </span>-fno-pic
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="nv">LDFLAGS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>-nostdlib<span class="w"> </span>-nostartfiles<span class="w"> </span>-Wl,-z,noexecstack<span class="w"> </span>-Wl,-e,_start<span class="w"> </span>-static
+</code></pre></div>
+<h3 id="why-each-flag-is-needed">Why each flag is needed<a class="headerlink" href="#why-each-flag-is-needed" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Flag</th>
+<th>Reason</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-msoft-float</code></td>
+<td>The AR9344 / QCA9557 has <strong>no hardware FPU</strong>. Any floating-point instruction causes an "Illegal instruction" trap. GCC must emit soft-float library calls for any FP operation.</td>
+</tr>
+<tr>
+<td><code>-nostdlib</code></td>
+<td>glibc's <code>crt0.o</code> startup code uses FPU instructions (e.g., to save/restore FP registers during <code>__libc_start_main</code>). Linking against glibc causes "Illegal instruction" on the first FP instruction in crt0, before <code>main()</code> even runs.</td>
+</tr>
+<tr>
+<td><code>-nostartfiles</code></td>
+<td>Prevents linking glibc's <code>crt1.o</code>/<code>crti.o</code>/<code>crtn.o</code>. We provide our own <code>_start</code> in <code>ar8035_start.S</code>.</td>
+</tr>
+<tr>
+<td><code>-mno-abicalls</code></td>
+<td>Disables MIPS position-independent code generation. Without this, GCC emits GOT (Global Offset Table) references and <code>.cpload</code>/<code>.cprestore</code> sequences that require dynamic linker support.</td>
+</tr>
+<tr>
+<td><code>-fno-pic</code></td>
+<td>Companion to <code>-mno-abicalls</code>. Ensures no PIC/PLT (Procedure Linkage Table) indirection is generated. The binary is fully static with direct addresses.</td>
+</tr>
+<tr>
+<td><code>-static</code></td>
+<td>Produces a static ELF binary with no dynamic library dependencies.</td>
+</tr>
+<tr>
+<td><code>-Wl,-e,_start</code></td>
+<td>Sets the ELF entry point to <code>_start</code> (our assembly entry, not glibc's).</td>
+</tr>
+</tbody>
+</table>
+<h3 id="output">Output<a class="headerlink" href="#output" title="Permanent link">&para;</a></h3>
+<p>The resulting <code>ar8035-fix</code> binary is <strong>5,592 bytes</strong> -- a fully static MIPS32 big-endian ELF executable. Small enough to transfer over UART in seconds.</p>
+<h3 id="cross-compilation">Cross-compilation<a class="headerlink" href="#cross-compilation" title="Permanent link">&para;</a></h3>
+<p>The build requires a MIPS cross-compiler. On Debian/Ubuntu:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>apt<span class="w"> </span>install<span class="w"> </span>gcc-mips-linux-gnu<span class="w"> </span>binutils-mips-linux-gnu
+</code></pre></div></p>
+<p>On other systems, a Docker-based build is provided:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>make<span class="w"> </span>docker
+</code></pre></div></p>
+<h2 id="deployment">Deployment<a class="headerlink" href="#deployment" title="Permanent link">&para;</a></h2>
+<h3 id="initial-application-via-send_binarypy">Initial application via send_binary.py<a class="headerlink" href="#initial-application-via-send_binarypy" title="Permanent link">&para;</a></h3>
+<p><code>ar8035-fix/send_binary.py</code> transfers the compiled binary to the MR18 over UART using hex encoding (see <a href="../uart-transfer/">uart-transfer.md</a>), makes it executable, and runs it. The fix takes effect immediately -- <code>rx_packets</code> begins incrementing and bidirectional Ethernet communication is restored.</p>
+<h3 id="persistence-via-hotplug-script">Persistence via hotplug script<a class="headerlink" href="#persistence-via-hotplug-script" title="Permanent link">&para;</a></h3>
+<p>The fix must be reapplied after every reboot because the AR8035 PHY resets to its default register values on power cycle. A hotplug script at <code>/etc/hotplug.d/iface/10-ar8035-fix</code> fires on <code>ifup</code> for the <code>lan</code> interface:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="ch">#!/bin/sh</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="o">[</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$ACTION</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;ifup&quot;</span><span class="w"> </span><span class="o">]</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$INTERFACE</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;lan&quot;</span><span class="w"> </span><span class="o">]</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>/usr/bin/ar8035-fix
+</code></pre></div>
+<p>This runs the fix binary every time the LAN interface comes up, ensuring RGMII RX delay is enabled before any network traffic flows.</p>
+<h3 id="proper-upstream-fix">Proper upstream fix<a class="headerlink" href="#proper-upstream-fix" title="Permanent link">&para;</a></h3>
+<p>The correct long-term fix is to change the device tree source:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="o">#</span><span class="w"> </span><span class="na">Before</span><span class="w"> </span><span class="nl">(broken)</span><span class="p">:</span>
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="n">phy-mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;rgmii&quot;</span><span class="p">;</span>
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="o">#</span><span class="w"> </span><span class="na">After</span><span class="w"> </span><span class="nl">(correct)</span><span class="p">:</span>
+<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="n">phy-mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;rgmii-rxid&quot;</span><span class="p">;</span>
+</code></pre></div>
+<p>This tells the <code>at803x</code> kernel driver to enable the RX internal delay during PHY initialization, eliminating the need for the userspace binary entirely.</p>
+<h2 id="cross-references">Cross-references<a class="headerlink" href="#cross-references" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="../uart-transfer/">UART Transfer Protocol</a> -- hex-over-UART protocol used by <code>send_binary.py</code></li>
+<li><a href="../../reference/script-reference/">Script Reference</a> -- CLI usage for <code>send_binary.py</code></li>
+<li><a href="../../overview/">Project Overview</a> -- hardware summary including AR8035 PHY</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.expand", "navigation.top", "toc.follow", "search.suggest", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
