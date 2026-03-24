@@ -129,6 +129,7 @@ The J3 pinout was determined empirically from the working wire connections (conf
               MR18 J3 JTAG Header
          (pin 1 marked on PCB silkscreen)
 
+        +-------+------+------+------+------+-------+------+
   Pin:  |  1    |  3   |  5   |  7   |  9   | 11    | 13   |
 Signal: |nTRST  | TDI  | TDO  | TMS  | TCK  |nSRST? | VREF?|
         +-------+------+------+------+------+-------+------+
@@ -202,7 +203,7 @@ graph LR
     end
 
     EP3 -- "purple" --- MP3
-    EP5 -- "red" --- MP5
+    EP5 -- "gray" --- MP5
     EP9 -- "black" --- MP7
     EP7 -- "white" --- MP9
     EP10 -- "yellow" --- R1 -- "green" --- MP1
@@ -212,7 +213,7 @@ graph LR
 | Wire Color | ESP-Prog Pin | ESP-Prog Signal | MR18 J3 Pin | MR18 Signal |
 |------------|-------------|-----------------|-------------|-------------|
 | purple | 3 | TDI | 3 | TDI |
-| red | 5 | TDO | 5 | TDO |
+| gray | 5 | TDO | 5 | TDO |
 | black | 9 | TMS | 7 | TMS |
 | white | 7 | TCK | 9 | TCK |
 | yellow + green | 10 (VJTAG) | 3.3V through 4.7k | 1 | nTRST pull-up |
