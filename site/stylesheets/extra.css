@@ -1,0 +1,92 @@
+/* Mermaid diagram fixes for dark mode (slate scheme) */
+[data-md-color-scheme="slate"] .mermaid {
+  background: #2d2d2d;
+  border-radius: 4px;
+  padding: 1em;
+}
+
+/* Mermaid text visibility in dark mode */
+[data-md-color-scheme="slate"] .mermaid text {
+  fill: #e0e0e0 !important;
+}
+
+[data-md-color-scheme="slate"] .mermaid .nodeLabel {
+  color: #e0e0e0 !important;
+}
+
+[data-md-color-scheme="slate"] .mermaid .edgeLabel {
+  background-color: #2d2d2d !important;
+  color: #e0e0e0 !important;
+}
+
+[data-md-color-scheme="slate"] .mermaid .label {
+  color: #e0e0e0 !important;
+}
+
+/* Mermaid flowchart node styling for dark mode */
+[data-md-color-scheme="slate"] .mermaid .node rect,
+[data-md-color-scheme="slate"] .mermaid .node polygon,
+[data-md-color-scheme="slate"] .mermaid .node circle {
+  stroke: #7c4dff !important;
+  fill: #3a3a3a !important;
+}
+
+/* Mermaid edge/arrow lines */
+[data-md-color-scheme="slate"] .mermaid .flowchart-link {
+  stroke: #aaa !important;
+}
+
+[data-md-color-scheme="slate"] .mermaid marker path {
+  fill: #aaa !important;
+}
+
+/* Mermaid subgraph labels */
+[data-md-color-scheme="slate"] .mermaid .cluster rect {
+  fill: #1e1e1e !important;
+  stroke: #555 !important;
+}
+
+[data-md-color-scheme="slate"] .mermaid .cluster text {
+  fill: #ccc !important;
+}
+
+/* Mermaid sequence diagram */
+[data-md-color-scheme="slate"] .mermaid .actor {
+  fill: #3a3a3a !important;
+  stroke: #7c4dff !important;
+}
+
+[data-md-color-scheme="slate"] .mermaid .actor-line {
+  stroke: #666 !important;
+}
+
+[data-md-color-scheme="slate"] .mermaid .messageLine0,
+[data-md-color-scheme="slate"] .mermaid .messageLine1 {
+  stroke: #aaa !important;
+}
+
+[data-md-color-scheme="slate"] .mermaid .messageText {
+  fill: #e0e0e0 !important;
+}
+
+[data-md-color-scheme="slate"] .mermaid .note {
+  fill: #3a3a3a !important;
+  stroke: #7c4dff !important;
+}
+
+[data-md-color-scheme="slate"] .mermaid .noteText {
+  fill: #e0e0e0 !important;
+}
+
+/* Mermaid pie chart */
+[data-md-color-scheme="slate"] .mermaid .pieTitleText {
+  fill: #e0e0e0 !important;
+}
+
+[data-md-color-scheme="slate"] .mermaid .slice {
+  stroke: #2d2d2d !important;
+}
+
+[data-md-color-scheme="slate"] .mermaid .legend text {
+  fill: #e0e0e0 !important;
+}
