@@ -49,15 +49,15 @@ graph LR
 
 ## MR18 Teardown
 
-![MR18 board overview -- JTAG header soldered, ethernet and barrel jack connected](../images/mr18-board-overview.jpg)
+![MR18 board overview—JTAG header soldered, ethernet and barrel jack connected](../images/mr18-board-overview.jpg)
 
 The MR18 case is held together by clips around the perimeter. Pry the front cover off starting from the Ethernet port side. Inside you will find:
 
-1. **J3 -- JTAG header**: An unpopulated 14-pin (2x7) through-hole pad array near the center of the PCB at 2.54 mm pitch. This is the primary JTAG connection.
+1. **J3—JTAG header**: An unpopulated 14-pin (2x7) through-hole pad array near the center of the PCB at 2.54 mm pitch. This is the primary JTAG connection.
 
-2. **J1 -- UART pads**: A 4-pin pad array near the board edge, carrying the QCA9557's serial console (115200 baud, 8N1, 3.3V TTL).
+2. **J1—UART pads**: A 4-pin pad array near the board edge, carrying the QCA9557's serial console (115200 baud, 8N1, 3.3V TTL).
 
-3. **Reset button pad**: A tactile switch pad with two connections -- one pad connects to GND and the other to the GPIO17 net. The non-GND pad is where the EN wire connects. To identify which pad is GND, use a continuity tester against the ground plane or any known GND point (such as the barrel jack outer ring or a JTAG GND pin).
+3. **Reset button pad**: A tactile switch pad with two connections—one pad connects to GND and the other to the GPIO17 net. The non-GND pad is where the EN wire connects. To identify which pad is GND, use a continuity tester against the ground plane or any known GND point (such as the barrel jack outer ring or a JTAG GND pin).
 
 4. **Barrel jack**: 12V center-positive DC input, located next to the Ethernet port.
 
@@ -113,11 +113,11 @@ Signal: | GND | GND | GND | GND |VJTAG|
 | Pin | Signal | Notes |
 |-----|--------|-------|
 | 1 | IO0 | GPIO0 control (not used for MR18) |
-| 2 | RXD0 | UART receive -- connect to MR18 TXD |
+| 2 | RXD0 | UART receive—connect to MR18 TXD |
 | 3 | GND | Ground |
-| 4 | TXD0 | UART transmit -- connect to MR18 RXD |
+| 4 | TXD0 | UART transmit—connect to MR18 RXD |
 | 5 | VPROG | Programming voltage (not used for MR18) |
-| 6 | EN | Enable -- NPN open-collector pull-down, driven by RTS |
+| 6 | EN | Enable—NPN open-collector pull-down, driven by RTS |
 
 ## MR18 J3 JTAG Header (14-pin, 2x7, 2.54mm)
 
@@ -170,7 +170,7 @@ Four pads in a vertical row (top to bottom when the board is oriented with the E
   +-----+
   | RXD |  MR18 receive <- ESP-Prog TXD0
   +-----+
-  | NC  |  (bottom, not connected -- possibly VCC)
+  | NC  |  (bottom, not connected—possibly VCC)
   +-----+
 ```
 
@@ -219,9 +219,9 @@ graph LR
 | yellow + green | 10 (VJTAG) | 3.3V through 4.7k | 1 | nTRST pull-up |
 | (any) | 2/4/6/8 | GND | any even pin | GND |
 
-Note: ESP-Prog and MR18 pin numbers do NOT match for TMS and TCK -- connect by **signal name**, not by pin number.
+Note: ESP-Prog and MR18 pin numbers do NOT match for TMS and TCK—connect by **signal name**, not by pin number.
 
-Both operate at 3.3V logic. No level shifter needed. Do NOT connect ESP-Prog VJTAG directly to any MR18 pin -- it only feeds the 4.7k pull-up resistor.
+Both operate at 3.3V logic. No level shifter needed. Do NOT connect ESP-Prog VJTAG directly to any MR18 pin—it only feeds the 4.7k pull-up resistor.
 
 **4.7k pull-up purpose:** nTRST is active-low. Pulling it HIGH through 4.7k keeps the JTAG TAP controller out of reset and available for probing. Without this pull-up, nTRST may float LOW, holding the TAP in reset and preventing OpenOCD from scanning the chain.
 
@@ -264,11 +264,11 @@ graph LR
 
 ESP-Prog UART pins 1 (IO0) and 5 (VPROG) are not connected.
 
-The EN pin is wired **directly** to the reset button pad -- no series resistor. See [Bug 22](../bugs/bug-22-resistor-wrong-side.md) for why.
+The EN pin is wired **directly** to the reset button pad—no series resistor. See [Bug 22](../bugs/bug-22-resistor-wrong-side.md) for why.
 
 ## EN Pin Wiring (Failsafe Trigger)
 
-The ESP-Prog UART connector exposes an EN (enable) pin. This pin is driven by the FT2232H's RTS line through an NPN transistor -- the same auto-reset circuit used by esptool.py for ESP32 boards.
+The ESP-Prog UART connector exposes an EN (enable) pin. This pin is driven by the FT2232H's RTS line through an NPN transistor—the same auto-reset circuit used by esptool.py for ESP32 boards.
 
 ### How it works
 

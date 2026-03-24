@@ -16,7 +16,7 @@ Chunk 209 covered the address range `0xa01FFC00` to `0xa0201C00`. This range inc
 1. `cpu_scan_and_fix` detects chunk 209 has a bad XOR
 2. Rewrites chunk 209 from the original file via `load_image` -- this correctly writes the binary data, **overwriting the XOR program** at `0xa0200000`
 3. Writes the XOR program back to `0xa0200000` -- this **overwrites part of the binary** that was just loaded
-4. Runs the XOR -- the chunk now contains the XOR program instead of binary data, so the checksum is wrong again
+4. Runs the XOR—the chunk now contains the XOR program instead of binary data, so the checksum is wrong again
 5. Repeat forever
 
 The trampoline and the binary data occupied the same physical memory, creating a write conflict that could never be resolved.

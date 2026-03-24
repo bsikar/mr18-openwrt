@@ -5,7 +5,7 @@
 
 ## Symptom
 
-The GPIO17 hammer loop ran all 17 cycles (each with `mww` to set GPIO_OE and GPIO_CLR, then a 1.5-second sleep). After the full 25-second hammer sequence, `192.168.1.1` never responded. The device appeared completely dead -- no Ethernet link, no Meraki frames, nothing.
+The GPIO17 hammer loop ran all 17 cycles (each with `mww` to set GPIO_OE and GPIO_CLR, then a 1.5-second sleep). After the full 25-second hammer sequence, `192.168.1.1` never responded. The device appeared completely dead—no Ethernet link, no Meraki frames, nothing.
 
 ## Root Cause
 

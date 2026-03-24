@@ -35,4 +35,4 @@ From failsafe, run `sysupgrade -n` with the OpenWrt sysupgrade image to replace 
 
 ## Lesson
 
-NAND overlays can completely override initramfs behavior. An initramfs kernel only guarantees that the kernel is yours -- the userspace may be replaced by overlay mounts from the existing flash contents. On devices with factory firmware, always plan for failsafe mode to bypass the overlay.
+NAND overlays can completely override initramfs behavior. An initramfs kernel only guarantees that the kernel is yours—the userspace may be replaced by overlay mounts from the existing flash contents. On devices with factory firmware, always plan for failsafe mode to bypass the overlay.

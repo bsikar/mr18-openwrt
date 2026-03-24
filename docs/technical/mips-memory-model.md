@@ -4,15 +4,15 @@ How the MIPS32 virtual memory architecture, AR9344 D-cache parameters, and the i
 
 ## MIPS32 Virtual Memory Segments
 
-MIPS32 divides the 4 GB virtual address space into fixed segments. The two kernel segments KSEG0 and KSEG1 are hardwired translations -- no TLB configuration is required. This is critical for bare-metal JTAG work because we are operating before any OS has configured the TLB.
+MIPS32 divides the 4 GB virtual address space into fixed segments. The two kernel segments KSEG0 and KSEG1 are hardwired translations—no TLB configuration is required. This is critical for bare-metal JTAG work because we are operating before any OS has configured the TLB.
 
 | Segment | Virtual Range | Size | Cached | Mapping |
 |---------|--------------|------|--------|---------|
-| KUSEG   | `0x00000000` -- `0x7FFFFFFF` | 2 GB | Configurable | TLB-mapped (user mode) |
-| KSEG0   | `0x80000000` -- `0x9FFFFFFF` | 512 MB | Yes | `phys = virt & 0x1FFFFFFF` |
-| KSEG1   | `0xA0000000` -- `0xBFFFFFFF` | 512 MB | No (uncached) | `phys = virt & 0x1FFFFFFF` |
-| KSEG2   | `0xC0000000` -- `0xDFFFFFFF` | 512 MB | Configurable | TLB-mapped (kernel) |
-| KSEG3   | `0xE0000000` -- `0xFFFFFFFF` | 512 MB | Configurable | TLB-mapped (kernel) |
+| KUSEG   | `0x00000000`—`0x7FFFFFFF` | 2 GB | Configurable | TLB-mapped (user mode) |
+| KSEG0   | `0x80000000`—`0x9FFFFFFF` | 512 MB | Yes | `phys = virt & 0x1FFFFFFF` |
+| KSEG1   | `0xA0000000`—`0xBFFFFFFF` | 512 MB | No (uncached) | `phys = virt & 0x1FFFFFFF` |
+| KSEG2   | `0xC0000000`—`0xDFFFFFFF` | 512 MB | Configurable | TLB-mapped (kernel) |
+| KSEG3   | `0xE0000000`—`0xFFFFFFFF` | 512 MB | Configurable | TLB-mapped (kernel) |
 
 ### Physical Address Derivation
 
@@ -35,15 +35,15 @@ Both KSEG0 and KSEG1 map to the same 512 MB of physical address space. The only 
 ```mermaid
 graph TB
     subgraph "Virtual Address Space (4 GB)"
-        KUSEG["KUSEG<br>0x00000000 -- 0x7FFFFFFF<br>2 GB, TLB-mapped, user mode"]
-        KSEG0["KSEG0<br>0x80000000 -- 0x9FFFFFFF<br>512 MB, CACHED<br>phys = virt & 0x1FFFFFFF"]
-        KSEG1["KSEG1<br>0xA0000000 -- 0xBFFFFFFF<br>512 MB, UNCACHED<br>phys = virt & 0x1FFFFFFF"]
-        KSEG2["KSEG2<br>0xC0000000 -- 0xDFFFFFFF<br>512 MB, TLB-mapped"]
-        KSEG3["KSEG3<br>0xE0000000 -- 0xFFFFFFFF<br>512 MB, TLB-mapped"]
+        KUSEG["KUSEG<br>0x00000000—0x7FFFFFFF<br>2 GB, TLB-mapped, user mode"]
+        KSEG0["KSEG0<br>0x80000000—0x9FFFFFFF<br>512 MB, CACHED<br>phys = virt & 0x1FFFFFFF"]
+        KSEG1["KSEG1<br>0xA0000000—0xBFFFFFFF<br>512 MB, UNCACHED<br>phys = virt & 0x1FFFFFFF"]
+        KSEG2["KSEG2<br>0xC0000000—0xDFFFFFFF<br>512 MB, TLB-mapped"]
+        KSEG3["KSEG3<br>0xE0000000—0xFFFFFFFF<br>512 MB, TLB-mapped"]
     end
 
     subgraph "Physical Memory"
-        PHYS_RAM["DDR RAM<br>0x00000000 -- 0x07FFFFFF<br>128 MB"]
+        PHYS_RAM["DDR RAM<br>0x00000000—0x07FFFFFF<br>128 MB"]
         PHYS_MMIO["SoC Peripherals<br>0x18000000+<br>GPIO, UART, etc."]
     end
 
@@ -94,7 +94,7 @@ When the MR18 powers on, the Nandloader reads the Cisco kernel from NAND flash a
 
 - Each 32-byte write allocates a D-cache line
 - The Cisco kernel data sits in D-cache lines marked **dirty** (modified but not yet written back to physical RAM)
-- Physical RAM at `0x0005FC00+` may lag behind -- some data may still be in-flight or only in cache
+- Physical RAM at `0x0005FC00+` may lag behind—some data may still be in-flight or only in cache
 
 After the Nandloader finishes, the D-cache contains dirty lines covering the physical address range `0x0005FC00` through approximately `0x0005FC00 + sizeof(cisco_kernel)`.
 
@@ -113,7 +113,7 @@ At this point, physical RAM is correct, but the D-cache is stale.
 When the CPU resumes and the lzma-loader begins executing via KSEG0, it performs various reads that sweep through the D-cache's index space. The LRU eviction policy means:
 
 1. A KSEG0 read needs a cache line for some address
-2. The cache set is full -- it must evict the least-recently-used line
+2. The cache set is full—it must evict the least-recently-used line
 3. The evicted line happens to be a dirty Cisco line covering physical `0x0005FC00+`
 4. **Write-back fires**: the dirty Cisco data is written from cache to physical RAM
 5. Our OpenWrt binary in physical RAM is now partially overwritten with Cisco data
@@ -128,7 +128,7 @@ The corruption is non-deterministic. Which Cisco lines get evicted depends on th
 
 ### The Solution: Flush Before Load
 
-The fix is to flush the entire D-cache **before** `load_image`. This writes back all dirty Cisco lines to physical RAM (harmless -- we are about to overwrite that RAM anyway) and marks all cache lines as clean/invalid.
+The fix is to flush the entire D-cache **before** `load_image`. This writes back all dirty Cisco lines to physical RAM (harmless—we are about to overwrite that RAM anyway) and marks all cache lines as clean/invalid.
 
 The `D_CACHE_FLUSH_TRAMPOLINE` in `mr18_flash.py` accomplishes this:
 
@@ -143,7 +143,7 @@ The `D_CACHE_FLUSH_TRAMPOLINE` in `mr18_flash.py` accomplishes this:
 7  nop
 ```
 
-This is a simple LW (load word) loop that reads every 32-byte cache line from KSEG0 `0x80000000` to `0x80020000` (128 KB). The reads themselves are not interesting -- what matters is the side effect: each read potentially evicts a dirty line from a different cache set, forcing its write-back to physical RAM.
+This is a simple LW (load word) loop that reads every 32-byte cache line from KSEG0 `0x80000000` to `0x80020000` (128 KB). The reads themselves are not interesting—what matters is the side effect: each read potentially evicts a dirty line from a different cache set, forcing its write-back to physical RAM.
 
 ### Why 128 KB (4x D-Cache Capacity)
 
@@ -169,14 +169,14 @@ Bug 13 was the mistake of running the D-cache flush **after** `load_image` inste
 
 1. `load_image` writes our OpenWrt binary to physical RAM via KSEG1 (correct)
 2. D-cache still has dirty Cisco lines (unchanged by KSEG1 writes)
-3. Flush trampoline runs via KSEG0 -- the flush loop's own KSEG0 reads cause LRU eviction
+3. Flush trampoline runs via KSEG0—the flush loop's own KSEG0 reads cause LRU eviction
 4. Dirty Cisco lines are evicted with write-back -- **overwriting our freshly loaded OpenWrt binary**
 
 The write-back of stale Cisco data happens during the flush itself, because the flush loop touches KSEG0 addresses that share cache sets with the Cisco data range. The flush that was supposed to protect our binary is the thing that destroys it.
 
 The correct order:
 
-1. **Flush first**: evict all dirty Cisco lines (writes Cisco data to RAM -- harmless)
+1. **Flush first**: evict all dirty Cisco lines (writes Cisco data to RAM—harmless)
 2. **Load second**: `load_image` writes OpenWrt to physical RAM via KSEG1
 3. D-cache is now clean (no dirty lines covering our binary's address range)
 4. When the CPU reads via KSEG0, cache misses fetch from physical RAM, which contains our correct binary

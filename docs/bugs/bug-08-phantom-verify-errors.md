@@ -5,7 +5,7 @@
 
 ## Symptom
 
-The `verify_and_fix` routine reported "fixing" 15 words -- it detected mismatches between RAM contents and the original file, then rewrote those words. But the full-binary XOR checksum was unchanged: `0x3137a4af` both before and after the "fixes." The lzma-loader still produced "data error!" on boot.
+The `verify_and_fix` routine reported "fixing" 15 words—it detected mismatches between RAM contents and the original file, then rewrote those words. But the full-binary XOR checksum was unchanged: `0x3137a4af` both before and after the "fixes." The lzma-loader still produced "data error!" on boot.
 
 ## Root Cause
 
@@ -13,7 +13,7 @@ The `verify_and_fix` routine used PRACC bulk reads (`mdw` via OpenOCD) to read b
 
 This creates two classes of errors that cancel out:
 
-1. **Phantom errors (false positives)**: A word in RAM is correct, but the PRACC read returns a bit-flipped value. The routine "detects" a mismatch and rewrites the word with the correct value -- which was already there. No harm, but no help either.
+1. **Phantom errors (false positives)**: A word in RAM is correct, but the PRACC read returns a bit-flipped value. The routine "detects" a mismatch and rewrites the word with the correct value—which was already there. No harm, but no help either.
 
 2. **Missed errors (false negatives)**: A word in RAM is genuinely corrupt, but the PRACC read returns the corrupt value with an additional bit flip that happens to produce the expected value. The routine sees a match and moves on, leaving the corruption in place.
 
@@ -35,4 +35,4 @@ This reduces PRACC exposure from ~2000 reads per 8 KB chunk to just 5 PRACC oper
 
 ## Lesson
 
-If your verification mechanism uses the same error-prone channel as your data transfer, the verification inherits the same error rate. The verification must use a fundamentally different path -- in this case, CPU-internal ALU operations -- to provide a reliable ground truth.
+If your verification mechanism uses the same error-prone channel as your data transfer, the verification inherits the same error rate. The verification must use a fundamentally different path—in this case, CPU-internal ALU operations—to provide a reliable ground truth.

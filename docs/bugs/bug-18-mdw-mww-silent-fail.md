@@ -18,9 +18,9 @@ ocd.cmd("resume")                      # CPU now RUNNING
 result = ocd.cmd("mdw 0xB8040004")     # GPIO_IN -- but CPU is RUNNING
 ```
 
-After `resume`, the target state is `RUNNING`. When `mdw` is issued against a running target, OpenOCD returns `ERROR_TARGET_NOT_HALTED`. However, the Python telnet wrapper did not check for this error -- it treated any response as valid data, producing meaningless readings.
+After `resume`, the target state is `RUNNING`. When `mdw` is issued against a running target, OpenOCD returns `ERROR_TARGET_NOT_HALTED`. However, the Python telnet wrapper did not check for this error—it treated any response as valid data, producing meaningless readings.
 
-The GPIO writes (via `mww`) also require halt state. The implicit halt behavior from Bug 17 only works for the first command in a sequence -- once `resume` is called, subsequent `mww`/`mdw` commands fail silently.
+The GPIO writes (via `mww`) also require halt state. The implicit halt behavior from Bug 17 only works for the first command in a sequence—once `resume` is called, subsequent `mww`/`mdw` commands fail silently.
 
 ## Fix
 
@@ -41,4 +41,4 @@ The sequence is now: halt (CPU stopped) -> write GPIO -> read GPIO -> resume (CP
 
 ## Lesson
 
-OpenOCD MIPS EJTAG requires the CPU to be explicitly halted before any `mdw`/`mww` memory access. After a `resume`, the target is in `RUNNING` state and memory operations will fail. Do not rely on implicit halt behavior -- make the halt/resume state transitions explicit in every JTAG operation cycle.
+OpenOCD MIPS EJTAG requires the CPU to be explicitly halted before any `mdw`/`mww` memory access. After a `resume`, the target is in `RUNNING` state and memory operations will fail. Do not rely on implicit halt behavior—make the halt/resume state transitions explicit in every JTAG operation cycle.

@@ -19,7 +19,7 @@ def psu(command):
 
 When a file opened with `"w"` mode on a FIFO is closed (at the end of the `with` block), the kernel sends an EOF to the reading end. `scpi-repl` reads from the FIFO in a loop; when it receives EOF, it exits the read loop and stops accepting commands.
 
-The first `psu("OFF")` call worked -- it opened the FIFO, wrote the command, and closed it (sending EOF). `scpi-repl` processed "OFF" and then exited its read loop. All subsequent `psu()` calls opened the FIFO in write mode, but with no reader on the other end, the `open()` call blocked forever (FIFO semantics: a writer blocks until a reader opens the other end).
+The first `psu("OFF")` call worked—it opened the FIFO, wrote the command, and closed it (sending EOF). `scpi-repl` processed "OFF" and then exited its read loop. All subsequent `psu()` calls opened the FIFO in write mode, but with no reader on the other end, the `open()` call blocked forever (FIFO semantics: a writer blocks until a reader opens the other end).
 
 The net result: the first PSU command executed, but all subsequent commands hung silently.
 

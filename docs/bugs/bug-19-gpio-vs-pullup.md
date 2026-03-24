@@ -11,7 +11,7 @@ With the halt/resume cycle correct (Bug 17 and Bug 18 fixed), GPIO17 was configu
 
 GPIO17 is the reset button input on the MR18. The board has pull-up resistors on this signal to ensure it reads HIGH (not pressed) by default. Additionally, the JTAG adapter's nSRST line may contribute a pull-up on the same net.
 
-The effective pull-up resistance is approximately 5 kohm (board pull-up in parallel with any JTAG pull-up). The AR9344 GPIO output driver has limited drive strength -- its internal PMOS/NMOS transistors can source/sink only a few milliamps.
+The effective pull-up resistance is approximately 5 kohm (board pull-up in parallel with any JTAG pull-up). The AR9344 GPIO output driver has limited drive strength—its internal PMOS/NMOS transistors can source/sink only a few milliamps.
 
 The pull-up current at 3.3 V through 5 kohm is:
 

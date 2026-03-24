@@ -59,7 +59,7 @@ graph TD
     P10 --> P11["UART thread: read console, send 'f' for failsafe"]
     P11 --> P12["Configure host NIC, wait for OpenWrt"]
     P12 --> P13["Transfer sysupgrade via telnet/nc or SSH/SCP"]
-    P13 --> P14["Done -- OpenWrt flashing NAND"]
+    P13 --> P14["Done—OpenWrt flashing NAND"]
     P3 --> |"Not halted"| P1
 ```
 
@@ -222,7 +222,7 @@ graph TD
     T1["Verify shell alive (echo test)"]
     T1 --> T2["Phase 0: Pre-test<br>(32 known bytes through awk)"]
     T2 --> |"Pass"| T3["Phase 1: Full transfer<br>(sysupgrade.bin via hex/awk)"]
-    T2 --> |"Fail"| T_ABORT["Abort -- awk or TTY broken"]
+    T2 --> |"Fail"| T_ABORT["Abort—awk or TTY broken"]
     T3 --> T4["Verify size (wc -c) +<br>MD5 on remote"]
     T4 --> |"MD5 match"| T5["Auto-run:<br>sysupgrade /tmp/fw.bin"]
     T4 --> |"MD5 mismatch"| T_FAIL["Report failure"]

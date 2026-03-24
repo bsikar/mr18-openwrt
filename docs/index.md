@@ -6,7 +6,7 @@ This project installs OpenWrt on a Cisco Meraki MR18 access point by exploiting 
 
 ## Reading Paths
 
-### Practical Path -- I want to reproduce this
+### Practical Path—I want to reproduce this
 
 | Step | Document | What you get |
 |------|----------|--------------|
@@ -15,7 +15,7 @@ This project installs OpenWrt on a Cisco Meraki MR18 access point by exploiting 
 | 3 | [Quick Start](guides/quickstart.md) | Step-by-step flash procedure |
 | 4 | [Troubleshooting](guides/troubleshooting.md) | Common failures and fixes |
 
-### Technical Path -- I want to understand how it works
+### Technical Path—I want to understand how it works
 
 | Step | Document | What you learn |
 |------|----------|----------------|
@@ -64,7 +64,7 @@ flowchart TD
     T9 --> REF
     REF --> ADDR[Address Map]
     REF --> SCRIPT[Script Reference]
-    REF --> BUGS[Bug Index -- 23 bugs]
+    REF --> BUGS[Bug Index—23 bugs]
 ```
 
 ---

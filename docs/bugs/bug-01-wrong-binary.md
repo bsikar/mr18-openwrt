@@ -5,7 +5,7 @@
 
 ## Symptom
 
-The ar71xx initramfs image was loaded via JTAG. The CPU resumed and the lzma-loader began executing. Nothing happened -- no Ethernet link, no ping response, no serial output. The LZMA decompressor appeared to die silently.
+The ar71xx initramfs image was loaded via JTAG. The CPU resumed and the lzma-loader began executing. Nothing happened—no Ethernet link, no ping response, no serial output. The LZMA decompressor appeared to die silently.
 
 ## Root Cause
 
@@ -28,4 +28,4 @@ The ath79 target's lzma-loader preserves the LZMA payload through relocation, al
 
 ## Lesson
 
-When two OpenWrt targets exist for the same hardware (ar71xx and ath79 both support the QCA9557/AR9344), the device compatibility table is not sufficient to choose between them. Check the loader startup sequence -- specifically, the ordering of BSS initialization relative to self-relocation -- to determine which target is safe for JTAG flat loading.
+When two OpenWrt targets exist for the same hardware (ar71xx and ath79 both support the QCA9557/AR9344), the device compatibility table is not sufficient to choose between them. Check the loader startup sequence—specifically, the ordering of BSS initialization relative to self-relocation—to determine which target is safe for JTAG flat loading.

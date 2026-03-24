@@ -30,7 +30,7 @@ But the correct encoding for "branch while not equal" is:
 
 With `BEQ`, the loop only executed when `t0 == t1`, which is never true at the start. The loop body ran exactly once (the instruction executes before the branch is evaluated on the first iteration due to the pipeline), flushing a single cache line instead of 4096.
 
-One cache line (32 bytes) out of 128 KB is 0.02% of the flush range -- effectively no flush at all.
+One cache line (32 bytes) out of 128 KB is 0.02% of the flush range—effectively no flush at all.
 
 ## Fix
 

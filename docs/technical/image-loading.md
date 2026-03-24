@@ -20,7 +20,7 @@ flowchart TD
     P3a --> P3b
     P3b --> P3c
     P3c -->|Match| P4
-    P3c -->|Mismatch| ABORT["Abort -- power-cycle retry"]
+    P3c -->|Mismatch| ABORT["Abort—power-cycle retry"]
     P3b -->|Unfixable chunk| ABORT
 
     style P0 fill:#f9f,stroke:#333
@@ -30,7 +30,7 @@ flowchart TD
 
 ## Phase 0: Pre-load D-cache Flush
 
-**Why BEFORE the load, not after:** The Cisco Nandloader writes the Cisco kernel to physical `0x5FC00` via KSEG0 (cached, write-back, write-allocate on AR9344). This fills D-cache lines at that physical range with dirty Cisco data -- the actual DRAM content lags behind the cache.
+**Why BEFORE the load, not after:** The Cisco Nandloader writes the Cisco kernel to physical `0x5FC00` via KSEG0 (cached, write-back, write-allocate on AR9344). This fills D-cache lines at that physical range with dirty Cisco data—the actual DRAM content lags behind the cache.
 
 Our `load_image` writes OpenWrt to the same physical range via KSEG1 (uncached, bypasses D-cache, goes straight to DRAM). But the D-cache still holds those dirty Cisco lines. When the lzma-loader later reads via KSEG0, the MIPS cache controller evicts dirty lines with write-back -- **overwriting our freshly loaded OpenWrt binary with stale Cisco data.** Result: `data error!` from the lzma-loader (see [Bug 13](../bugs/bug-13-flush-ordering.md)).
 
@@ -111,11 +111,11 @@ A 14-word MIPS program that XORs every 32-bit word in the loaded binary and stor
 
 ### XOR limitation (Bug 10)
 
-XOR is a weak checksum: if two corrupted words have the same XOR delta, they cancel out and the full-binary XOR appears correct. For a 6.9 MB binary with ~5 expected PRACC bit-flip errors (see [Bug 4](../bugs/bug-04-pracc-bit-errors.md)), the probability of exact cancellation is low but nonzero. This is why Phase 3b exists -- the chunk-level scan makes cancellation astronomically unlikely within any single 8 KB chunk. See [Bug 10](../bugs/bug-10-xor-cancellation.md).
+XOR is a weak checksum: if two corrupted words have the same XOR delta, they cancel out and the full-binary XOR appears correct. For a 6.9 MB binary with ~5 expected PRACC bit-flip errors (see [Bug 4](../bugs/bug-04-pracc-bit-errors.md)), the probability of exact cancellation is low but nonzero. This is why Phase 3b exists—the chunk-level scan makes cancellation astronomically unlikely within any single 8 KB chunk. See [Bug 10](../bugs/bug-10-xor-cancellation.md).
 
 ## Phase 3b: Per-chunk CPU-XOR Scan (cpu_scan_and_fix)
 
-The core corruption detection and repair mechanism. Replaced the earlier `verify_and_fix` approach that used PRACC reads (`dump_image`), which suffered from the same bit-flip rate as writes -- causing phantom errors where correct data appeared bad and real errors appeared correct (see [Bug 8](../bugs/bug-08-phantom-verify-errors.md)).
+The core corruption detection and repair mechanism. Replaced the earlier `verify_and_fix` approach that used PRACC reads (`dump_image`), which suffered from the same bit-flip rate as writes—causing phantom errors where correct data appeared bad and real errors appeared correct (see [Bug 8](../bugs/bug-08-phantom-verify-errors.md)).
 
 ### Design
 
@@ -150,7 +150,7 @@ This eliminates guessing which words within a chunk are bad. The full chunk rewr
 
 The original `verify_and_fix` used `dump_image` (PRACC reads) to read back the entire binary and compare against the file. The problem (see [Bug 8](../bugs/bug-08-phantom-verify-errors.md)): PRACC reads have the same ~5 bit-flip per MB error rate as writes. A correct word in RAM could be read back wrong (false positive), and a corrupted word could be read back as the expected value (false negative). The verify step was as unreliable as the load step.
 
-`cpu_scan_and_fix` avoids this by having the CPU itself do the comparison. The CPU reads RAM through the L1 cache at 560 MHz with zero bit errors -- only the 5 PRACC operations per chunk are subject to JTAG noise.
+`cpu_scan_and_fix` avoids this by having the CPU itself do the comparison. The CPU reads RAM through the L1 cache at 560 MHz with zero bit errors—only the 5 PRACC operations per chunk are subject to JTAG noise.
 
 ## Phase 3c: Final Full XOR After Chunk Scan
 

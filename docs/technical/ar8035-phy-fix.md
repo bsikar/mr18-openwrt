@@ -13,7 +13,7 @@ After OpenWrt boots on the MR18:
 
 The QCA9557 SoC connects to the AR8035 PHY over an RGMII (Reduced Gigabit Media Independent Interface) bus. RGMII clocks data on both rising and falling edges of a 125 MHz clock at 1 Gbps. The specification requires a 2 ns delay between the clock and data signals so the MAC can sample data at the correct point.
 
-The AR8035 has an internal programmable delay line for this purpose. On the RX path (PHY-to-MAC direction), this delay is controlled by **bit 15 of debug register 0x00**. When this bit is cleared (the default), the delay line is disabled and the RX clock arrives aligned with the data edges -- the MAC samples at transition points, producing garbage.
+The AR8035 has an internal programmable delay line for this purpose. On the RX path (PHY-to-MAC direction), this delay is controlled by **bit 15 of debug register 0x00**. When this bit is cleared (the default), the delay line is disabled and the RX clock arrives aligned with the data edges—the MAC samples at transition points, producing garbage.
 
 ### The DTS Gap
 
@@ -79,7 +79,7 @@ If the PHY ID does not match, the binary aborts without writing any registers.
 
 ## ar8035.c Walkthrough
 
-The fix is implemented as a standalone C program (`ar8035-fix/ar8035.c`) that uses raw Linux syscalls -- no libc, no dynamic linking.
+The fix is implemented as a standalone C program (`ar8035-fix/ar8035.c`) that uses raw Linux syscalls—no libc, no dynamic linking.
 
 ### Raw Syscall Wrappers
 

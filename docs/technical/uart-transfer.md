@@ -165,7 +165,7 @@ The ~20 minute sysupgrade transfer is the bottleneck in the entire flash process
 | Shell alive | Before anything | Abort with "Shell not responding" |
 | Pre-test MD5 | After 32-byte test | Abort with "awk formula or TTY is broken" |
 | File size | After transfer | Abort with "Size mismatch" |
-| MD5 checksum | After transfer | Abort with "MD5 mismatch -- transfer corrupted" |
+| MD5 checksum | After transfer | Abort with "MD5 mismatch—transfer corrupted" |
 | PHY ID (send_binary.py only) | During binary execution | Binary self-aborts if PHY is not AR8035 |
 
 There is no retry logic within a single transfer. If the MD5 mismatches, the user must re-run the script. The pre-test makes this unlikely by catching systemic issues early.

@@ -4,7 +4,7 @@ Every address constant used in the project, with derivation from hardware specs 
 
 ## MIPS Address Space Primer
 
-The AR9344 / QCA9557 is a MIPS 74Kc core. MIPS32 divides the 4 GB virtual address space into fixed segments. No TLB mapping is needed for the two KSEG regions -- they are hardwired translations to physical memory:
+The AR9344 / QCA9557 is a MIPS 74Kc core. MIPS32 divides the 4 GB virtual address space into fixed segments. No TLB mapping is needed for the two KSEG regions—they are hardwired translations to physical memory:
 
 | Segment | Virtual Range | Physical Mapping | Cached | Used For |
 |---------|--------------|-----------------|--------|----------|
@@ -30,32 +30,32 @@ A given physical address is accessible through both KSEG0 (cached) and KSEG1 (un
 graph TB
     subgraph "Physical Memory (128 MB DDR)"
         P_BASE["0x00000000"]
-        P_LOAD["0x0005FC00 -- Kernel load base"]
-        P_ENTRY["0x00060000 -- lzma-loader entry"]
-        P_END["0x006FBE6D -- ~End of initramfs binary"]
-        P_TRAMP["0x00800000 -- Trampoline region"]
-        P_RELOC["0x02800000 -- lzma-loader self-relocation target"]
-        P_TOP["0x07FFFFFF -- End of 128 MB"]
+        P_LOAD["0x0005FC00—Kernel load base"]
+        P_ENTRY["0x00060000—lzma-loader entry"]
+        P_END["0x006FBE6D—~End of initramfs binary"]
+        P_TRAMP["0x00800000—Trampoline region"]
+        P_RELOC["0x02800000—lzma-loader self-relocation target"]
+        P_TOP["0x07FFFFFF—End of 128 MB"]
     end
 
-    subgraph "KSEG1 (Uncached) -- JTAG writes here"
-        K1_LOAD["0xA005FC00 -- LOAD_ADDR"]
-        K1_ENTRY["0xA0060000 -- ENTRY_KSEG1"]
-        K1_TRAMP["0xA0800000 -- TRAMPOLINE_ADDR"]
-        K1_RESULT["0xA0800040 -- Checksum result slot"]
+    subgraph "KSEG1 (Uncached)—JTAG writes here"
+        K1_LOAD["0xA005FC00—LOAD_ADDR"]
+        K1_ENTRY["0xA0060000—ENTRY_KSEG1"]
+        K1_TRAMP["0xA0800000—TRAMPOLINE_ADDR"]
+        K1_RESULT["0xA0800040—Checksum result slot"]
     end
 
-    subgraph "KSEG0 (Cached) -- CPU reads/executes here"
-        K0_LOAD["0x8005FC00 -- Kernel load (KSEG0 view)"]
-        K0_ENTRY["0x80060000 -- ENTRY_ADDR (decompressor)"]
-        K0_FLUSH["0x80000000 -- D-cache flush sweep start"]
-        K0_FLUSH_END["0x80020000 -- D-cache flush sweep end"]
-        K0_RELOC["0x82800000 -- lzma-loader relocation"]
+    subgraph "KSEG0 (Cached)—CPU reads/executes here"
+        K0_LOAD["0x8005FC00—Kernel load (KSEG0 view)"]
+        K0_ENTRY["0x80060000—ENTRY_ADDR (decompressor)"]
+        K0_FLUSH["0x80000000—D-cache flush sweep start"]
+        K0_FLUSH_END["0x80020000—D-cache flush sweep end"]
+        K0_RELOC["0x82800000—lzma-loader relocation"]
     end
 
     subgraph "KSEG1 MMIO Registers"
-        MMIO_GPIO["0xB8040000 -- GPIO register block"]
-        MMIO_WDT["0xB8060008 -- Watchdog control"]
+        MMIO_GPIO["0xB8040000—GPIO register block"]
+        MMIO_WDT["0xB8060008—Watchdog control"]
     end
 
     K1_LOAD -. "physical 0x0005FC00" .-> P_LOAD
@@ -68,7 +68,7 @@ graph TB
 
 These come from the [OpenWrt MR18 JTAG wiki](https://openwrt.org/toh/meraki/mr18) and are embedded in the initramfs binary's lzma-loader header.
 
-### 0xA005FC00 / 0x8005FC00 -- Kernel Load Address
+### 0xA005FC00 / 0x8005FC00—Kernel Load Address
 
 ```
 LOAD_ADDR   = "0xa005FC00"   # KSEG1 (uncached)
@@ -81,7 +81,7 @@ LOAD_KSEG1  = "0xa005FC00"   # same, explicit name
 
 The initramfs kernel binary is loaded starting at this address. The `0x5FC00` offset (383 KB into RAM) is an OpenWrt convention for ath79 targets, leaving room for the bootloader's data structures below.
 
-### 0xA0060000 / 0x80060000 -- lzma-loader Entry Point
+### 0xA0060000 / 0x80060000—lzma-loader Entry Point
 
 ```
 ENTRY_ADDR   = "0x80060000"   # KSEG0 (cached execution)
@@ -99,7 +99,7 @@ The first 1024 bytes at `LOAD_ADDR` are the lzma-loader's header. Execution begi
 
 ## Trampoline Region
 
-### 0xA0800000 -- TRAMPOLINE_ADDR
+### 0xA0800000—TRAMPOLINE_ADDR
 
 ```
 TRAMPOLINE_ADDR = "0xa0800000"
@@ -122,7 +122,7 @@ Three programs are staged here during the flash process:
 2. **XOR checksum program** (14 words) -- computes a 32-bit XOR over the loaded binary and stores the result at `TRAMPOLINE_ADDR + 0x40`
 3. **Launch trampoline** (`LAUNCH_TRAMPOLINE`) -- a single `J 0xa0060000` instruction that jumps to the lzma-loader entry
 
-### 0xA0800040 -- Checksum Result Slot
+### 0xA0800040—Checksum Result Slot
 
 ```
 CHECKSUM_RESULT_OFFSET = 0x40   # 64 bytes past TRAMPOLINE_ADDR
@@ -152,7 +152,7 @@ The reset button is GPIO17 (`RESET_GPIO_BIT = 1 << 17 = 0x00020000`).
 
 ## Hardware Watchdog
 
-### 0xB8060008 -- Watchdog Control
+### 0xB8060008—Watchdog Control
 
 - **Physical:** `0x18060008`
 - **Purpose:** QCA9558 hardware watchdog timer control register
@@ -165,7 +165,7 @@ while true; do echo 1 > /dev/watchdog; sleep 5; done
 
 ## D-Cache Flush Sweep Range
 
-### 0x80000000 -- 0x80020000
+### 0x80000000—0x80020000
 
 ```
 D_CACHE_FLUSH_TRAMPOLINE starts at KSEG0 0x80000000
@@ -216,7 +216,7 @@ The MR18 has 128 MB of DDR RAM. Physical addresses and their roles:
            |  lzma-loader self-relocation target         |
            |  (copied here before decompression)         |
 0x02810000 +-- ~ end of relocated loader ---------------+
-           |  (free -- kernel decompresses somewhere     |
+           |  (free—kernel decompresses somewhere     |
            |   in this region, managed by lzma-loader)   |
 0x07FFFFFF +---------------------------------------------+
              End of 128 MB physical RAM

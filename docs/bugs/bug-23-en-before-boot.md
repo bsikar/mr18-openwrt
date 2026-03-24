@@ -22,7 +22,7 @@ The actual timeline:
 | t=18-25s | Preinit runs, **failsafe window open** |
 | t=25s+ | Normal init proceeds, window closed |
 
-The EN assertion at t=12s hit during LZMA decompression -- the kernel had not even started yet. By t=17s (when EN was released), preinit still had not run. The GPIO17 state during decompression is irrelevant because no software is checking it.
+The EN assertion at t=12s hit during LZMA decompression—the kernel had not even started yet. By t=17s (when EN was released), preinit still had not run. The GPIO17 state during decompression is irrelevant because no software is checking it.
 
 ## Fix
 

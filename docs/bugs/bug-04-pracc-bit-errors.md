@@ -9,7 +9,7 @@ After a successful `load_image` (correct duration, proper completion message), t
 
 ## Root Cause
 
-The bit errors are not caused by signal integrity (noise, reflections, crosstalk on the JTAG wires). They are PRACC handshake protocol errors -- timing violations in the MIPS EJTAG Processor Access (PRACC) state machine that mediates memory writes through the debug interface.
+The bit errors are not caused by signal integrity (noise, reflections, crosstalk on the JTAG wires). They are PRACC handshake protocol errors—timing violations in the MIPS EJTAG Processor Access (PRACC) state machine that mediates memory writes through the debug interface.
 
 Key evidence: the error rate does not change when JTAG clock speed is reduced. At both 1000 kHz and 100 kHz adapter speeds, the per-word bit-flip probability remains approximately the same. Signal integrity issues would improve at lower clock rates; PRACC protocol errors do not, because they are a function of the handshake state machine, not the wire timing.
 
@@ -19,7 +19,7 @@ The error rate is approximately 1 corrupted word per 2500 words written (~0.04%)
 
 Since PRACC bit errors cannot be prevented at the transport level, the solution is a verify-and-correct layer:
 
-1. **Detect**: After `load_image`, run a CPU-executed XOR checksum program (not a PRACC bulk read, which would inherit the same error rate -- see [Bug 8](bug-08-phantom-verify-errors.md)).
+1. **Detect**: After `load_image`, run a CPU-executed XOR checksum program (not a PRACC bulk read, which would inherit the same error rate—see [Bug 8](bug-08-phantom-verify-errors.md)).
 2. **Locate**: `cpu_scan_and_fix` divides the binary into 847 chunks of 8 KB each. For each chunk, a CPU-executed XOR program computes the checksum using only 5 PRACC operations (write program, set registers, resume, read result, compare).
 3. **Fix**: Any chunk with a mismatched XOR is rewritten from the file via `load_image` and re-verified.
 

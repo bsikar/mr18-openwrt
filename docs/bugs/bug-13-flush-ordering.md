@@ -5,7 +5,7 @@
 
 ## Symptom
 
-Bug 12 was fixed -- the flush loop now correctly ran 4096 iterations, sweeping the full 128 KB. The `SDBBP` hit at the right time. The lzma-loader still reported "data error!" on boot.
+Bug 12 was fixed—the flush loop now correctly ran 4096 iterations, sweeping the full 128 KB. The `SDBBP` hit at the right time. The lzma-loader still reported "data error!" on boot.
 
 ## Root Cause
 
@@ -23,7 +23,7 @@ The flush that was supposed to clean the cache is the operation that destroys th
 
 ## Fix
 
-Move the flush to **Phase 0 -- before `load_image`**:
+Move the flush to **Phase 0—before `load_image`**:
 
 1. **Flush first**: Evict all dirty Cisco D-cache lines. The Cisco data is written back to physical RAM. This is harmless because we are about to overwrite that entire region with `load_image`.
 2. **Load second**: `load_image` writes the OpenWrt binary to physical RAM via KSEG1. The D-cache is now clean (no dirty lines covering our binary's address range).

@@ -464,7 +464,7 @@ I-type: op=0x09, rs=0($zero), rt=10($t2), imm=0
 
 **Word 5: `0x8D0B0000` -- `LW $t3, 0($t0)` [LOOP HEAD]**
 
-Load one word from the binary (via KSEG1 uncached -- reads physical RAM directly).
+Load one word from the binary (via KSEG1 uncached—reads physical RAM directly).
 
 ```
 I-type: op=0x23, rs=8($t0), rt=11($t3), imm=0
@@ -639,7 +639,7 @@ Index  Hex         Assembly                          Purpose
  9     0x00000000  nop                               padding
 ```
 
-Note that `FLUSH_TRAMPOLINE` sweeps only 32 KB (`0x80000000` to `0x80008000`) because CACHE index operations address individual cache lines directly -- one invocation per line flushes that specific line regardless of which way it is in. 32 KB / 32 bytes per line = 1024 index iterations, covering all 256 sets x 4 ways. The ORI at word 2 uses `0x8000` (bit 15 set), which would break with ADDIU (sign extension to `-32768`), hence ORI.
+Note that `FLUSH_TRAMPOLINE` sweeps only 32 KB (`0x80000000` to `0x80008000`) because CACHE index operations address individual cache lines directly—one invocation per line flushes that specific line regardless of which way it is in. 32 KB / 32 bytes per line = 1024 index iterations, covering all 256 sets x 4 ways. The ORI at word 2 uses `0x8000` (bit 15 set), which would break with ADDIU (sign extension to `-32768`), hence ORI.
 
 The BNE at word 6 computes: offset = 3 - (6+1) = -4 = 0xFFFC.
 
@@ -653,7 +653,7 @@ This script independently verifies every hand-encoded instruction word in the pr
 
 1. **Manual bit-field calculation**: For each instruction, it shows the encoding arithmetic step by step (opcode shift, register field placement, immediate masking) and compares the computed 32-bit value against the expected constant from `mr18_flash.py`.
 
-2. **Capstone cross-check**: Feeds the raw instruction bytes to [Capstone](https://www.capstone-engine.org/) (a disassembly framework) in MIPS32 big-endian mode and prints the disassembly. This provides an independent ground truth -- if our hand-encoded `0x1509FFFC` disassembles as `bne $t0, $t1, -4`, the encoding is correct.
+2. **Capstone cross-check**: Feeds the raw instruction bytes to [Capstone](https://www.capstone-engine.org/) (a disassembly framework) in MIPS32 big-endian mode and prints the disassembly. This provides an independent ground truth—if our hand-encoded `0x1509FFFC` disassembles as `bne $t0, $t1, -4`, the encoding is correct.
 
 The script covers all three trampolines (D-cache flush, XOR checksum, launch) and uses helper functions that mirror the encoding formulas:
 
@@ -679,7 +679,7 @@ All checks should print `[pass]`. Any `[fail]` indicates a mismatch between the 
 
 ## Bug 12: BEQ vs BNE Encoding Error
 
-Bug 12 was a single-bit encoding error in the D-cache flush trampoline's branch instruction. The original code used opcode `0x04` (BEQ -- Branch if Equal) instead of `0x05` (BNE -- Branch if Not Equal):
+Bug 12 was a single-bit encoding error in the D-cache flush trampoline's branch instruction. The original code used opcode `0x04` (BEQ—Branch if Equal) instead of `0x05` (BNE—Branch if Not Equal):
 
 ```
 BEQ: opcode = 0x04 = 000100 (binary)

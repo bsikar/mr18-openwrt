@@ -6,7 +6,7 @@ How OpenOCD is configured, started, and controlled for JTAG communication with t
 
 OpenOCD uses two configuration files, loaded in order. The first configures the debug adapter hardware. The second configures the target chip.
 
-### esp-prog.cfg -- Debug Adapter Interface
+### esp-prog.cfg—Debug Adapter Interface
 
 Location: `jtag/esp-prog.cfg`
 
@@ -37,7 +37,7 @@ This ensures nTRST starts deasserted so the JTAG TAP is not held in reset.
 
 **`adapter speed 1000`** -- JTAG clock at 1000 kHz (1 MHz). This is conservative for the AR9344 (which supports higher), but empirically reliable over the ESP-Prog's flying wires. Higher speeds increase the risk of signal integrity errors on the PRACC-heavy load operations.
 
-### mr18.cfg -- Target Configuration
+### mr18.cfg—Target Configuration
 
 Location: `jtag/mr18.cfg`
 
@@ -69,7 +69,7 @@ Line-by-line:
 
 **`set _CHIPNAME ar9344`** -- Internal name for the chip. Used as a prefix for TAP and target names (e.g., `ar9344.cpu`). The AR9344 and QCA9557 share the same MIPS core and JTAG interface.
 
-**`set _CPUTAPID 0x00000001`** -- The expected JTAG IDCODE. This is **non-standard**: the JTAG specification (IEEE 1149.1) requires bit 0 of the IDCODE to be 1, which `0x00000001` satisfies, but a conforming IDCODE also encodes manufacturer ID, part number, and version in the remaining bits. The QCA9557 returns `0x00000001` for all of those fields -- a minimal valid IDCODE that provides no manufacturer identification. This is what the chip actually returns; it is not configurable.
+**`set _CPUTAPID 0x00000001`** -- The expected JTAG IDCODE. This is **non-standard**: the JTAG specification (IEEE 1149.1) requires bit 0 of the IDCODE to be 1, which `0x00000001` satisfies, but a conforming IDCODE also encodes manufacturer ID, part number, and version in the remaining bits. The QCA9557 returns `0x00000001` for all of those fields—a minimal valid IDCODE that provides no manufacturer identification. This is what the chip actually returns; it is not configurable.
 
 **`jtag newtap $_CHIPNAME cpu -irlen 5 -expected-id $_CPUTAPID`** -- Declare a TAP (Test Access Port) named `ar9344.cpu` with:
 - `-irlen 5`: Instruction Register length is 5 bits (standard for MIPS EJTAG)
@@ -145,8 +145,8 @@ Commands are sent as newline-terminated strings. Responses are read until the `>
 
 | Command | Purpose |
 |---------|---------|
-| `mww 0xaddr 0xval` | Memory Write Word -- write 32-bit value to address |
-| `mdw 0xaddr` | Memory Display Word -- read 32-bit value from address |
+| `mww 0xaddr 0xval` | Memory Write Word—write 32-bit value to address |
+| `mdw 0xaddr` | Memory Display Word—read 32-bit value from address |
 | `load_image /path/file 0xaddr bin` | Bulk load binary file to memory address |
 | `dump_image /path/file 0xaddr size` | Bulk read memory to file |
 

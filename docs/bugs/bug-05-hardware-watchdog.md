@@ -24,7 +24,7 @@ The result is that our carefully loaded OpenWrt binary in RAM is wiped by the re
 
 ## Fix
 
-An initial attempt to disable the watchdog via a direct MMIO write to `WDOG_CTRL` at `0xB8060008` failed -- the write broke the PRACC state machine (possibly because the watchdog control register has side effects during EJTAG access).
+An initial attempt to disable the watchdog via a direct MMIO write to `WDOG_CTRL` at `0xB8060008` failed—the write broke the PRACC state machine (possibly because the watchdog control register has side effects during EJTAG access).
 
 The bug ultimately self-resolved: PRACC activity during `load_image` and verification generates enough bus transactions to keep the watchdog alive. Each PRACC memory access involves the CPU (even while halted in debug mode) executing micro-operations that touch the bus, which the watchdog interprets as activity. As long as the JTAG transfer is actively running, the watchdog does not expire.
 

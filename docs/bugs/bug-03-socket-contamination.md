@@ -22,7 +22,7 @@ def _drain(self):
         break  # Assumed command was done
 ```
 
-When `cmd("load_image ...")` was called, `_drain()` waited for 0.5 seconds of silence on the socket. Since `load_image` produces no output during the actual transfer (only a completion message at the end), the 0.5-second silence threshold was hit almost immediately. `_drain()` returned, and `cmd()` declared success -- even though `load_image` was still running in the background.
+When `cmd("load_image ...")` was called, `_drain()` waited for 0.5 seconds of silence on the socket. Since `load_image` produces no output during the actual transfer (only a completion message at the end), the 0.5-second silence threshold was hit almost immediately. `_drain()` returned, and `cmd()` declared success—even though `load_image` was still running in the background.
 
 Subsequent commands sent to the same socket interleaved with `load_image`'s eventual completion message, corrupting the command/response stream.
 

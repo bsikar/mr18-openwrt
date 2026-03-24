@@ -25,7 +25,7 @@ When the NPN transistor turned on (pulling its collector to GND), the current pa
 - Voltage at NPN collector = 0 V (NPN saturated)
 - Voltage drop is across the 100 ohm resistor, but it is between the NPN and the GPIO17 net
 
-The GPIO17 net stays at 3.3 V because the voltage drop occurs between GPIO17 and the NPN, not between the supervisor and GPIO17. The supervisor's output is still driving the GPIO17 net directly, and the resistor only limits how much current the NPN sinks -- it does not pull the GPIO17 voltage down.
+The GPIO17 net stays at 3.3 V because the voltage drop occurs between GPIO17 and the NPN, not between the supervisor and GPIO17. The supervisor's output is still driving the GPIO17 net directly, and the resistor only limits how much current the NPN sinks—it does not pull the GPIO17 voltage down.
 
 ## Fix
 

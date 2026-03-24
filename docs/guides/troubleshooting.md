@@ -27,7 +27,7 @@ Organized by symptom. Each entry includes the likely cause, the fix, and a link 
 
 **Likely cause:** The 2-second JTAG window was missed. The Nandloader disables JTAG probing approximately 2 seconds after power-on. If the `halt` command arrives even slightly late, the TAP stops responding.
 
-**Fix:** The script retries automatically -- up to 6 power-cycle attempts with slightly varied timing. Each cycle powers off, waits, powers on, starts OpenOCD, and attempts `halt`. If all 6 attempts fail, check that the PSU is actually cycling power (see the PSU troubleshooting section below).
+**Fix:** The script retries automatically—up to 6 power-cycle attempts with slightly varied timing. Each cycle powers off, waits, powers on, starts OpenOCD, and attempts `halt`. If all 6 attempts fail, check that the PSU is actually cycling power (see the PSU troubleshooting section below).
 
 **Reference:** [JTAG Timing Attack](../technical/jtag-timing-attack.md), [Bug 2](../bugs/bug-02-openocd-timing.md)
 
@@ -142,7 +142,7 @@ python3 send_binary.py
 
 This writes MDIO debug register 0x00 bit 15 to enable the RGMII RX clock delay. The fix takes effect immediately -- `rx_packets` will begin incrementing.
 
-For persistence across reboots, install the hotplug script (see [Quick Start Guide -- Step 10](quickstart.md#step-10-install-hotplug-script-for-persistence)).
+For persistence across reboots, install the hotplug script (see [Quick Start Guide—Step 10](quickstart.md#step-10-install-hotplug-script-for-persistence)).
 
 **Reference:** [AR8035 PHY Fix](../technical/ar8035-phy-fix.md)
 
@@ -161,7 +161,7 @@ LDFLAGS = -nostdlib -nostartfiles -Wl,-z,noexecstack -Wl,-e,_start -static
 
 The most common mistake is linking against glibc (forgetting `-nostdlib`), which pulls in `crt0.o` containing FPU instructions.
 
-**Reference:** [AR8035 PHY Fix -- Compilation](../technical/ar8035-phy-fix.md#compilation)
+**Reference:** [AR8035 PHY Fix—Compilation](../technical/ar8035-phy-fix.md#compilation)
 
 ---
 
@@ -277,7 +277,7 @@ Key things to look for:
 - `tap/device found` -- JTAG chain detected successfully
 - `target halted` -- CPU halt succeeded
 - `downloaded X bytes` -- load_image transfer progress
-- `Error:` lines -- any OpenOCD error
+- `Error:` lines—any OpenOCD error
 
 ### /tmp/scpi_repl.log
 
@@ -288,7 +288,7 @@ tail -20 /tmp/scpi_repl.log
 ```
 
 Key things to look for:
-- `eset>` prompt -- scpi-repl is ready and connected to the instrument
+- `eset>` prompt—scpi-repl is ready and connected to the instrument
 - Voltage/current readbacks confirming PSU commands were executed
 - Error messages if the instrument disconnected
 

@@ -151,7 +151,7 @@ Look for the physical Ethernet adapter. It will have one of these naming styles:
 | `enxMACADDR` | `enx6c1ff71fee83` | Predictable naming by MAC address |
 | `enpXsYfZ...` | `enp0s13f0u1u4u2c2` | Predictable naming by PCI/USB path |
 
-All three can refer to the same physical adapter -- the kernel assigns one primary name and lists the others as aliases. Check with:
+All three can refer to the same physical adapter—the kernel assigns one primary name and lists the others as aliases. Check with:
 
 ```sh
 ip link show eth0
@@ -177,4 +177,4 @@ sudo ip addr add 192.168.1.2/24 dev <your-nic>
 sudo ip link set <your-nic> up
 ```
 
-The connection is a direct cable between the host and the MR18 -- no switch or router.
+The connection is a direct cable between the host and the MR18—no switch or router.

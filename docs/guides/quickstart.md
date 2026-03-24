@@ -23,7 +23,7 @@ echo "db191ecf0224f030365d604aa3919da9  openwrt-25.12.0-ath79-nand-meraki_mr18-i
 echo "53e272bed2041616068c6958fe28a197  openwrt-25.12.0-ath79-nand-meraki_mr18-squashfs-sysupgrade.bin" | md5sum -c
 ```
 
-Both should print `OK`. See [Prerequisites -- Firmware Downloads](prerequisites.md#firmware-downloads) for details.
+Both should print `OK`. See [Prerequisites—Firmware Downloads](prerequisites.md#firmware-downloads) for details.
 
 ## Step 2: Verify ESP-Prog detected
 
@@ -31,7 +31,7 @@ Both should print `OK`. See [Prerequisites -- Firmware Downloads](prerequisites.
 ls /dev/ttyUSB*
 ```
 
-You should see at least `ttyUSB0`, `ttyUSB1` (JTAG, Interface A), and `ttyUSB4` (UART, Interface B). If not, check the USB cable and `lsusb` output. See [Hardware Setup -- Device Enumeration](hardware-setup.md#device-enumeration).
+You should see at least `ttyUSB0`, `ttyUSB1` (JTAG, Interface A), and `ttyUSB4` (UART, Interface B). If not, check the USB cable and `lsusb` output. See [Hardware Setup—Device Enumeration](hardware-setup.md#device-enumeration).
 
 ## Step 3: Start scpi-repl (if using programmable PSU)
 
@@ -41,7 +41,7 @@ If you have a SCPI-capable bench PSU, start `scpi-repl` so the flash script can 
 scpi-repl
 ```
 
-The `mr18_flash.py` script will start and manage `scpi-repl` automatically. If you are using a manual PSU, no action is needed here -- you will toggle power by hand when prompted. See [Script Reference -- scpi-repl](../reference/script-reference.md).
+The `mr18_flash.py` script will start and manage `scpi-repl` automatically. If you are using a manual PSU, no action is needed here—you will toggle power by hand when prompted. See [Script Reference—scpi-repl](../reference/script-reference.md).
 
 ## Step 4: Run the JTAG flash script
 
@@ -68,7 +68,7 @@ The CPU executes a 128 KB KSEG0 sweep to evict dirty D-cache lines left by the C
     load_image done in 71.3s
 ```
 
-The initramfs kernel (6.9 MB) is transferred from the host to MR18 RAM via JTAG PRACC at approximately 97 KB/s. Progress is visible in `/tmp/openocd.log`. If `load_image` completes in under 5 seconds, something went wrong -- see [Troubleshooting](troubleshooting.md#load_image-completes-too-fast).
+The initramfs kernel (6.9 MB) is transferred from the host to MR18 RAM via JTAG PRACC at approximately 97 KB/s. Progress is visible in `/tmp/openocd.log`. If `load_image` completes in under 5 seconds, something went wrong—see [Troubleshooting](troubleshooting.md#load_image-completes-too-fast).
 
 ### Phase 2: Post-load D-cache flush
 
@@ -181,7 +181,7 @@ After `sysupgrade` completes, the MR18 reboots and boots OpenWrt from NAND. This
 ping 192.168.1.1
 ```
 
-The device is now running OpenWrt from NAND flash. However, Ethernet RX is broken at this point due to the AR8035 PHY RGMII RX clock delay bug -- you can transmit but not receive. The next steps fix this.
+The device is now running OpenWrt from NAND flash. However, Ethernet RX is broken at this point due to the AR8035 PHY RGMII RX clock delay bug—you can transmit but not receive. The next steps fix this.
 
 ## Step 8: Build AR8035 fix (if needed)
 
@@ -198,7 +198,7 @@ Or use the Docker-based build (works on any Linux distro):
 make docker
 ```
 
-See [Prerequisites -- Cross-Compiler](prerequisites.md#cross-compiler-ar8035-fix-only) for cross-compiler installation.
+See [Prerequisites—Cross-Compiler](prerequisites.md#cross-compiler-ar8035-fix-only) for cross-compiler installation.
 
 ## Step 9: Deploy AR8035 fix
 

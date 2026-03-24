@@ -45,10 +45,10 @@ pie title Bug Categories
 
 ### Category Breakdown
 
-- **JTAG/PRACC (6)**: Bugs 2, 3, 4, 17, 18 -- protocol-level issues with EJTAG PRACC memory access and OpenOCD communication.
-- **Verification (4)**: Bugs 8, 9, 10, 12 -- errors in the verify-and-correct pipeline (phantom reads, trampoline placement, XOR cancellation, instruction encoding).
-- **Failsafe (4)**: Bugs 15, 16, 21, 23 -- timing and trigger issues getting OpenWrt into failsafe mode.
-- **Cache coherency (3)**: Bugs 7, 11, 13 -- MIPS D-cache stale data and flush ordering relative to JTAG load.
-- **Hardware/electrical (3)**: Bugs 19, 20, 22 -- physical signal contention between GPIO, pull-ups, reset supervisor IC, and EN wiring.
-- **Toolchain (2)**: Bugs 1, 6 -- wrong firmware target and named pipe file mode.
-- **Boot/kernel (2)**: Bugs 5, 14 -- hardware watchdog and NAND overlay issues during kernel boot.
+- **JTAG/PRACC (6)**: Bugs 2, 3, 4, 17, 18—protocol-level issues with EJTAG PRACC memory access and OpenOCD communication.
+- **Verification (4)**: Bugs 8, 9, 10, 12—errors in the verify-and-correct pipeline (phantom reads, trampoline placement, XOR cancellation, instruction encoding).
+- **Failsafe (4)**: Bugs 15, 16, 21, 23—timing and trigger issues getting OpenWrt into failsafe mode.
+- **Cache coherency (3)**: Bugs 7, 11, 13—MIPS D-cache stale data and flush ordering relative to JTAG load.
+- **Hardware/electrical (3)**: Bugs 19, 20, 22—physical signal contention between GPIO, pull-ups, reset supervisor IC, and EN wiring.
+- **Toolchain (2)**: Bugs 1, 6—wrong firmware target and named pipe file mode.
+- **Boot/kernel (2)**: Bugs 5, 14—hardware watchdog and NAND overlay issues during kernel boot.

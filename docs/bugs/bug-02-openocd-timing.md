@@ -19,7 +19,7 @@ The `halt` command never succeeded. OpenOCD could not detect any device on the J
 
 ## Root Cause
 
-OpenOCD was started **before** the MR18 was powered on. At init time, OpenOCD performs a JTAG scan chain interrogation -- it clocks patterns through TDI/TDO to discover TAPs. With no power applied to the MR18, there is no live TAP. TDO is pulled high by the idle state (or the TMS pull-up resistor), so every bit read back is `1`.
+OpenOCD was started **before** the MR18 was powered on. At init time, OpenOCD performs a JTAG scan chain interrogation—it clocks patterns through TDI/TDO to discover TAPs. With no power applied to the MR18, there is no live TAP. TDO is pulled high by the idle state (or the TMS pull-up resistor), so every bit read back is `1`.
 
 The correct timing window is narrow:
 
@@ -42,4 +42,4 @@ If the halt fails (Nandloader already disabled JTAG), the script retries by powe
 
 ## Lesson
 
-The JTAG TAP must be live and responsive when OpenOCD performs its initial scan chain interrogation. The intuitive approach of "get OpenOCD ready, then power on the device" is wrong -- OpenOCD's init happens at startup, not on demand. Power must be on and the TAP must be active before OpenOCD starts.
+The JTAG TAP must be live and responsive when OpenOCD performs its initial scan chain interrogation. The intuitive approach of "get OpenOCD ready, then power on the device" is wrong—OpenOCD's init happens at startup, not on demand. Power must be on and the TAP must be active before OpenOCD starts.

@@ -5,7 +5,7 @@
 
 ## Symptom
 
-The `FLUSH_TRAMPOLINE` -- a small MIPS program using `CACHE` instructions to writeback-invalidate D-cache and I-cache lines -- was loaded to the trampoline region and the CPU was resumed. The script waited for an `SDBBP` (debug breakpoint) at the end of the trampoline to signal completion. After 3 seconds, the wait timed out. The `SDBBP` was never hit.
+The `FLUSH_TRAMPOLINE`—a small MIPS program using `CACHE` instructions to writeback-invalidate D-cache and I-cache lines—was loaded to the trampoline region and the CPU was resumed. The script waited for an `SDBBP` (debug breakpoint) at the end of the trampoline to signal completion. After 3 seconds, the wait timed out. The `SDBBP` was never hit.
 
 ## Root Cause
 

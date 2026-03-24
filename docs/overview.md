@@ -8,9 +8,9 @@ This project installs [OpenWrt](https://openwrt.org/) on a **Cisco Meraki MR18**
 
 The Meraki MR18 is **cloud-locked by Cisco**. Without an active Meraki dashboard license:
 
-- There is no local web UI -- the device phones home to Cisco's cloud or does nothing.
+- There is no local web UI—the device phones home to Cisco's cloud or does nothing.
 - There is no TFTP recovery mode accessible without the Meraki bootloader password.
-- There is no serial console shell -- the Meraki Nandloader drops straight into a locked-down Linux environment.
+- There is no serial console shell—the Meraki Nandloader drops straight into a locked-down Linux environment.
 - The bootloader disables JTAG probing within ~2 seconds of power-on.
 
 **JTAG is the only way in.** This project exploits a narrow timing window during the Nandloader's early boot to halt the CPU via EJTAG, load an OpenWrt initramfs kernel directly into RAM, boot it, trigger failsafe mode, and flash a sysupgrade image to NAND. The entire process is automated with Python.
@@ -46,7 +46,7 @@ After OpenWrt is installed, a separate bare-metal MIPS binary (`ar8035-fix`) cor
 mr18-openwrt/
 +-- README.md                   Quick-start summary and directory index
 +-- docs/                       Full project documentation
-|   +-- overview.md             This file -- project overview
+|   +-- overview.md             This file—project overview
 |   +-- guides/
 |   |   +-- prerequisites.md    Hardware BOM, software deps, firmware downloads
 |   +-- reference/

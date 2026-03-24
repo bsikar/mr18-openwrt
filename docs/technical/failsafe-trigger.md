@@ -4,7 +4,7 @@ How the project enters OpenWrt failsafe mode after booting the initramfs kernel,
 
 ## Why Failsafe Is Necessary
 
-The Meraki MR18's NAND flash contains Cisco's original overlay partition. When OpenWrt boots the initramfs kernel, its preinit sequence mounts this NAND overlay by default. The Meraki overlay contains Cisco's userspace -- management daemons, DHCP client configuration, and cloud-phone-home scripts -- which overrides OpenWrt's networking stack entirely (see [Bug 15](../bugs/bug-15-meraki-nand-overlay.md)).
+The Meraki MR18's NAND flash contains Cisco's original overlay partition. When OpenWrt boots the initramfs kernel, its preinit sequence mounts this NAND overlay by default. The Meraki overlay contains Cisco's userspace—management daemons, DHCP client configuration, and cloud-phone-home scripts—which overrides OpenWrt's networking stack entirely (see [Bug 15](../bugs/bug-15-meraki-nand-overlay.md)).
 
 The result: the device acquires an IP via DHCP as a WAN client instead of coming up at the expected `192.168.1.1`. There is no web UI, no SSH, and no way to flash the sysupgrade image.
 
@@ -15,7 +15,7 @@ OpenWrt's failsafe mode (triggered during preinit) skips the overlay mount entir
 - **No NAND overlay:** only the read-only SquashFS root is active
 - **Static IP:** `192.168.1.1/24` on the LAN interface
 - **Telnet:** `telnetd` on port 23, no password
-- **Minimal services:** no firewall, no DHCP server, no DNS -- just a root shell
+- **Minimal services:** no firewall, no DHCP server, no DNS—just a root shell
 
 This gives a clean environment to transfer and flash the sysupgrade image.
 
@@ -55,11 +55,11 @@ This was defeated by a cascade of hardware issues:
 
 | Bug | Problem |
 |-----|---------|
-| [Bug 16](../bugs/bug-16-failsafe-timing.md) | Timing too late -- GPIO writes started after the preinit failsafe check window had already passed |
-| [Bug 17](../bugs/bug-17-hammer-freezes-cpu.md) | Missing `resume` after halt -- CPU stayed halted, kernel could not advance to preinit |
+| [Bug 16](../bugs/bug-16-failsafe-timing.md) | Timing too late—GPIO writes started after the preinit failsafe check window had already passed |
+| [Bug 17](../bugs/bug-17-hammer-freezes-cpu.md) | Missing `resume` after halt—CPU stayed halted, kernel could not advance to preinit |
 | [Bug 18](../bugs/bug-18-mdw-mww-silent-fail.md) | OpenOCD's `mdw`/`mww` require the target to be halted; they silently fail on a running target |
 | [Bug 19](../bugs/bug-19-gpio-vs-pullup.md) | External pull-up resistors on the GPIO17 net overpower the SoC's GPIO output driver |
-| [Bug 20](../bugs/bug-20-reset-supervisor.md) | The MR18 reset supervisor IC actively drives GPIO17 HIGH with a CMOS push-pull output, not just a pull-up -- the SoC's GPIO driver cannot overcome it |
+| [Bug 20](../bugs/bug-20-reset-supervisor.md) | The MR18 reset supervisor IC actively drives GPIO17 HIGH with a CMOS push-pull output, not just a pull-up—the SoC's GPIO driver cannot overcome it |
 
 The fundamental problem: GPIO17 is not just a passive pull-up line. The reset supervisor IC on the MR18 board drives it HIGH with enough current that the SoC's GPIO output (even in push-pull mode) cannot pull it LOW. No amount of register manipulation via JTAG can overcome this.
 
@@ -81,7 +81,7 @@ Two issues:
 | Bug | Problem |
 |-----|---------|
 | [Bug 22](../bugs/bug-22-resistor-wrong-side.md) | 100 ohm series resistor placed on the wrong side of the NPN transistor (between collector and GPIO17 net instead of at the base), limiting current sink capability |
-| [Bug 23](../bugs/bug-23-en-before-boot.md) | EN fires too early -- asserted before the kernel has even booted, well before preinit starts polling GPIO17 |
+| [Bug 23](../bugs/bug-23-en-before-boot.md) | EN fires too early—asserted before the kernel has even booted, well before preinit starts polling GPIO17 |
 
 The EN approach does electrically pull GPIO17 LOW (the NPN transistor can sink more current than the reset supervisor sources), but the timing alignment was wrong.
 
@@ -163,7 +163,7 @@ Once the failsafe shell prompt is detected (line containing `"failsafe"` and `"/
 
 3. **Telnet daemon:** `telnetd -l /bin/sh &` -- Starts the telnet server for remote sysupgrade.
 
-After these commands succeed, the `_failsafe_active` event is set, which prevents the main script from power-cycling the device on timeout -- the device is known to be running OpenWrt even if network detection is slow.
+After these commands succeed, the `_failsafe_active` event is set, which prevents the main script from power-cycling the device on timeout—the device is known to be running OpenWrt even if network detection is slow.
 
 ## Related Bugs
 
