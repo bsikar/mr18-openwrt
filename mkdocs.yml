@@ -1,4 +1,4 @@
-site_name: MR18 OpenWrt -- JTAG Flash Documentation
+site_name: MR18 OpenWrt—JTAG Flash Documentation
 site_description: Installing OpenWrt on a Cisco Meraki MR18 via JTAG
 repo_url: https://github.com/bsikar/mr18-openwrt
 

@@ -1,6 +1,6 @@
 # MR18 OpenWrt Documentation
 
-This project installs OpenWrt on a Cisco Meraki MR18 access point by exploiting a 2-second JTAG window during boot to halt the CPU, load a kernel into RAM, and flash NAND -- bypassing Cisco's cloud lock entirely. JTAG is necessary because the MR18 has no serial bootloader console, no network recovery mode, and no way to interrupt the boot process without physical debug access. The project is complete: OpenWrt 25.12.0 runs from NAND with full bidirectional Ethernet, including a persistent fix for the AR8035 PHY RX clock bug.
+This project installs OpenWrt on a Cisco Meraki MR18 access point by exploiting a 2-second JTAG window during boot to halt the CPU, load a kernel into RAM, and flash NAND—bypassing Cisco's cloud lock entirely. JTAG is necessary because the MR18 has no serial bootloader console, no network recovery mode, and no way to interrupt the boot process without physical debug access. The project is complete: OpenWrt 25.12.0 runs from NAND with full bidirectional Ethernet, including a persistent fix for the AR8035 PHY RX clock bug.
 
 ---
 
