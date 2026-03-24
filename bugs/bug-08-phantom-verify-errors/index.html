@@ -1802,13 +1802,13 @@
 <p><strong>Category</strong>: Verification
 <strong>Related docs</strong>: <a href="../../technical/mips-memory-model/">mips-memory-model</a>, <a href="../../reference/address-map/">address-map</a></p>
 <h2 id="symptom">Symptom<a class="headerlink" href="#symptom" title="Permanent link">&para;</a></h2>
-<p>The <code>verify_and_fix</code> routine reported "fixing" 15 words -- it detected mismatches between RAM contents and the original file, then rewrote those words. But the full-binary XOR checksum was unchanged: <code>0x3137a4af</code> both before and after the "fixes." The lzma-loader still produced "data error!" on boot.</p>
+<p>The <code>verify_and_fix</code> routine reported "fixing" 15 words—it detected mismatches between RAM contents and the original file, then rewrote those words. But the full-binary XOR checksum was unchanged: <code>0x3137a4af</code> both before and after the "fixes." The lzma-loader still produced "data error!" on boot.</p>
 <h2 id="root-cause">Root Cause<a class="headerlink" href="#root-cause" title="Permanent link">&para;</a></h2>
 <p>The <code>verify_and_fix</code> routine used PRACC bulk reads (<code>mdw</code> via OpenOCD) to read back each word from RAM and compare it against the file. But PRACC reads have the same bit-flip rate as PRACC writes (see <a href="../bug-04-pracc-bit-errors/">Bug 4</a>).</p>
 <p>This creates two classes of errors that cancel out:</p>
 <ol>
 <li>
-<p><strong>Phantom errors (false positives)</strong>: A word in RAM is correct, but the PRACC read returns a bit-flipped value. The routine "detects" a mismatch and rewrites the word with the correct value -- which was already there. No harm, but no help either.</p>
+<p><strong>Phantom errors (false positives)</strong>: A word in RAM is correct, but the PRACC read returns a bit-flipped value. The routine "detects" a mismatch and rewrites the word with the correct value—which was already there. No harm, but no help either.</p>
 </li>
 <li>
 <p><strong>Missed errors (false negatives)</strong>: A word in RAM is genuinely corrupt, but the PRACC read returns the corrupt value with an additional bit flip that happens to produce the expected value. The routine sees a match and moves on, leaving the corruption in place.</p>
@@ -1827,7 +1827,7 @@
 </ol>
 <p>This reduces PRACC exposure from ~2000 reads per 8 KB chunk to just 5 PRACC operations per chunk (write program once, then per-chunk: 2 register writes + resume + 1 result read + compare). At 5 ops per chunk, the probability of a phantom error affecting the result is negligible.</p>
 <h2 id="lesson">Lesson<a class="headerlink" href="#lesson" title="Permanent link">&para;</a></h2>
-<p>If your verification mechanism uses the same error-prone channel as your data transfer, the verification inherits the same error rate. The verification must use a fundamentally different path -- in this case, CPU-internal ALU operations -- to provide a reliable ground truth.</p>
+<p>If your verification mechanism uses the same error-prone channel as your data transfer, the verification inherits the same error rate. The verification must use a fundamentally different path—in this case, CPU-internal ALU operations—to provide a reliable ground truth.</p>
 
 
 

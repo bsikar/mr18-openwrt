@@ -1987,7 +1987,7 @@
 
 
 <h1 id="the-jtag-timing-attack">The JTAG Timing Attack<a class="headerlink" href="#the-jtag-timing-attack" title="Permanent link">&para;</a></h1>
-<p>How the script exploits a narrow window during the MR18's boot sequence to halt the CPU via EJTAG before Cisco's Linux kernel disables JTAG access. This is the first and most critical step of the entire flash process -- everything else depends on getting a halted CPU.</p>
+<p>How the script exploits a narrow window during the MR18's boot sequence to halt the CPU via EJTAG before Cisco's Linux kernel disables JTAG access. This is the first and most critical step of the entire flash process—everything else depends on getting a halted CPU.</p>
 <h2 id="mr18-boot-sequence">MR18 Boot Sequence<a class="headerlink" href="#mr18-boot-sequence" title="Permanent link">&para;</a></h2>
 <p>When the MR18 powers on, the following sequence executes:</p>
 <ol>
@@ -1995,7 +1995,7 @@
 <li><strong>Nandloader</strong> (Meraki's bootloader in NAND flash): initializes DDR RAM, reads the Cisco kernel image from NAND, copies it to physical <code>0x0005FC00</code> via KSEG0</li>
 <li><strong>Cisco Linux kernel</strong>: Nandloader jumps to the kernel entry point. The kernel initializes the platform, including GPIO pin muxing</li>
 <li><strong>TDO pin reconfiguration</strong>: The Linux kernel (or its platform init code) reconfigures the GPIO pin that carries TDO (JTAG Test Data Out) for an alternate function, breaking the JTAG scan chain</li>
-<li><strong>JTAG is dead</strong>: After this point, OpenOCD cannot communicate with the EJTAG TAP -- the scan chain is physically broken</li>
+<li><strong>JTAG is dead</strong>: After this point, OpenOCD cannot communicate with the EJTAG TAP—the scan chain is physically broken</li>
 </ol>
 <p>Steps 1-3 take approximately <strong>2 seconds</strong> from power-on. Step 4 happens within the first second of kernel execution. The total window between "Nandloader is running and JTAG is alive" and "kernel has killed JTAG" is roughly <strong>2 seconds</strong>.</p>
 <pre class="mermaid"><code>sequenceDiagram
@@ -2024,7 +2024,7 @@
     alt Halt succeeds (within ~2s window)
         MR18--&gt;&gt;OCD: CPU in debug mode
         OCD--&gt;&gt;Script: halted
-        Note over Script: SUCCESS -- load binary
+        Note over Script: SUCCESS—load binary
     else Window closes
         NL-&gt;&gt;CK: Jump to kernel
         CK-&gt;&gt;MR18: Reconfigure TDO pin
@@ -2036,10 +2036,10 @@
 <p><strong>Bug 2</strong> was caused by starting OpenOCD before powering on the MR18. The sequence was:</p>
 <ol>
 <li>Start OpenOCD (with <code>-c init</code>)</li>
-<li>OpenOCD scans JTAG chain -- all lines are floating (no power), no devices found</li>
+<li>OpenOCD scans JTAG chain—all lines are floating (no power), no devices found</li>
 <li>OpenOCD reports TAP scan failure and enters an error state</li>
 <li>Power on MR18</li>
-<li>MR18 is alive but OpenOCD already failed -- cannot communicate</li>
+<li>MR18 is alive but OpenOCD already failed—cannot communicate</li>
 </ol>
 <p>The fix is straightforward: power on first, wait for the Nandloader to be running (~1.5 seconds), then start OpenOCD so it scans a live JTAG chain.</p>
 <h2 id="power-cycle-automation">Power-Cycle Automation<a class="headerlink" href="#power-cycle-automation" title="Permanent link">&para;</a></h2>
@@ -2182,7 +2182,7 @@
 <a id="__codelineno-8-20" name="__codelineno-8-20" href="#__codelineno-8-20"></a>    <span class="k">if</span> <span class="n">halted</span><span class="p">:</span>
 <a id="__codelineno-8-21" name="__codelineno-8-21" href="#__codelineno-8-21"></a>        <span class="k">break</span>
 </code></pre></div>
-<p>Six attempts provide a high probability of success. The timing window is tight but not impossibly narrow -- empirically, the halt succeeds on the first or second attempt in most runs. The retry mechanism handles cases where:</p>
+<p>Six attempts provide a high probability of success. The timing window is tight but not impossibly narrow—empirically, the halt succeeds on the first or second attempt in most runs. The retry mechanism handles cases where:</p>
 <ul>
 <li>The Nandloader takes slightly longer or shorter than expected (Bug 5)</li>
 <li>OpenOCD's TAP scan happens to coincide with a Nandloader operation that briefly tristates the JTAG pins (Bug 6)</li>
@@ -2190,7 +2190,7 @@
 </ul>
 <h2 id="cross-references">Cross-References<a class="headerlink" href="#cross-references" title="Permanent link">&para;</a></h2>
 <ul>
-<li><a href="../../bugs/bug-02-openocd-timing/">Bug 2</a>: OpenOCD started before power-on -- dead TAP scan</li>
+<li><a href="../../bugs/bug-02-openocd-timing/">Bug 2</a>: OpenOCD started before power-on—dead TAP scan</li>
 <li><a href="../../bugs/bug-05-hardware-watchdog/">Bug 5</a>: Timing window too narrow with original delays</li>
 <li><a href="../../bugs/bug-06-named-pipe-eof/">Bug 6</a>: Intermittent TAP scan failures during Nandloader</li>
 </ul>

@@ -2428,7 +2428,7 @@
 <h3 id="cpu-wont-halt">CPU won't halt<a class="headerlink" href="#cpu-wont-halt" title="Permanent link">&para;</a></h3>
 <p><strong>Symptom:</strong> OpenOCD connects and detects the TAP, but <code>halt</code> does not succeed. The CPU continues running and the Nandloader disables JTAG probing.</p>
 <p><strong>Likely cause:</strong> The 2-second JTAG window was missed. The Nandloader disables JTAG probing approximately 2 seconds after power-on. If the <code>halt</code> command arrives even slightly late, the TAP stops responding.</p>
-<p><strong>Fix:</strong> The script retries automatically -- up to 6 power-cycle attempts with slightly varied timing. Each cycle powers off, waits, powers on, starts OpenOCD, and attempts <code>halt</code>. If all 6 attempts fail, check that the PSU is actually cycling power (see the PSU troubleshooting section below).</p>
+<p><strong>Fix:</strong> The script retries automatically—up to 6 power-cycle attempts with slightly varied timing. Each cycle powers off, waits, powers on, starts OpenOCD, and attempts <code>halt</code>. If all 6 attempts fail, check that the PSU is actually cycling power (see the PSU troubleshooting section below).</p>
 <p><strong>Reference:</strong> <a href="../../technical/jtag-timing-attack/">JTAG Timing Attack</a>, <a href="../../bugs/bug-02-openocd-timing/">Bug 2</a></p>
 <hr />
 <h2 id="binary-loading-issues">Binary Loading Issues<a class="headerlink" href="#binary-loading-issues" title="Permanent link">&para;</a></h2>
@@ -2499,7 +2499,7 @@
 <a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>python3<span class="w"> </span>send_binary.py
 </code></pre></div>
 <p>This writes MDIO debug register 0x00 bit 15 to enable the RGMII RX clock delay. The fix takes effect immediately -- <code>rx_packets</code> will begin incrementing.</p>
-<p>For persistence across reboots, install the hotplug script (see <a href="../quickstart/#step-10-install-hotplug-script-for-persistence">Quick Start Guide -- Step 10</a>).</p>
+<p>For persistence across reboots, install the hotplug script (see <a href="../quickstart/#step-10-install-hotplug-script-for-persistence">Quick Start Guide—Step 10</a>).</p>
 <p><strong>Reference:</strong> <a href="../../technical/ar8035-phy-fix/">AR8035 PHY Fix</a></p>
 <h3 id="ar8035-fix-crashes-with-illegal-instruction">ar8035-fix crashes with "Illegal instruction"<a class="headerlink" href="#ar8035-fix-crashes-with-illegal-instruction" title="Permanent link">&para;</a></h3>
 <p><strong>Symptom:</strong> Running the <code>ar8035-fix</code> binary on the MR18 produces an <code>Illegal instruction</code> signal and the process terminates immediately, before printing any output.</p>
@@ -2509,7 +2509,7 @@
 <a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="nv">LDFLAGS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>-nostdlib<span class="w"> </span>-nostartfiles<span class="w"> </span>-Wl,-z,noexecstack<span class="w"> </span>-Wl,-e,_start<span class="w"> </span>-static
 </code></pre></div>
 <p>The most common mistake is linking against glibc (forgetting <code>-nostdlib</code>), which pulls in <code>crt0.o</code> containing FPU instructions.</p>
-<p><strong>Reference:</strong> <a href="../../technical/ar8035-phy-fix/#compilation">AR8035 PHY Fix -- Compilation</a></p>
+<p><strong>Reference:</strong> <a href="../../technical/ar8035-phy-fix/#compilation">AR8035 PHY Fix—Compilation</a></p>
 <hr />
 <h2 id="device-stability-issues">Device Stability Issues<a class="headerlink" href="#device-stability-issues" title="Permanent link">&para;</a></h2>
 <h3 id="device-reboots-every-90-seconds">Device reboots every ~90 seconds<a class="headerlink" href="#device-reboots-every-90-seconds" title="Permanent link">&para;</a></h3>
@@ -2580,13 +2580,13 @@
 - <code>tap/device found</code> -- JTAG chain detected successfully
 - <code>target halted</code> -- CPU halt succeeded
 - <code>downloaded X bytes</code> -- load_image transfer progress
-- <code>Error:</code> lines -- any OpenOCD error</p>
+- <code>Error:</code> lines—any OpenOCD error</p>
 <h3 id="tmpscpi_repllog">/tmp/scpi_repl.log<a class="headerlink" href="#tmpscpi_repllog" title="Permanent link">&para;</a></h3>
 <p>Contains scpi-repl instrument discovery output and command responses.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>tail<span class="w"> </span>-20<span class="w"> </span>/tmp/scpi_repl.log
 </code></pre></div>
 <p>Key things to look for:
-- <code>eset&gt;</code> prompt -- scpi-repl is ready and connected to the instrument
+- <code>eset&gt;</code> prompt—scpi-repl is ready and connected to the instrument
 - Voltage/current readbacks confirming PSU commands were executed
 - Error messages if the instrument disconnected</p>
 <h3 id="uart-console-output">UART console output<a class="headerlink" href="#uart-console-output" title="Permanent link">&para;</a></h3>

@@ -1804,13 +1804,13 @@
 <h2 id="symptom">Symptom<a class="headerlink" href="#symptom" title="Permanent link">&para;</a></h2>
 <p>After a successful <code>load_image</code> (correct duration, proper completion message), the lzma-loader reported "data error!" during decompression. Comparing a 45 KB sample of RAM contents against the original file revealed 18 single-bit flips scattered across the region.</p>
 <h2 id="root-cause">Root Cause<a class="headerlink" href="#root-cause" title="Permanent link">&para;</a></h2>
-<p>The bit errors are not caused by signal integrity (noise, reflections, crosstalk on the JTAG wires). They are PRACC handshake protocol errors -- timing violations in the MIPS EJTAG Processor Access (PRACC) state machine that mediates memory writes through the debug interface.</p>
+<p>The bit errors are not caused by signal integrity (noise, reflections, crosstalk on the JTAG wires). They are PRACC handshake protocol errors—timing violations in the MIPS EJTAG Processor Access (PRACC) state machine that mediates memory writes through the debug interface.</p>
 <p>Key evidence: the error rate does not change when JTAG clock speed is reduced. At both 1000 kHz and 100 kHz adapter speeds, the per-word bit-flip probability remains approximately the same. Signal integrity issues would improve at lower clock rates; PRACC protocol errors do not, because they are a function of the handshake state machine, not the wire timing.</p>
 <p>The error rate is approximately 1 corrupted word per 2500 words written (~0.04%), which means roughly 60 corrupted words across a 6.9 MB binary load.</p>
 <h2 id="fix">Fix<a class="headerlink" href="#fix" title="Permanent link">&para;</a></h2>
 <p>Since PRACC bit errors cannot be prevented at the transport level, the solution is a verify-and-correct layer:</p>
 <ol>
-<li><strong>Detect</strong>: After <code>load_image</code>, run a CPU-executed XOR checksum program (not a PRACC bulk read, which would inherit the same error rate -- see <a href="../bug-08-phantom-verify-errors/">Bug 8</a>).</li>
+<li><strong>Detect</strong>: After <code>load_image</code>, run a CPU-executed XOR checksum program (not a PRACC bulk read, which would inherit the same error rate—see <a href="../bug-08-phantom-verify-errors/">Bug 8</a>).</li>
 <li><strong>Locate</strong>: <code>cpu_scan_and_fix</code> divides the binary into 847 chunks of 8 KB each. For each chunk, a CPU-executed XOR program computes the checksum using only 5 PRACC operations (write program, set registers, resume, read result, compare).</li>
 <li><strong>Fix</strong>: Any chunk with a mismatched XOR is rewritten from the file via <code>load_image</code> and re-verified.</li>
 </ol>

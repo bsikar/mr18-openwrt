@@ -2045,7 +2045,7 @@
 <h1 id="failsafe-mode-trigger">Failsafe Mode Trigger<a class="headerlink" href="#failsafe-mode-trigger" title="Permanent link">&para;</a></h1>
 <p>How the project enters OpenWrt failsafe mode after booting the initramfs kernel, and the evolution through five failed approaches before arriving at the working solution.</p>
 <h2 id="why-failsafe-is-necessary">Why Failsafe Is Necessary<a class="headerlink" href="#why-failsafe-is-necessary" title="Permanent link">&para;</a></h2>
-<p>The Meraki MR18's NAND flash contains Cisco's original overlay partition. When OpenWrt boots the initramfs kernel, its preinit sequence mounts this NAND overlay by default. The Meraki overlay contains Cisco's userspace -- management daemons, DHCP client configuration, and cloud-phone-home scripts -- which overrides OpenWrt's networking stack entirely (see <a href="../../bugs/bug-15-meraki-nand-overlay/">Bug 15</a>).</p>
+<p>The Meraki MR18's NAND flash contains Cisco's original overlay partition. When OpenWrt boots the initramfs kernel, its preinit sequence mounts this NAND overlay by default. The Meraki overlay contains Cisco's userspace—management daemons, DHCP client configuration, and cloud-phone-home scripts—which overrides OpenWrt's networking stack entirely (see <a href="../../bugs/bug-15-meraki-nand-overlay/">Bug 15</a>).</p>
 <p>The result: the device acquires an IP via DHCP as a WAN client instead of coming up at the expected <code>192.168.1.1</code>. There is no web UI, no SSH, and no way to flash the sysupgrade image.</p>
 <h2 id="what-failsafe-mode-does">What Failsafe Mode Does<a class="headerlink" href="#what-failsafe-mode-does" title="Permanent link">&para;</a></h2>
 <p>OpenWrt's failsafe mode (triggered during preinit) skips the overlay mount entirely:</p>
@@ -2053,7 +2053,7 @@
 <li><strong>No NAND overlay:</strong> only the read-only SquashFS root is active</li>
 <li><strong>Static IP:</strong> <code>192.168.1.1/24</code> on the LAN interface</li>
 <li><strong>Telnet:</strong> <code>telnetd</code> on port 23, no password</li>
-<li><strong>Minimal services:</strong> no firewall, no DHCP server, no DNS -- just a root shell</li>
+<li><strong>Minimal services:</strong> no firewall, no DHCP server, no DNS—just a root shell</li>
 </ul>
 <p>This gives a clean environment to transfer and flash the sysupgrade image.</p>
 <h2 id="trigger-evolution">Trigger Evolution<a class="headerlink" href="#trigger-evolution" title="Permanent link">&para;</a></h2>
@@ -2091,11 +2091,11 @@
 <tbody>
 <tr>
 <td><a href="../../bugs/bug-16-failsafe-timing/">Bug 16</a></td>
-<td>Timing too late -- GPIO writes started after the preinit failsafe check window had already passed</td>
+<td>Timing too late—GPIO writes started after the preinit failsafe check window had already passed</td>
 </tr>
 <tr>
 <td><a href="../../bugs/bug-17-hammer-freezes-cpu/">Bug 17</a></td>
-<td>Missing <code>resume</code> after halt -- CPU stayed halted, kernel could not advance to preinit</td>
+<td>Missing <code>resume</code> after halt—CPU stayed halted, kernel could not advance to preinit</td>
 </tr>
 <tr>
 <td><a href="../../bugs/bug-18-mdw-mww-silent-fail/">Bug 18</a></td>
@@ -2107,7 +2107,7 @@
 </tr>
 <tr>
 <td><a href="../../bugs/bug-20-reset-supervisor/">Bug 20</a></td>
-<td>The MR18 reset supervisor IC actively drives GPIO17 HIGH with a CMOS push-pull output, not just a pull-up -- the SoC's GPIO driver cannot overcome it</td>
+<td>The MR18 reset supervisor IC actively drives GPIO17 HIGH with a CMOS push-pull output, not just a pull-up—the SoC's GPIO driver cannot overcome it</td>
 </tr>
 </tbody>
 </table>
@@ -2134,7 +2134,7 @@
 </tr>
 <tr>
 <td><a href="../../bugs/bug-23-en-before-boot/">Bug 23</a></td>
-<td>EN fires too early -- asserted before the kernel has even booted, well before preinit starts polling GPIO17</td>
+<td>EN fires too early—asserted before the kernel has even booted, well before preinit starts polling GPIO17</td>
 </tr>
 </tbody>
 </table>
@@ -2248,7 +2248,7 @@
 <p><strong>Telnet daemon:</strong> <code>telnetd -l /bin/sh &amp;</code> -- Starts the telnet server for remote sysupgrade.</p>
 </li>
 </ol>
-<p>After these commands succeed, the <code>_failsafe_active</code> event is set, which prevents the main script from power-cycling the device on timeout -- the device is known to be running OpenWrt even if network detection is slow.</p>
+<p>After these commands succeed, the <code>_failsafe_active</code> event is set, which prevents the main script from power-cycling the device on timeout—the device is known to be running OpenWrt even if network detection is slow.</p>
 <h2 id="related-bugs">Related Bugs<a class="headerlink" href="#related-bugs" title="Permanent link">&para;</a></h2>
 <ul>
 <li><a href="../../bugs/bug-15-meraki-nand-overlay/">Bug 15</a>: Meraki NAND overlay mounts Cisco userspace</li>

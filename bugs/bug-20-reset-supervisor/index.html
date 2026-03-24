@@ -1809,14 +1809,14 @@
 </ul>
 <p>Neither driving HIGH nor driving LOW changed the pin state. It was stuck HIGH regardless of the GPIO output configuration.</p>
 <h2 id="root-cause">Root Cause<a class="headerlink" href="#root-cause" title="Permanent link">&para;</a></h2>
-<p>The MR18 board has a dedicated <strong>reset supervisor IC</strong> connected to the GPIO17 / reset button net. This IC is not a passive pull-up resistor -- it is an active CMOS output that drives the reset line HIGH with a strong driver (capable of 10-50 mA).</p>
+<p>The MR18 board has a dedicated <strong>reset supervisor IC</strong> connected to the GPIO17 / reset button net. This IC is not a passive pull-up resistor—it is an active CMOS output that drives the reset line HIGH with a strong driver (capable of 10-50 mA).</p>
 <p>The reset supervisor's purpose is to hold the reset line in a known state during power-up and brown-out conditions. It actively drives the line HIGH with a low-impedance CMOS output stage. The AR9344 GPIO output driver cannot compete:</p>
 <ul>
 <li>The GPIO output driver can source/sink perhaps 2-4 mA</li>
 <li>The reset supervisor IC can source 10-50 mA with a CMOS push-pull output</li>
 <li>The supervisor's output impedance is much lower than the GPIO's</li>
 </ul>
-<p>The GPIO output is effectively shorted against the supervisor's output. The supervisor always wins, keeping the pin HIGH regardless of what the GPIO is trying to do. This also means the JTAG GPIO approach is fundamentally broken on this board -- no amount of software configuration can override the reset supervisor.</p>
+<p>The GPIO output is effectively shorted against the supervisor's output. The supervisor always wins, keeping the pin HIGH regardless of what the GPIO is trying to do. This also means the JTAG GPIO approach is fundamentally broken on this board—no amount of software configuration can override the reset supervisor.</p>
 <h2 id="fix">Fix<a class="headerlink" href="#fix" title="Permanent link">&para;</a></h2>
 <p>Abandon the JTAG GPIO approach entirely. Two alternative methods were identified:</p>
 <ol>
@@ -1829,7 +1829,7 @@
 </ol>
 <p>The final solution uses both: the UART thread watches for the preinit prompt and sends <code>f</code>, while the EN pin is asserted as a backup.</p>
 <h2 id="lesson">Lesson<a class="headerlink" href="#lesson" title="Permanent link">&para;</a></h2>
-<p>When a dedicated IC owns a signal line (reset supervisor, voltage regulator enable, power management IC), software GPIO control from the SoC cannot compete. The IC's output driver is designed to be authoritative on that net. To manipulate the signal, you must find a path that bypasses the IC -- such as the button pad itself, which is downstream of the supervisor.</p>
+<p>When a dedicated IC owns a signal line (reset supervisor, voltage regulator enable, power management IC), software GPIO control from the SoC cannot compete. The IC's output driver is designed to be authoritative on that net. To manipulate the signal, you must find a path that bypasses the IC—such as the button pad itself, which is downstream of the supervisor.</p>
 
 
 

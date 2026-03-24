@@ -2154,16 +2154,16 @@
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;db191ecf0224f030365d604aa3919da9  openwrt-25.12.0-ath79-nand-meraki_mr18-initramfs-kernel.bin&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>md5sum<span class="w"> </span>-c
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;53e272bed2041616068c6958fe28a197  openwrt-25.12.0-ath79-nand-meraki_mr18-squashfs-sysupgrade.bin&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>md5sum<span class="w"> </span>-c
 </code></pre></div>
-<p>Both should print <code>OK</code>. See <a href="../prerequisites/#firmware-downloads">Prerequisites -- Firmware Downloads</a> for details.</p>
+<p>Both should print <code>OK</code>. See <a href="../prerequisites/#firmware-downloads">Prerequisites—Firmware Downloads</a> for details.</p>
 <h2 id="step-2-verify-esp-prog-detected">Step 2: Verify ESP-Prog detected<a class="headerlink" href="#step-2-verify-esp-prog-detected" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>ls<span class="w"> </span>/dev/ttyUSB*
 </code></pre></div>
-<p>You should see at least <code>ttyUSB0</code>, <code>ttyUSB1</code> (JTAG, Interface A), and <code>ttyUSB4</code> (UART, Interface B). If not, check the USB cable and <code>lsusb</code> output. See <a href="../hardware-setup/#device-enumeration">Hardware Setup -- Device Enumeration</a>.</p>
+<p>You should see at least <code>ttyUSB0</code>, <code>ttyUSB1</code> (JTAG, Interface A), and <code>ttyUSB4</code> (UART, Interface B). If not, check the USB cable and <code>lsusb</code> output. See <a href="../hardware-setup/#device-enumeration">Hardware Setup—Device Enumeration</a>.</p>
 <h2 id="step-3-start-scpi-repl-if-using-programmable-psu">Step 3: Start scpi-repl (if using programmable PSU)<a class="headerlink" href="#step-3-start-scpi-repl-if-using-programmable-psu" title="Permanent link">&para;</a></h2>
 <p>If you have a SCPI-capable bench PSU, start <code>scpi-repl</code> so the flash script can control power cycling:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>scpi-repl
 </code></pre></div>
-<p>The <code>mr18_flash.py</code> script will start and manage <code>scpi-repl</code> automatically. If you are using a manual PSU, no action is needed here -- you will toggle power by hand when prompted. See <a href="../../reference/script-reference/">Script Reference -- scpi-repl</a>.</p>
+<p>The <code>mr18_flash.py</code> script will start and manage <code>scpi-repl</code> automatically. If you are using a manual PSU, no action is needed here—you will toggle power by hand when prompted. See <a href="../../reference/script-reference/">Script Reference—scpi-repl</a>.</p>
 <h2 id="step-4-run-the-jtag-flash-script">Step 4: Run the JTAG flash script<a class="headerlink" href="#step-4-run-the-jtag-flash-script" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nb">cd</span><span class="w"> </span>jtag/
 <a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>sudo<span class="w"> </span>python3<span class="w"> </span>mr18_flash.py
@@ -2178,7 +2178,7 @@
 <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>[*] Loading 6768 KB -&gt; 0xa005FC00  (est. 70s at 1000 kHz) ...
 <a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>    load_image done in 71.3s
 </code></pre></div>
-<p>The initramfs kernel (6.9 MB) is transferred from the host to MR18 RAM via JTAG PRACC at approximately 97 KB/s. Progress is visible in <code>/tmp/openocd.log</code>. If <code>load_image</code> completes in under 5 seconds, something went wrong -- see <a href="../troubleshooting/#load_image-completes-too-fast">Troubleshooting</a>.</p>
+<p>The initramfs kernel (6.9 MB) is transferred from the host to MR18 RAM via JTAG PRACC at approximately 97 KB/s. Progress is visible in <code>/tmp/openocd.log</code>. If <code>load_image</code> completes in under 5 seconds, something went wrong—see <a href="../troubleshooting/#load_image-completes-too-fast">Troubleshooting</a>.</p>
 <h3 id="phase-2-post-load-d-cache-flush">Phase 2: Post-load D-cache flush<a class="headerlink" href="#phase-2-post-load-d-cache-flush" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>[*] Post-load D-cache flush (cache 0x01 Index_WB_Invalidate, all 4 ways) ...
 <a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>[+] Post-load D-cache flush done [pass]
@@ -2257,7 +2257,7 @@
 <div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="c1"># Wait for the device to come back up</span>
 <a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>ping<span class="w"> </span><span class="m">192</span>.168.1.1
 </code></pre></div>
-<p>The device is now running OpenWrt from NAND flash. However, Ethernet RX is broken at this point due to the AR8035 PHY RGMII RX clock delay bug -- you can transmit but not receive. The next steps fix this.</p>
+<p>The device is now running OpenWrt from NAND flash. However, Ethernet RX is broken at this point due to the AR8035 PHY RGMII RX clock delay bug—you can transmit but not receive. The next steps fix this.</p>
 <h2 id="step-8-build-ar8035-fix-if-needed">Step 8: Build AR8035 fix (if needed)<a class="headerlink" href="#step-8-build-ar8035-fix-if-needed" title="Permanent link">&para;</a></h2>
 <p>A pre-built <code>ar8035-fix</code> binary (5592 bytes, MIPS32 big-endian static ELF) is included in the repository. Skip this step unless you have modified the C or assembly source.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="nb">cd</span><span class="w"> </span>ar8035-fix/
@@ -2266,7 +2266,7 @@
 <p>Or use the Docker-based build (works on any Linux distro):</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>make<span class="w"> </span>docker
 </code></pre></div>
-<p>See <a href="../prerequisites/#cross-compiler-ar8035-fix-only">Prerequisites -- Cross-Compiler</a> for cross-compiler installation.</p>
+<p>See <a href="../prerequisites/#cross-compiler-ar8035-fix-only">Prerequisites—Cross-Compiler</a> for cross-compiler installation.</p>
 <h2 id="step-9-deploy-ar8035-fix">Step 9: Deploy AR8035 fix<a class="headerlink" href="#step-9-deploy-ar8035-fix" title="Permanent link">&para;</a></h2>
 <p>Transfer the <code>ar8035-fix</code> binary to the MR18 and execute it:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="nb">cd</span><span class="w"> </span>ar8035-fix/

@@ -811,10 +811,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#esp-progcfg-debug-adapter-interface" class="md-nav__link">
+  <a href="#esp-progcfgdebug-adapter-interface" class="md-nav__link">
     <span class="md-ellipsis">
       
-        esp-prog.cfg -- Debug Adapter Interface
+        esp-prog.cfg—Debug Adapter Interface
       
     </span>
   </a>
@@ -822,10 +822,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#mr18cfg-target-configuration" class="md-nav__link">
+  <a href="#mr18cfgtarget-configuration" class="md-nav__link">
     <span class="md-ellipsis">
       
-        mr18.cfg -- Target Configuration
+        mr18.cfg—Target Configuration
       
     </span>
   </a>
@@ -1853,10 +1853,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#esp-progcfg-debug-adapter-interface" class="md-nav__link">
+  <a href="#esp-progcfgdebug-adapter-interface" class="md-nav__link">
     <span class="md-ellipsis">
       
-        esp-prog.cfg -- Debug Adapter Interface
+        esp-prog.cfg—Debug Adapter Interface
       
     </span>
   </a>
@@ -1864,10 +1864,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#mr18cfg-target-configuration" class="md-nav__link">
+  <a href="#mr18cfgtarget-configuration" class="md-nav__link">
     <span class="md-ellipsis">
       
-        mr18.cfg -- Target Configuration
+        mr18.cfg—Target Configuration
       
     </span>
   </a>
@@ -2014,7 +2014,7 @@
 <p>How OpenOCD is configured, started, and controlled for JTAG communication with the AR9344 on the Meraki MR18. Covers both configuration files and the telnet command interface used by <code>mr18_flash.py</code>.</p>
 <h2 id="configuration-files">Configuration Files<a class="headerlink" href="#configuration-files" title="Permanent link">&para;</a></h2>
 <p>OpenOCD uses two configuration files, loaded in order. The first configures the debug adapter hardware. The second configures the target chip.</p>
-<h3 id="esp-progcfg-debug-adapter-interface">esp-prog.cfg -- Debug Adapter Interface<a class="headerlink" href="#esp-progcfg-debug-adapter-interface" title="Permanent link">&para;</a></h3>
+<h3 id="esp-progcfgdebug-adapter-interface">esp-prog.cfg—Debug Adapter Interface<a class="headerlink" href="#esp-progcfgdebug-adapter-interface" title="Permanent link">&para;</a></h3>
 <p>Location: <code>jtag/esp-prog.cfg</code></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>adapter driver ftdi
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>ftdi vid_pid 0x0403 0x6010
@@ -2033,7 +2033,7 @@
 <p>This ensures nTRST starts deasserted so the JTAG TAP is not held in reset.</p>
 <p><strong><code>reset_config none</code></strong> -- No reset lines are connected. The MR18 does not expose SRST (system reset) on its JTAG header. We use the bench power supply to power-cycle instead.</p>
 <p><strong><code>adapter speed 1000</code></strong> -- JTAG clock at 1000 kHz (1 MHz). This is conservative for the AR9344 (which supports higher), but empirically reliable over the ESP-Prog's flying wires. Higher speeds increase the risk of signal integrity errors on the PRACC-heavy load operations.</p>
-<h3 id="mr18cfg-target-configuration">mr18.cfg -- Target Configuration<a class="headerlink" href="#mr18cfg-target-configuration" title="Permanent link">&para;</a></h3>
+<h3 id="mr18cfgtarget-configuration">mr18.cfg—Target Configuration<a class="headerlink" href="#mr18cfgtarget-configuration" title="Permanent link">&para;</a></h3>
 <p>Location: <code>jtag/mr18.cfg</code></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">if</span><span class="w"> </span><span class="k">{</span><span class="w"> </span><span class="k">[</span><span class="nb">info</span><span class="w"> </span>exists<span class="w"> </span>CHIPNAME<span class="k">]</span><span class="w"> </span><span class="k">}</span><span class="w"> </span><span class="k">{</span>
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">        </span><span class="k">set</span><span class="w"> </span>_CHIPNAME<span class="w"> </span><span class="nv">$_CHIPNAME</span>
@@ -2059,7 +2059,7 @@
 </code></pre></div>
 <p>Line-by-line:</p>
 <p><strong><code>set _CHIPNAME ar9344</code></strong> -- Internal name for the chip. Used as a prefix for TAP and target names (e.g., <code>ar9344.cpu</code>). The AR9344 and QCA9557 share the same MIPS core and JTAG interface.</p>
-<p><strong><code>set _CPUTAPID 0x00000001</code></strong> -- The expected JTAG IDCODE. This is <strong>non-standard</strong>: the JTAG specification (IEEE 1149.1) requires bit 0 of the IDCODE to be 1, which <code>0x00000001</code> satisfies, but a conforming IDCODE also encodes manufacturer ID, part number, and version in the remaining bits. The QCA9557 returns <code>0x00000001</code> for all of those fields -- a minimal valid IDCODE that provides no manufacturer identification. This is what the chip actually returns; it is not configurable.</p>
+<p><strong><code>set _CPUTAPID 0x00000001</code></strong> -- The expected JTAG IDCODE. This is <strong>non-standard</strong>: the JTAG specification (IEEE 1149.1) requires bit 0 of the IDCODE to be 1, which <code>0x00000001</code> satisfies, but a conforming IDCODE also encodes manufacturer ID, part number, and version in the remaining bits. The QCA9557 returns <code>0x00000001</code> for all of those fields—a minimal valid IDCODE that provides no manufacturer identification. This is what the chip actually returns; it is not configurable.</p>
 <p><strong><code>jtag newtap $_CHIPNAME cpu -irlen 5 -expected-id $_CPUTAPID</code></strong> -- Declare a TAP (Test Access Port) named <code>ar9344.cpu</code> with:
 - <code>-irlen 5</code>: Instruction Register length is 5 bits (standard for MIPS EJTAG)
 - <code>-expected-id 0x00000001</code>: OpenOCD will verify this IDCODE during <code>init</code> and refuse to proceed if the scan chain returns a different value</p>
@@ -2146,11 +2146,11 @@
 <tbody>
 <tr>
 <td><code>mww 0xaddr 0xval</code></td>
-<td>Memory Write Word -- write 32-bit value to address</td>
+<td>Memory Write Word—write 32-bit value to address</td>
 </tr>
 <tr>
 <td><code>mdw 0xaddr</code></td>
-<td>Memory Display Word -- read 32-bit value from address</td>
+<td>Memory Display Word—read 32-bit value from address</td>
 </tr>
 <tr>
 <td><code>load_image /path/file 0xaddr bin</code></td>

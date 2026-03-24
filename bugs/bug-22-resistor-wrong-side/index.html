@@ -1816,7 +1816,7 @@
 <li>Voltage at NPN collector = 0 V (NPN saturated)</li>
 <li>Voltage drop is across the 100 ohm resistor, but it is between the NPN and the GPIO17 net</li>
 </ul>
-<p>The GPIO17 net stays at 3.3 V because the voltage drop occurs between GPIO17 and the NPN, not between the supervisor and GPIO17. The supervisor's output is still driving the GPIO17 net directly, and the resistor only limits how much current the NPN sinks -- it does not pull the GPIO17 voltage down.</p>
+<p>The GPIO17 net stays at 3.3 V because the voltage drop occurs between GPIO17 and the NPN, not between the supervisor and GPIO17. The supervisor's output is still driving the GPIO17 net directly, and the resistor only limits how much current the NPN sinks—it does not pull the GPIO17 voltage down.</p>
 <h2 id="fix">Fix<a class="headerlink" href="#fix" title="Permanent link">&para;</a></h2>
 <p>Remove the 100 ohm resistor. Wire the EN pin (NPN collector) directly to the reset button pad on the MR18:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>ESP-Prog NPN collector -- Reset button pad (GPIO17 side)

@@ -2758,7 +2758,7 @@
 <a id="__codelineno-35-3" name="__codelineno-35-3" href="#__codelineno-35-3"></a>= 0x240A0000
 </code></pre></div>
 <p><strong>Word 5: <code>0x8D0B0000</code> -- <code>LW $t3, 0($t0)</code> [LOOP HEAD]</strong></p>
-<p>Load one word from the binary (via KSEG1 uncached -- reads physical RAM directly).</p>
+<p>Load one word from the binary (via KSEG1 uncached—reads physical RAM directly).</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a>I-type: op=0x23, rs=8($t0), rt=11($t3), imm=0
 <a id="__codelineno-36-2" name="__codelineno-36-2" href="#__codelineno-36-2"></a>(0x23 &lt;&lt; 26) | (8 &lt;&lt; 21) | (11 &lt;&lt; 16) | 0
 <a id="__codelineno-36-3" name="__codelineno-36-3" href="#__codelineno-36-3"></a>= 0x8D0B0000
@@ -2874,7 +2874,7 @@
 <a id="__codelineno-46-10" name="__codelineno-46-10" href="#__codelineno-46-10"></a> 8     0x7000003F  sdbbp                             halt
 <a id="__codelineno-46-11" name="__codelineno-46-11" href="#__codelineno-46-11"></a> 9     0x00000000  nop                               padding
 </code></pre></div>
-<p>Note that <code>FLUSH_TRAMPOLINE</code> sweeps only 32 KB (<code>0x80000000</code> to <code>0x80008000</code>) because CACHE index operations address individual cache lines directly -- one invocation per line flushes that specific line regardless of which way it is in. 32 KB / 32 bytes per line = 1024 index iterations, covering all 256 sets x 4 ways. The ORI at word 2 uses <code>0x8000</code> (bit 15 set), which would break with ADDIU (sign extension to <code>-32768</code>), hence ORI.</p>
+<p>Note that <code>FLUSH_TRAMPOLINE</code> sweeps only 32 KB (<code>0x80000000</code> to <code>0x80008000</code>) because CACHE index operations address individual cache lines directly—one invocation per line flushes that specific line regardless of which way it is in. 32 KB / 32 bytes per line = 1024 index iterations, covering all 256 sets x 4 ways. The ORI at word 2 uses <code>0x8000</code> (bit 15 set), which would break with ADDIU (sign extension to <code>-32768</code>), hence ORI.</p>
 <p>The BNE at word 6 computes: offset = 3 - (6+1) = -4 = 0xFFFC.</p>
 <hr />
 <h2 id="verify_asmpy">verify_asm.py<a class="headerlink" href="#verify_asmpy" title="Permanent link">&para;</a></h2>
@@ -2885,7 +2885,7 @@
 <p><strong>Manual bit-field calculation</strong>: For each instruction, it shows the encoding arithmetic step by step (opcode shift, register field placement, immediate masking) and compares the computed 32-bit value against the expected constant from <code>mr18_flash.py</code>.</p>
 </li>
 <li>
-<p><strong>Capstone cross-check</strong>: Feeds the raw instruction bytes to <a href="https://www.capstone-engine.org/">Capstone</a> (a disassembly framework) in MIPS32 big-endian mode and prints the disassembly. This provides an independent ground truth -- if our hand-encoded <code>0x1509FFFC</code> disassembles as <code>bne $t0, $t1, -4</code>, the encoding is correct.</p>
+<p><strong>Capstone cross-check</strong>: Feeds the raw instruction bytes to <a href="https://www.capstone-engine.org/">Capstone</a> (a disassembly framework) in MIPS32 big-endian mode and prints the disassembly. This provides an independent ground truth—if our hand-encoded <code>0x1509FFFC</code> disassembles as <code>bne $t0, $t1, -4</code>, the encoding is correct.</p>
 </li>
 </ol>
 <p>The script covers all three trampolines (D-cache flush, XOR checksum, launch) and uses helper functions that mirror the encoding formulas:</p>
@@ -2904,7 +2904,7 @@
 </code></pre></div>
 <p>All checks should print <code>[pass]</code>. Any <code>[fail]</code> indicates a mismatch between the encoding formula and the hardcoded constant.</p>
 <h2 id="bug-12-beq-vs-bne-encoding-error">Bug 12: BEQ vs BNE Encoding Error<a class="headerlink" href="#bug-12-beq-vs-bne-encoding-error" title="Permanent link">&para;</a></h2>
-<p>Bug 12 was a single-bit encoding error in the D-cache flush trampoline's branch instruction. The original code used opcode <code>0x04</code> (BEQ -- Branch if Equal) instead of <code>0x05</code> (BNE -- Branch if Not Equal):</p>
+<p>Bug 12 was a single-bit encoding error in the D-cache flush trampoline's branch instruction. The original code used opcode <code>0x04</code> (BEQ—Branch if Equal) instead of <code>0x05</code> (BNE—Branch if Not Equal):</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-49-1" name="__codelineno-49-1" href="#__codelineno-49-1"></a>BEQ: opcode = 0x04 = 000100 (binary)
 <a id="__codelineno-49-2" name="__codelineno-49-2" href="#__codelineno-49-2"></a>BNE: opcode = 0x05 = 000101 (binary)
 <a id="__codelineno-49-3" name="__codelineno-49-3" href="#__codelineno-49-3"></a>                            ^ single bit difference

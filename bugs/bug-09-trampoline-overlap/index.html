@@ -1810,7 +1810,7 @@
 <li><code>cpu_scan_and_fix</code> detects chunk 209 has a bad XOR</li>
 <li>Rewrites chunk 209 from the original file via <code>load_image</code> -- this correctly writes the binary data, <strong>overwriting the XOR program</strong> at <code>0xa0200000</code></li>
 <li>Writes the XOR program back to <code>0xa0200000</code> -- this <strong>overwrites part of the binary</strong> that was just loaded</li>
-<li>Runs the XOR -- the chunk now contains the XOR program instead of binary data, so the checksum is wrong again</li>
+<li>Runs the XOR—the chunk now contains the XOR program instead of binary data, so the checksum is wrong again</li>
 <li>Repeat forever</li>
 </ol>
 <p>The trampoline and the binary data occupied the same physical memory, creating a write conflict that could never be resolved.</p>

@@ -1836,7 +1836,7 @@
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>0x1509FFFD  (BNE t0, t1, -3)
 </code></pre></div>
 <p>With <code>BEQ</code>, the loop only executed when <code>t0 == t1</code>, which is never true at the start. The loop body ran exactly once (the instruction executes before the branch is evaluated on the first iteration due to the pipeline), flushing a single cache line instead of 4096.</p>
-<p>One cache line (32 bytes) out of 128 KB is 0.02% of the flush range -- effectively no flush at all.</p>
+<p>One cache line (32 bytes) out of 128 KB is 0.02% of the flush range—effectively no flush at all.</p>
 <h2 id="fix">Fix<a class="headerlink" href="#fix" title="Permanent link">&para;</a></h2>
 <p>Change the branch instruction encoding:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># Before (BEQ - wrong)</span>

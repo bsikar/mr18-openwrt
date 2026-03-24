@@ -1814,7 +1814,7 @@
 <a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    <span class="k">except</span> <span class="n">socket</span><span class="o">.</span><span class="n">timeout</span><span class="p">:</span>
 <a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>        <span class="k">break</span>  <span class="c1"># Assumed command was done</span>
 </code></pre></div>
-<p>When <code>cmd("load_image ...")</code> was called, <code>_drain()</code> waited for 0.5 seconds of silence on the socket. Since <code>load_image</code> produces no output during the actual transfer (only a completion message at the end), the 0.5-second silence threshold was hit almost immediately. <code>_drain()</code> returned, and <code>cmd()</code> declared success -- even though <code>load_image</code> was still running in the background.</p>
+<p>When <code>cmd("load_image ...")</code> was called, <code>_drain()</code> waited for 0.5 seconds of silence on the socket. Since <code>load_image</code> produces no output during the actual transfer (only a completion message at the end), the 0.5-second silence threshold was hit almost immediately. <code>_drain()</code> returned, and <code>cmd()</code> declared success—even though <code>load_image</code> was still running in the background.</p>
 <p>Subsequent commands sent to the same socket interleaved with <code>load_image</code>'s eventual completion message, corrupting the command/response stream.</p>
 <h2 id="fix">Fix<a class="headerlink" href="#fix" title="Permanent link">&para;</a></h2>
 <p>Thread the timeout from <code>cmd()</code> through to <code>_drain()</code>. For long-running commands like <code>load_image</code>, pass a timeout that exceeds the expected duration:</p>

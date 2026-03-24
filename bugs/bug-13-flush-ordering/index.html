@@ -1802,7 +1802,7 @@
 <p><strong>Category</strong>: Cache coherency
 <strong>Related docs</strong>: <a href="../../technical/mips-memory-model/">mips-memory-model</a>, <a href="../../reference/address-map/">address-map</a></p>
 <h2 id="symptom">Symptom<a class="headerlink" href="#symptom" title="Permanent link">&para;</a></h2>
-<p>Bug 12 was fixed -- the flush loop now correctly ran 4096 iterations, sweeping the full 128 KB. The <code>SDBBP</code> hit at the right time. The lzma-loader still reported "data error!" on boot.</p>
+<p>Bug 12 was fixed—the flush loop now correctly ran 4096 iterations, sweeping the full 128 KB. The <code>SDBBP</code> hit at the right time. The lzma-loader still reported "data error!" on boot.</p>
 <h2 id="root-cause">Root Cause<a class="headerlink" href="#root-cause" title="Permanent link">&para;</a></h2>
 <p>The D-cache flush was running <strong>after</strong> <code>load_image</code>, not before. The reasoning at the time was: "load the binary, then flush the cache to ensure coherency." This reasoning is exactly backwards.</p>
 <p>Here is what happens when the flush runs after the load:</p>
@@ -1815,7 +1815,7 @@
 </ol>
 <p>The flush that was supposed to clean the cache is the operation that destroys the loaded binary.</p>
 <h2 id="fix">Fix<a class="headerlink" href="#fix" title="Permanent link">&para;</a></h2>
-<p>Move the flush to <strong>Phase 0 -- before <code>load_image</code></strong>:</p>
+<p>Move the flush to <strong>Phase 0—before <code>load_image</code></strong>:</p>
 <ol>
 <li><strong>Flush first</strong>: Evict all dirty Cisco D-cache lines. The Cisco data is written back to physical RAM. This is harmless because we are about to overwrite that entire region with <code>load_image</code>.</li>
 <li><strong>Load second</strong>: <code>load_image</code> writes the OpenWrt binary to physical RAM via KSEG1. The D-cache is now clean (no dirty lines covering our binary's address range).</li>

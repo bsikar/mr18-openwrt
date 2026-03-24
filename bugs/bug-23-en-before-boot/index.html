@@ -1838,7 +1838,7 @@
 </tr>
 </tbody>
 </table>
-<p>The EN assertion at t=12s hit during LZMA decompression -- the kernel had not even started yet. By t=17s (when EN was released), preinit still had not run. The GPIO17 state during decompression is irrelevant because no software is checking it.</p>
+<p>The EN assertion at t=12s hit during LZMA decompression—the kernel had not even started yet. By t=17s (when EN was released), preinit still had not run. The GPIO17 state during decompression is irrelevant because no software is checking it.</p>
 <h2 id="fix">Fix<a class="headerlink" href="#fix" title="Permanent link">&para;</a></h2>
 <p>Assert EN from t=2s (shortly after kernel launch) and hold for 40 seconds:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">FAILSAFE_EN_DELAY</span> <span class="o">=</span> <span class="mf">2.0</span>   <span class="c1"># seconds after launch before asserting EN</span>

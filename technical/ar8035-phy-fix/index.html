@@ -2242,7 +2242,7 @@
 </ul>
 <h2 id="root-cause-rgmii-rx-clock-timing-skew">Root Cause: RGMII RX Clock Timing Skew<a class="headerlink" href="#root-cause-rgmii-rx-clock-timing-skew" title="Permanent link">&para;</a></h2>
 <p>The QCA9557 SoC connects to the AR8035 PHY over an RGMII (Reduced Gigabit Media Independent Interface) bus. RGMII clocks data on both rising and falling edges of a 125 MHz clock at 1 Gbps. The specification requires a 2 ns delay between the clock and data signals so the MAC can sample data at the correct point.</p>
-<p>The AR8035 has an internal programmable delay line for this purpose. On the RX path (PHY-to-MAC direction), this delay is controlled by <strong>bit 15 of debug register 0x00</strong>. When this bit is cleared (the default), the delay line is disabled and the RX clock arrives aligned with the data edges -- the MAC samples at transition points, producing garbage.</p>
+<p>The AR8035 has an internal programmable delay line for this purpose. On the RX path (PHY-to-MAC direction), this delay is controlled by <strong>bit 15 of debug register 0x00</strong>. When this bit is cleared (the default), the delay line is disabled and the RX clock arrives aligned with the data edges—the MAC samples at transition points, producing garbage.</p>
 <h3 id="the-dts-gap">The DTS Gap<a class="headerlink" href="#the-dts-gap" title="Permanent link">&para;</a></h3>
 <p>The OpenWrt device tree for the MR18 specifies:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">phy-mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;rgmii&quot;</span><span class="p">;</span>
@@ -2317,7 +2317,7 @@
 </table>
 <p>If the PHY ID does not match, the binary aborts without writing any registers.</p>
 <h2 id="ar8035c-walkthrough">ar8035.c Walkthrough<a class="headerlink" href="#ar8035c-walkthrough" title="Permanent link">&para;</a></h2>
-<p>The fix is implemented as a standalone C program (<code>ar8035-fix/ar8035.c</code>) that uses raw Linux syscalls -- no libc, no dynamic linking.</p>
+<p>The fix is implemented as a standalone C program (<code>ar8035-fix/ar8035.c</code>) that uses raw Linux syscalls—no libc, no dynamic linking.</p>
 <h3 id="raw-syscall-wrappers">Raw Syscall Wrappers<a class="headerlink" href="#raw-syscall-wrappers" title="Permanent link">&para;</a></h3>
 <p>Four syscall wrappers using inline MIPS assembly:</p>
 <table>

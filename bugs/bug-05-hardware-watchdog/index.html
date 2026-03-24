@@ -1816,7 +1816,7 @@
 </ol>
 <p>The result is that our carefully loaded OpenWrt binary in RAM is wiped by the reset, and the device boots Cisco as if nothing happened.</p>
 <h2 id="fix">Fix<a class="headerlink" href="#fix" title="Permanent link">&para;</a></h2>
-<p>An initial attempt to disable the watchdog via a direct MMIO write to <code>WDOG_CTRL</code> at <code>0xB8060008</code> failed -- the write broke the PRACC state machine (possibly because the watchdog control register has side effects during EJTAG access).</p>
+<p>An initial attempt to disable the watchdog via a direct MMIO write to <code>WDOG_CTRL</code> at <code>0xB8060008</code> failed—the write broke the PRACC state machine (possibly because the watchdog control register has side effects during EJTAG access).</p>
 <p>The bug ultimately self-resolved: PRACC activity during <code>load_image</code> and verification generates enough bus transactions to keep the watchdog alive. Each PRACC memory access involves the CPU (even while halted in debug mode) executing micro-operations that touch the bus, which the watchdog interprets as activity. As long as the JTAG transfer is actively running, the watchdog does not expire.</p>
 <p>The critical window is any long pause after halting the CPU but before starting <code>load_image</code>. The script avoids this by starting the binary load immediately after a successful halt.</p>
 <h2 id="lesson">Lesson<a class="headerlink" href="#lesson" title="Permanent link">&para;</a></h2>

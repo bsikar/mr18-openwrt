@@ -2238,14 +2238,14 @@
     P3a --&gt; P3b
     P3b --&gt; P3c
     P3c --&gt;|Match| P4
-    P3c --&gt;|Mismatch| ABORT["Abort -- power-cycle retry"]
+    P3c --&gt;|Mismatch| ABORT["Abort—power-cycle retry"]
     P3b --&gt;|Unfixable chunk| ABORT
 
     style P0 fill:#f9f,stroke:#333
     style P4 fill:#9f9,stroke:#333
     style ABORT fill:#f99,stroke:#333</code></pre>
 <h2 id="phase-0-pre-load-d-cache-flush">Phase 0: Pre-load D-cache Flush<a class="headerlink" href="#phase-0-pre-load-d-cache-flush" title="Permanent link">&para;</a></h2>
-<p><strong>Why BEFORE the load, not after:</strong> The Cisco Nandloader writes the Cisco kernel to physical <code>0x5FC00</code> via KSEG0 (cached, write-back, write-allocate on AR9344). This fills D-cache lines at that physical range with dirty Cisco data -- the actual DRAM content lags behind the cache.</p>
+<p><strong>Why BEFORE the load, not after:</strong> The Cisco Nandloader writes the Cisco kernel to physical <code>0x5FC00</code> via KSEG0 (cached, write-back, write-allocate on AR9344). This fills D-cache lines at that physical range with dirty Cisco data—the actual DRAM content lags behind the cache.</p>
 <p>Our <code>load_image</code> writes OpenWrt to the same physical range via KSEG1 (uncached, bypasses D-cache, goes straight to DRAM). But the D-cache still holds those dirty Cisco lines. When the lzma-loader later reads via KSEG0, the MIPS cache controller evicts dirty lines with write-back -- <strong>overwriting our freshly loaded OpenWrt binary with stale Cisco data.</strong> Result: <code>data error!</code> from the lzma-loader (see <a href="../../bugs/bug-13-flush-ordering/">Bug 13</a>).</p>
 <p>If we flushed <em>after</em> <code>load_image</code>, the write-back of stale Cisco lines would corrupt our binary. Flushing <em>before</em> ensures the dirty lines are written back to DRAM (harmless, since we overwrite that DRAM immediately) and the D-cache is clean before the load begins.</p>
 <h3 id="d_cache_flush_trampoline">D_CACHE_FLUSH_TRAMPOLINE<a class="headerlink" href="#d_cache_flush_trampoline" title="Permanent link">&para;</a></h3>
@@ -2424,9 +2424,9 @@
 <li><strong>Retries:</strong> up to 3 attempts if SDBBP is not reached</li>
 </ul>
 <h3 id="xor-limitation-bug-10">XOR limitation (Bug 10)<a class="headerlink" href="#xor-limitation-bug-10" title="Permanent link">&para;</a></h3>
-<p>XOR is a weak checksum: if two corrupted words have the same XOR delta, they cancel out and the full-binary XOR appears correct. For a 6.9 MB binary with ~5 expected PRACC bit-flip errors (see <a href="../../bugs/bug-04-pracc-bit-errors/">Bug 4</a>), the probability of exact cancellation is low but nonzero. This is why Phase 3b exists -- the chunk-level scan makes cancellation astronomically unlikely within any single 8 KB chunk. See <a href="../../bugs/bug-10-xor-cancellation/">Bug 10</a>.</p>
+<p>XOR is a weak checksum: if two corrupted words have the same XOR delta, they cancel out and the full-binary XOR appears correct. For a 6.9 MB binary with ~5 expected PRACC bit-flip errors (see <a href="../../bugs/bug-04-pracc-bit-errors/">Bug 4</a>), the probability of exact cancellation is low but nonzero. This is why Phase 3b exists—the chunk-level scan makes cancellation astronomically unlikely within any single 8 KB chunk. See <a href="../../bugs/bug-10-xor-cancellation/">Bug 10</a>.</p>
 <h2 id="phase-3b-per-chunk-cpu-xor-scan-cpu_scan_and_fix">Phase 3b: Per-chunk CPU-XOR Scan (cpu_scan_and_fix)<a class="headerlink" href="#phase-3b-per-chunk-cpu-xor-scan-cpu_scan_and_fix" title="Permanent link">&para;</a></h2>
-<p>The core corruption detection and repair mechanism. Replaced the earlier <code>verify_and_fix</code> approach that used PRACC reads (<code>dump_image</code>), which suffered from the same bit-flip rate as writes -- causing phantom errors where correct data appeared bad and real errors appeared correct (see <a href="../../bugs/bug-08-phantom-verify-errors/">Bug 8</a>).</p>
+<p>The core corruption detection and repair mechanism. Replaced the earlier <code>verify_and_fix</code> approach that used PRACC reads (<code>dump_image</code>), which suffered from the same bit-flip rate as writes—causing phantom errors where correct data appeared bad and real errors appeared correct (see <a href="../../bugs/bug-08-phantom-verify-errors/">Bug 8</a>).</p>
 <h3 id="design">Design<a class="headerlink" href="#design" title="Permanent link">&para;</a></h3>
 <ul>
 <li><strong>Chunk size:</strong> 8192 bytes (8 KB)</li>
@@ -2456,7 +2456,7 @@
 <p>This eliminates guessing which words within a chunk are bad. The full chunk rewrite is slow (~2 seconds per chunk) but reliable since only ~5 chunks out of 847 are typically affected (see <a href="../../bugs/bug-07-flush-trampoline/">Bug 7</a>).</p>
 <h3 id="why-cpu_scan_and_fix-replaced-verify_and_fix">Why cpu_scan_and_fix replaced verify_and_fix<a class="headerlink" href="#why-cpu_scan_and_fix-replaced-verify_and_fix" title="Permanent link">&para;</a></h3>
 <p>The original <code>verify_and_fix</code> used <code>dump_image</code> (PRACC reads) to read back the entire binary and compare against the file. The problem (see <a href="../../bugs/bug-08-phantom-verify-errors/">Bug 8</a>): PRACC reads have the same ~5 bit-flip per MB error rate as writes. A correct word in RAM could be read back wrong (false positive), and a corrupted word could be read back as the expected value (false negative). The verify step was as unreliable as the load step.</p>
-<p><code>cpu_scan_and_fix</code> avoids this by having the CPU itself do the comparison. The CPU reads RAM through the L1 cache at 560 MHz with zero bit errors -- only the 5 PRACC operations per chunk are subject to JTAG noise.</p>
+<p><code>cpu_scan_and_fix</code> avoids this by having the CPU itself do the comparison. The CPU reads RAM through the L1 cache at 560 MHz with zero bit errors—only the 5 PRACC operations per chunk are subject to JTAG noise.</p>
 <h2 id="phase-3c-final-full-xor-after-chunk-scan">Phase 3c: Final Full XOR After Chunk Scan<a class="headerlink" href="#phase-3c-final-full-xor-after-chunk-scan" title="Permanent link">&para;</a></h2>
 <p>Repeats the Phase 3a full-binary XOR checksum after all chunk repairs. This confirms that the chunk scan + repair process left the binary in a globally consistent state. Both the per-chunk XOR results and the full-binary XOR must agree before launch proceeds.</p>
 <p>If the final XOR mismatches, the script aborts and the outer power-cycle retry loop starts a fresh attempt.</p>

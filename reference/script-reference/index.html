@@ -2453,7 +2453,7 @@
     P10 --&gt; P11["UART thread: read console, send 'f' for failsafe"]
     P11 --&gt; P12["Configure host NIC, wait for OpenWrt"]
     P12 --&gt; P13["Transfer sysupgrade via telnet/nc or SSH/SCP"]
-    P13 --&gt; P14["Done -- OpenWrt flashing NAND"]
+    P13 --&gt; P14["Done—OpenWrt flashing NAND"]
     P3 --&gt; |"Not halted"| P1</code></pre>
 <h4 id="phase-by-phase">Phase-by-Phase<a class="headerlink" href="#phase-by-phase" title="Permanent link">&para;</a></h4>
 <table>
@@ -2742,7 +2742,7 @@
     T1["Verify shell alive (echo test)"]
     T1 --&gt; T2["Phase 0: Pre-test&lt;br&gt;(32 known bytes through awk)"]
     T2 --&gt; |"Pass"| T3["Phase 1: Full transfer&lt;br&gt;(sysupgrade.bin via hex/awk)"]
-    T2 --&gt; |"Fail"| T_ABORT["Abort -- awk or TTY broken"]
+    T2 --&gt; |"Fail"| T_ABORT["Abort—awk or TTY broken"]
     T3 --&gt; T4["Verify size (wc -c) +&lt;br&gt;MD5 on remote"]
     T4 --&gt; |"MD5 match"| T5["Auto-run:&lt;br&gt;sysupgrade /tmp/fw.bin"]
     T4 --&gt; |"MD5 mismatch"| T_FAIL["Report failure"]</code></pre>

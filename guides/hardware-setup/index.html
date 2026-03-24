@@ -2298,17 +2298,17 @@
 
     DC -- "12V center-positive" --- BARREL</code></pre>
 <h2 id="mr18-teardown">MR18 Teardown<a class="headerlink" href="#mr18-teardown" title="Permanent link">&para;</a></h2>
-<p><img alt="MR18 board overview -- JTAG header soldered, ethernet and barrel jack connected" src="../../images/mr18-board-overview.jpg" /></p>
+<p><img alt="MR18 board overview—JTAG header soldered, ethernet and barrel jack connected" src="../../images/mr18-board-overview.jpg" /></p>
 <p>The MR18 case is held together by clips around the perimeter. Pry the front cover off starting from the Ethernet port side. Inside you will find:</p>
 <ol>
 <li>
-<p><strong>J3 -- JTAG header</strong>: An unpopulated 14-pin (2x7) through-hole pad array near the center of the PCB at 2.54 mm pitch. This is the primary JTAG connection.</p>
+<p><strong>J3—JTAG header</strong>: An unpopulated 14-pin (2x7) through-hole pad array near the center of the PCB at 2.54 mm pitch. This is the primary JTAG connection.</p>
 </li>
 <li>
-<p><strong>J1 -- UART pads</strong>: A 4-pin pad array near the board edge, carrying the QCA9557's serial console (115200 baud, 8N1, 3.3V TTL).</p>
+<p><strong>J1—UART pads</strong>: A 4-pin pad array near the board edge, carrying the QCA9557's serial console (115200 baud, 8N1, 3.3V TTL).</p>
 </li>
 <li>
-<p><strong>Reset button pad</strong>: A tactile switch pad with two connections -- one pad connects to GND and the other to the GPIO17 net. The non-GND pad is where the EN wire connects. To identify which pad is GND, use a continuity tester against the ground plane or any known GND point (such as the barrel jack outer ring or a JTAG GND pin).</p>
+<p><strong>Reset button pad</strong>: A tactile switch pad with two connections—one pad connects to GND and the other to the GPIO17 net. The non-GND pad is where the EN wire connects. To identify which pad is GND, use a continuity tester against the ground plane or any known GND point (such as the barrel jack outer ring or a JTAG GND pin).</p>
 </li>
 <li>
 <p><strong>Barrel jack</strong>: 12V center-positive DC input, located next to the Ethernet port.</p>
@@ -2417,7 +2417,7 @@
 <tr>
 <td>2</td>
 <td>RXD0</td>
-<td>UART receive -- connect to MR18 TXD</td>
+<td>UART receive—connect to MR18 TXD</td>
 </tr>
 <tr>
 <td>3</td>
@@ -2427,7 +2427,7 @@
 <tr>
 <td>4</td>
 <td>TXD0</td>
-<td>UART transmit -- connect to MR18 RXD</td>
+<td>UART transmit—connect to MR18 RXD</td>
 </tr>
 <tr>
 <td>5</td>
@@ -2437,7 +2437,7 @@
 <tr>
 <td>6</td>
 <td>EN</td>
-<td>Enable -- NPN open-collector pull-down, driven by RTS</td>
+<td>Enable—NPN open-collector pull-down, driven by RTS</td>
 </tr>
 </tbody>
 </table>
@@ -2562,7 +2562,7 @@
 <a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>  +-----+
 <a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>  | RXD |  MR18 receive &lt;- ESP-Prog TXD0
 <a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>  +-----+
-<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>  | NC  |  (bottom, not connected -- possibly VCC)
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>  | NC  |  (bottom, not connected—possibly VCC)
 <a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>  +-----+
 </code></pre></div>
 <h2 id="wiring">Wiring<a class="headerlink" href="#wiring" title="Permanent link">&para;</a></h2>
@@ -2651,8 +2651,8 @@
 </tr>
 </tbody>
 </table>
-<p>Note: ESP-Prog and MR18 pin numbers do NOT match for TMS and TCK -- connect by <strong>signal name</strong>, not by pin number.</p>
-<p>Both operate at 3.3V logic. No level shifter needed. Do NOT connect ESP-Prog VJTAG directly to any MR18 pin -- it only feeds the 4.7k pull-up resistor.</p>
+<p>Note: ESP-Prog and MR18 pin numbers do NOT match for TMS and TCK—connect by <strong>signal name</strong>, not by pin number.</p>
+<p>Both operate at 3.3V logic. No level shifter needed. Do NOT connect ESP-Prog VJTAG directly to any MR18 pin—it only feeds the 4.7k pull-up resistor.</p>
 <p><strong>4.7k pull-up purpose:</strong> nTRST is active-low. Pulling it HIGH through 4.7k keeps the JTAG TAP controller out of reset and available for probing. Without this pull-up, nTRST may float LOW, holding the TAP in reset and preventing OpenOCD from scanning the chain.</p>
 <p><img alt="Breadboard with 4.7k pull-up between VJTAG (yellow) and nTRST (green)" src="../../images/breadboard-pullup.jpg" /></p>
 <p><img alt="ESP-Prog JTAG connector wired up, bench PSU visible in background" src="../../images/esp-prog-jtag-wired.jpg" /></p>
@@ -2710,9 +2710,9 @@
 </tbody>
 </table>
 <p>ESP-Prog UART pins 1 (IO0) and 5 (VPROG) are not connected.</p>
-<p>The EN pin is wired <strong>directly</strong> to the reset button pad -- no series resistor. See <a href="../../bugs/bug-22-resistor-wrong-side/">Bug 22</a> for why.</p>
+<p>The EN pin is wired <strong>directly</strong> to the reset button pad—no series resistor. See <a href="../../bugs/bug-22-resistor-wrong-side/">Bug 22</a> for why.</p>
 <h2 id="en-pin-wiring-failsafe-trigger">EN Pin Wiring (Failsafe Trigger)<a class="headerlink" href="#en-pin-wiring-failsafe-trigger" title="Permanent link">&para;</a></h2>
-<p>The ESP-Prog UART connector exposes an EN (enable) pin. This pin is driven by the FT2232H's RTS line through an NPN transistor -- the same auto-reset circuit used by esptool.py for ESP32 boards.</p>
+<p>The ESP-Prog UART connector exposes an EN (enable) pin. This pin is driven by the FT2232H's RTS line through an NPN transistor—the same auto-reset circuit used by esptool.py for ESP32 boards.</p>
 <h3 id="how-it-works">How it works<a class="headerlink" href="#how-it-works" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>ser.rts = True   --&gt; NPN base driven HIGH --&gt; transistor conducts
 <a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>                 --&gt; EN pin (collector) pulled to GND

@@ -2101,7 +2101,7 @@
 <h1 id="mips-memory-model-and-cache-coherency">MIPS Memory Model and Cache Coherency<a class="headerlink" href="#mips-memory-model-and-cache-coherency" title="Permanent link">&para;</a></h1>
 <p>How the MIPS32 virtual memory architecture, AR9344 D-cache parameters, and the interaction between cached and uncached address segments create the central technical challenge of this project: keeping JTAG-loaded binary data coherent with what the CPU actually reads.</p>
 <h2 id="mips32-virtual-memory-segments">MIPS32 Virtual Memory Segments<a class="headerlink" href="#mips32-virtual-memory-segments" title="Permanent link">&para;</a></h2>
-<p>MIPS32 divides the 4 GB virtual address space into fixed segments. The two kernel segments KSEG0 and KSEG1 are hardwired translations -- no TLB configuration is required. This is critical for bare-metal JTAG work because we are operating before any OS has configured the TLB.</p>
+<p>MIPS32 divides the 4 GB virtual address space into fixed segments. The two kernel segments KSEG0 and KSEG1 are hardwired translations—no TLB configuration is required. This is critical for bare-metal JTAG work because we are operating before any OS has configured the TLB.</p>
 <table>
 <thead>
 <tr>
@@ -2115,35 +2115,35 @@
 <tbody>
 <tr>
 <td>KUSEG</td>
-<td><code>0x00000000</code> -- <code>0x7FFFFFFF</code></td>
+<td><code>0x00000000</code>—<code>0x7FFFFFFF</code></td>
 <td>2 GB</td>
 <td>Configurable</td>
 <td>TLB-mapped (user mode)</td>
 </tr>
 <tr>
 <td>KSEG0</td>
-<td><code>0x80000000</code> -- <code>0x9FFFFFFF</code></td>
+<td><code>0x80000000</code>—<code>0x9FFFFFFF</code></td>
 <td>512 MB</td>
 <td>Yes</td>
 <td><code>phys = virt &amp; 0x1FFFFFFF</code></td>
 </tr>
 <tr>
 <td>KSEG1</td>
-<td><code>0xA0000000</code> -- <code>0xBFFFFFFF</code></td>
+<td><code>0xA0000000</code>—<code>0xBFFFFFFF</code></td>
 <td>512 MB</td>
 <td>No (uncached)</td>
 <td><code>phys = virt &amp; 0x1FFFFFFF</code></td>
 </tr>
 <tr>
 <td>KSEG2</td>
-<td><code>0xC0000000</code> -- <code>0xDFFFFFFF</code></td>
+<td><code>0xC0000000</code>—<code>0xDFFFFFFF</code></td>
 <td>512 MB</td>
 <td>Configurable</td>
 <td>TLB-mapped (kernel)</td>
 </tr>
 <tr>
 <td>KSEG3</td>
-<td><code>0xE0000000</code> -- <code>0xFFFFFFFF</code></td>
+<td><code>0xE0000000</code>—<code>0xFFFFFFFF</code></td>
 <td>512 MB</td>
 <td>Configurable</td>
 <td>TLB-mapped (kernel)</td>
@@ -2164,15 +2164,15 @@
 <h3 id="memory-segment-map">Memory Segment Map<a class="headerlink" href="#memory-segment-map" title="Permanent link">&para;</a></h3>
 <pre class="mermaid"><code>graph TB
     subgraph "Virtual Address Space (4 GB)"
-        KUSEG["KUSEG&lt;br&gt;0x00000000 -- 0x7FFFFFFF&lt;br&gt;2 GB, TLB-mapped, user mode"]
-        KSEG0["KSEG0&lt;br&gt;0x80000000 -- 0x9FFFFFFF&lt;br&gt;512 MB, CACHED&lt;br&gt;phys = virt &amp; 0x1FFFFFFF"]
-        KSEG1["KSEG1&lt;br&gt;0xA0000000 -- 0xBFFFFFFF&lt;br&gt;512 MB, UNCACHED&lt;br&gt;phys = virt &amp; 0x1FFFFFFF"]
-        KSEG2["KSEG2&lt;br&gt;0xC0000000 -- 0xDFFFFFFF&lt;br&gt;512 MB, TLB-mapped"]
-        KSEG3["KSEG3&lt;br&gt;0xE0000000 -- 0xFFFFFFFF&lt;br&gt;512 MB, TLB-mapped"]
+        KUSEG["KUSEG&lt;br&gt;0x00000000—0x7FFFFFFF&lt;br&gt;2 GB, TLB-mapped, user mode"]
+        KSEG0["KSEG0&lt;br&gt;0x80000000—0x9FFFFFFF&lt;br&gt;512 MB, CACHED&lt;br&gt;phys = virt &amp; 0x1FFFFFFF"]
+        KSEG1["KSEG1&lt;br&gt;0xA0000000—0xBFFFFFFF&lt;br&gt;512 MB, UNCACHED&lt;br&gt;phys = virt &amp; 0x1FFFFFFF"]
+        KSEG2["KSEG2&lt;br&gt;0xC0000000—0xDFFFFFFF&lt;br&gt;512 MB, TLB-mapped"]
+        KSEG3["KSEG3&lt;br&gt;0xE0000000—0xFFFFFFFF&lt;br&gt;512 MB, TLB-mapped"]
     end
 
     subgraph "Physical Memory"
-        PHYS_RAM["DDR RAM&lt;br&gt;0x00000000 -- 0x07FFFFFF&lt;br&gt;128 MB"]
+        PHYS_RAM["DDR RAM&lt;br&gt;0x00000000—0x07FFFFFF&lt;br&gt;128 MB"]
         PHYS_MMIO["SoC Peripherals&lt;br&gt;0x18000000+&lt;br&gt;GPIO, UART, etc."]
     end
 
@@ -2240,7 +2240,7 @@
 <ul>
 <li>Each 32-byte write allocates a D-cache line</li>
 <li>The Cisco kernel data sits in D-cache lines marked <strong>dirty</strong> (modified but not yet written back to physical RAM)</li>
-<li>Physical RAM at <code>0x0005FC00+</code> may lag behind -- some data may still be in-flight or only in cache</li>
+<li>Physical RAM at <code>0x0005FC00+</code> may lag behind—some data may still be in-flight or only in cache</li>
 </ul>
 <p>After the Nandloader finishes, the D-cache contains dirty lines covering the physical address range <code>0x0005FC00</code> through approximately <code>0x0005FC00 + sizeof(cisco_kernel)</code>.</p>
 <h3 id="step-2-jtag-writes-our-binary-via-kseg1">Step 2: JTAG Writes Our Binary via KSEG1<a class="headerlink" href="#step-2-jtag-writes-our-binary-via-kseg1" title="Permanent link">&para;</a></h3>
@@ -2255,7 +2255,7 @@
 <p>When the CPU resumes and the lzma-loader begins executing via KSEG0, it performs various reads that sweep through the D-cache's index space. The LRU eviction policy means:</p>
 <ol>
 <li>A KSEG0 read needs a cache line for some address</li>
-<li>The cache set is full -- it must evict the least-recently-used line</li>
+<li>The cache set is full—it must evict the least-recently-used line</li>
 <li>The evicted line happens to be a dirty Cisco line covering physical <code>0x0005FC00+</code></li>
 <li><strong>Write-back fires</strong>: the dirty Cisco data is written from cache to physical RAM</li>
 <li>Our OpenWrt binary in physical RAM is now partially overwritten with Cisco data</li>
@@ -2265,7 +2265,7 @@
 <p>The corruption is non-deterministic. Which Cisco lines get evicted depends on the exact access pattern of the lzma-loader, which depends on the decompression state, which depends on the compressed data. Different regions of our binary get corrupted on different runs. The symptom (lzma decompression failure) is far removed from the cause (cache eviction during unrelated reads).</p>
 <h2 id="d-cache-flush-strategy">D-Cache Flush Strategy<a class="headerlink" href="#d-cache-flush-strategy" title="Permanent link">&para;</a></h2>
 <h3 id="the-solution-flush-before-load">The Solution: Flush Before Load<a class="headerlink" href="#the-solution-flush-before-load" title="Permanent link">&para;</a></h3>
-<p>The fix is to flush the entire D-cache <strong>before</strong> <code>load_image</code>. This writes back all dirty Cisco lines to physical RAM (harmless -- we are about to overwrite that RAM anyway) and marks all cache lines as clean/invalid.</p>
+<p>The fix is to flush the entire D-cache <strong>before</strong> <code>load_image</code>. This writes back all dirty Cisco lines to physical RAM (harmless—we are about to overwrite that RAM anyway) and marks all cache lines as clean/invalid.</p>
 <p>The <code>D_CACHE_FLUSH_TRAMPOLINE</code> in <code>mr18_flash.py</code> accomplishes this:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>0  lui  t0, 0x8000        # t0 = 0x80000000 (start of KSEG0)
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>1  lui  t1, 0x8002        # t1 = 0x80020000 (start + 128 KB)
@@ -2276,7 +2276,7 @@
 <a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>6  sdbbp                  # halt -- signal completion to OpenOCD
 <a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>7  nop
 </code></pre></div>
-<p>This is a simple LW (load word) loop that reads every 32-byte cache line from KSEG0 <code>0x80000000</code> to <code>0x80020000</code> (128 KB). The reads themselves are not interesting -- what matters is the side effect: each read potentially evicts a dirty line from a different cache set, forcing its write-back to physical RAM.</p>
+<p>This is a simple LW (load word) loop that reads every 32-byte cache line from KSEG0 <code>0x80000000</code> to <code>0x80020000</code> (128 KB). The reads themselves are not interesting—what matters is the side effect: each read potentially evicts a dirty line from a different cache set, forcing its write-back to physical RAM.</p>
 <h3 id="why-128-kb-4x-d-cache-capacity">Why 128 KB (4x D-Cache Capacity)<a class="headerlink" href="#why-128-kb-4x-d-cache-capacity" title="Permanent link">&para;</a></h3>
 <p>The D-cache is 32 KB with 4-way set associativity. A single 32 KB sweep only touches one way per set. To guarantee that all 4 ways of every set are evicted, the sweep must cover 4 times the cache size:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>4 ways x 32 KB per way = 128 KB total sweep
@@ -2291,13 +2291,13 @@
 <ol>
 <li><code>load_image</code> writes our OpenWrt binary to physical RAM via KSEG1 (correct)</li>
 <li>D-cache still has dirty Cisco lines (unchanged by KSEG1 writes)</li>
-<li>Flush trampoline runs via KSEG0 -- the flush loop's own KSEG0 reads cause LRU eviction</li>
+<li>Flush trampoline runs via KSEG0—the flush loop's own KSEG0 reads cause LRU eviction</li>
 <li>Dirty Cisco lines are evicted with write-back -- <strong>overwriting our freshly loaded OpenWrt binary</strong></li>
 </ol>
 <p>The write-back of stale Cisco data happens during the flush itself, because the flush loop touches KSEG0 addresses that share cache sets with the Cisco data range. The flush that was supposed to protect our binary is the thing that destroys it.</p>
 <p>The correct order:</p>
 <ol>
-<li><strong>Flush first</strong>: evict all dirty Cisco lines (writes Cisco data to RAM -- harmless)</li>
+<li><strong>Flush first</strong>: evict all dirty Cisco lines (writes Cisco data to RAM—harmless)</li>
 <li><strong>Load second</strong>: <code>load_image</code> writes OpenWrt to physical RAM via KSEG1</li>
 <li>D-cache is now clean (no dirty lines covering our binary's address range)</li>
 <li>When the CPU reads via KSEG0, cache misses fetch from physical RAM, which contains our correct binary</li>
