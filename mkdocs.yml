@@ -1,0 +1,88 @@
+site_name: MR18 OpenWrt -- JTAG Flash Documentation
+site_description: Installing OpenWrt on a Cisco Meraki MR18 via JTAG
+repo_url: https://github.com/bsikar/mr18-openwrt
+
+theme:
+  name: material
+  palette:
+    - scheme: slate
+      primary: deep purple
+      accent: amber
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+    - scheme: default
+      primary: deep purple
+      accent: amber
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+  features:
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - toc.follow
+    - search.suggest
+    - content.code.copy
+
+markdown_extensions:
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.tabbed:
+      alternate_style: true
+  - tables
+  - admonition
+  - toc:
+      permalink: true
+
+nav:
+  - Home: index.md
+  - Overview: overview.md
+  - Guides:
+    - Prerequisites: guides/prerequisites.md
+    - Hardware Setup: guides/hardware-setup.md
+    - Quick Start: guides/quickstart.md
+    - Troubleshooting: guides/troubleshooting.md
+  - Technical Deep-Dives:
+    - MIPS Memory Model: technical/mips-memory-model.md
+    - JTAG Timing Attack: technical/jtag-timing-attack.md
+    - Image Loading & Verification: technical/image-loading.md
+    - MIPS Assembly: technical/mips-assembly.md
+    - Failsafe Trigger: technical/failsafe-trigger.md
+    - AR8035 PHY Fix: technical/ar8035-phy-fix.md
+    - UART Transfer: technical/uart-transfer.md
+    - OpenOCD Config: technical/openocd-config.md
+  - Reference:
+    - Address Map: reference/address-map.md
+    - Script Reference: reference/script-reference.md
+  - Bugs:
+    - Bug Index: bugs/index.md
+    - "Bug 1: Wrong Binary": bugs/bug-01-wrong-binary.md
+    - "Bug 2: OpenOCD Timing": bugs/bug-02-openocd-timing.md
+    - "Bug 3: Socket Contamination": bugs/bug-03-socket-contamination.md
+    - "Bug 4: PRACC Bit Errors": bugs/bug-04-pracc-bit-errors.md
+    - "Bug 5: Hardware Watchdog": bugs/bug-05-hardware-watchdog.md
+    - "Bug 6: Named Pipe EOF": bugs/bug-06-named-pipe-eof.md
+    - "Bug 7: Flush Trampoline": bugs/bug-07-flush-trampoline.md
+    - "Bug 8: Phantom Verify Errors": bugs/bug-08-phantom-verify-errors.md
+    - "Bug 9: Trampoline Overlap": bugs/bug-09-trampoline-overlap.md
+    - "Bug 10: XOR Cancellation": bugs/bug-10-xor-cancellation.md
+    - "Bug 11: D-Cache Stale Data": bugs/bug-11-dcache-stale-data.md
+    - "Bug 12: BEQ vs BNE": bugs/bug-12-beq-vs-bne.md
+    - "Bug 13: Flush Ordering": bugs/bug-13-flush-ordering.md
+    - "Bug 14: Ethernet Silent": bugs/bug-14-ethernet-silent.md
+    - "Bug 15: Meraki NAND Overlay": bugs/bug-15-meraki-nand-overlay.md
+    - "Bug 16: Failsafe Timing": bugs/bug-16-failsafe-timing.md
+    - "Bug 17: Missing Resume": bugs/bug-17-hammer-freezes-cpu.md
+    - "Bug 18: mdw/mww Silent Fail": bugs/bug-18-mdw-mww-silent-fail.md
+    - "Bug 19: GPIO vs Pull-up": bugs/bug-19-gpio-vs-pullup.md
+    - "Bug 20: Reset Supervisor": bugs/bug-20-reset-supervisor.md
+    - "Bug 21: Manual Prompt Window": bugs/bug-21-manual-prompt-window.md
+    - "Bug 22: Resistor Wrong Side": bugs/bug-22-resistor-wrong-side.md
+    - "Bug 23: EN Before Boot": bugs/bug-23-en-before-boot.md
