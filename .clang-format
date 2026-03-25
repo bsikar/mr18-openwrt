@@ -1,0 +1,105 @@
+# .clang-format for STAR project STM32 firmware sources
+# Based on LLVM with STM32CubeIDE conventions (4-space indent, 100-col limit)
+
+BasedOnStyle: LLVM
+
+#----------------------------------------------------------------------------
+# Indentation
+#----------------------------------------------------------------------------
+IndentWidth: 4
+UseTab: Never
+ContinuationIndentWidth: 4
+IndentCaseLabels: true
+
+#----------------------------------------------------------------------------
+# Braces and Blocks
+#----------------------------------------------------------------------------
+BreakBeforeBraces: Custom
+BraceWrapping:
+  AfterControlStatement: false
+  AfterFunction: true
+  AfterStruct: false
+  AfterUnion: false
+  AfterEnum: false
+  AfterNamespace: false
+  AfterExternBlock: false
+  BeforeCatch: false
+  BeforeElse: false
+  BeforeLambdaBody: false
+  BeforeWhile: false
+  SplitEmptyFunction: false
+  SplitEmptyRecord: false
+  SplitEmptyNamespace: false
+
+AllowShortBlocksOnASingleLine: Never
+AllowShortIfStatementsOnASingleLine: Never
+AllowShortLoopsOnASingleLine: false
+AllowShortFunctionsOnASingleLine: Empty
+AllowShortCaseLabelsOnASingleLine: false
+InsertBraces: true
+
+#----------------------------------------------------------------------------
+# Spacing
+#----------------------------------------------------------------------------
+SpaceBeforeParens: ControlStatements
+SpaceAfterCStyleCast: false
+SpaceBeforeAssignmentOperators: true
+SpaceInEmptyParentheses: false
+SpacesInParentheses: false
+SpacesInSquareBrackets: false
+SpacesInAngles: false
+SpacesBeforeTrailingComments: 1
+
+#----------------------------------------------------------------------------
+# Line Breaking and Wrapping
+#----------------------------------------------------------------------------
+ColumnLimit: 100
+
+AlignAfterOpenBracket: Align
+
+BinPackParameters: false
+BinPackArguments: false
+
+AllowAllParametersOfDeclarationOnNextLine: false
+AllowAllArgumentsOnNextLine: false
+
+BreakBeforeBinaryOperators: None
+BreakConstructorInitializers: BeforeColon
+Cpp11BracedListStyle: true
+
+#----------------------------------------------------------------------------
+# Comment Handling
+#----------------------------------------------------------------------------
+ReflowComments: false
+AlignTrailingComments: true
+BreakStringLiterals: false
+
+#----------------------------------------------------------------------------
+# Alignment
+#----------------------------------------------------------------------------
+AlignConsecutiveMacros: true
+AlignConsecutiveDeclarations: true
+AlignConsecutiveAssignments: true
+AlignOperands: Align
+PointerAlignment: Left
+DerivePointerAlignment: false
+
+#----------------------------------------------------------------------------
+# Includes
+#----------------------------------------------------------------------------
+SortIncludes: true
+IncludeBlocks: Regroup
+IncludeCategories:
+  - Regex:           '^".*\.h"'
+    Priority:        1
+  - Regex:           '^<.*\.h>'
+    Priority:        2
+  - Regex:           '^<.*>'
+    Priority:        3
+  - Regex:           '.*'
+    Priority:        4
+
+#----------------------------------------------------------------------------
+# Miscellaneous
+#----------------------------------------------------------------------------
+FixNamespaceComments: true
